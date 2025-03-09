@@ -7,7 +7,7 @@ package com.work.workusercentre.contant;
  */
 public interface UserConstant {
     /**
-     * 用户登录状态
+     * 登录状态
      */
     String USER_LOGIN_STA = "user_is_login";
 

@@ -8,8 +8,9 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
- * 用户信息表
- * @TableName user
+ * @author ljp
+ * @description 针对表【user(用户信息表)】的实体类
+ * @createDate 2025-03-06 10:25:51
  */
 @TableName(value ="user")
 @Data

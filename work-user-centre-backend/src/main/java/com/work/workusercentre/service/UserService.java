@@ -2,6 +2,7 @@ package com.work.workusercentre.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.work.workusercentre.entity.User;
+import com.work.workusercentre.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -28,7 +29,7 @@ public interface UserService extends IService<User> {
      * @param request
      * @return 脱敏后的用户信息
      */
-    User userLogin(String userAccount, String userPasswd, HttpServletRequest request);
+    UserVO userLogin(String userAccount, String userPasswd, HttpServletRequest request);
 
     /**
      * 用户登出服务
