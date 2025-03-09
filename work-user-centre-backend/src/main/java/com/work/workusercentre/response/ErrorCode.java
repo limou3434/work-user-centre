@@ -1,4 +1,4 @@
-package com.work.workusercentre.common;
+package com.work.workusercentre.response;
 
 import lombok.Getter;
 
@@ -32,7 +32,7 @@ public enum ErrorCode {
     private final String message;
 
     /**
-     * 构造方法, 可以自定义其他的错误码及其含义
+     * 内部构造方法, 可以自定义其他的错误码及其含义
      *
      * @param code
      * @param message

@@ -22,7 +22,6 @@ server:
   servlet:
     context-path: /work_user_centre_api  # 这样所有接口都会带上前缀
 
-
 # 配置持久
 mybatis-plus:
   # (1)配置全局

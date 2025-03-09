@@ -3,11 +3,11 @@ package com.work.workusercentre.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.work.workusercentre.entity.User;
+import com.work.workusercentre.exception.ArgumentException;
 import com.work.workusercentre.mapper.UserMapper;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 
 import static com.work.workusercentre.contant.ConfigConstant.SALT;
 import static com.work.workusercentre.contant.UserConstant.USER_LOGIN_STA;
+import static com.work.workusercentre.response.ErrorCode.*;
 
 /**
  * @author ljp
@@ -25,37 +26,36 @@ import static com.work.workusercentre.contant.UserConstant.USER_LOGIN_STA;
  */
 @Service
 @Transactional
-@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Override
     public long userRegister(String userAccount, String userPasswd, String checkPasswd) {
         // 1. 参数校验
         // 判断传入的所有字符串是否都是空白(null、空字符串、仅包含空格）
         if (StringUtils.isAllBlank(userAccount, userPasswd, checkPasswd)) {
-            return -1; // TODO: 这里的返回值需要修改为异常
+            throw new ArgumentException(PARAMS_ERROR, "请输入账户、密码、确认密码后再注册");
         }
 
         // 判断账户和密码的长度是否符合要求
         if (userAccount.length() < 4 || userPasswd.length() < 6 || checkPasswd.length() < 6) {
-            return -1;
+            throw new ArgumentException(PARAMS_ERROR, "账户不得小于 4 位、密码和确认密码均不小于 6 位");
         }
 
         // 避免账户中的非法字符
         String validPattern = "^[a-zA-Z0-9$_-]+$";
         if (!userPasswd.matches(validPattern)) {
-            return -1;
+            throw new ArgumentException(PARAMS_ERROR, "密码和确认密码均不能包含特殊字符");
         }
 
         // 判断两次输入的密码是否一致
         if (!userPasswd.equals(checkPasswd)) {
-            return -1;
+            throw new ArgumentException(PARAMS_ERROR, "新密码和确认密码不一致");
         }
 
         // 避免重复注册用户
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
         if (this.count(lambdaQueryWrapper) > 0) {
-            return -1;
+            throw new ArgumentException(OPERATION_ERROR, "不允许重复注册已存在的用户");
         }
 
         // 2. 密码加密
@@ -68,8 +68,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         // 4. 注册用户
         boolean saveResult = this.save(user);
-        if (!saveResult) { // 避免拆箱错误
-            return -1;
+        if (!saveResult) {
+            throw new ArgumentException(SYSTEM_ERROR, "出现拆箱错误");
         }
 
         return user.getId();
@@ -80,18 +80,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 1. 参数校验
         // 判断传入的所有字符串是否都是空白(null、空字符串、仅包含空格）
         if (StringUtils.isAllBlank(userAccount, userPasswd)) {
-            return null; // TODO: 这里的返回值需要修改为异常
+            throw new ArgumentException(PARAMS_ERROR, "请输入账户、密码后再登录");
         }
 
         // 判断账户和密码的长度是否符合要求
         if (userAccount.length() < 4 || userPasswd.length() < 6) {
-            return null;
+            throw new ArgumentException(PARAMS_ERROR, "账户不得小于 4 位、密码不小于 6 位");
         }
 
         // 避免账户中的非法字符
         String validPattern = "^[a-zA-Z0-9$_-]+$";
         if (!userPasswd.matches(validPattern)) {
-            return null;
+            throw new ArgumentException(PARAMS_ERROR, "密码不能包含特殊字符");
         }
 
         // 2. 密码加密
@@ -102,8 +102,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         lambdaQueryWrapper.eq(User::getUserAccount, userAccount).eq(User::getUserPasswd, newUserPasswd);
         User user = this.getOne(lambdaQueryWrapper);
         if (user == null) {
-            log.info("用户名或密码错误");
-            return null; // TODO: 这里的返回值需要修改为异常
+            throw new ArgumentException(PARAMS_ERROR, "可能该用户不存在, 也可能是密码错误");
         }
 
         // 4. 脱敏信息
