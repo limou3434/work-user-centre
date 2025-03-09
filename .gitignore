@@ -2,4 +2,6 @@
 ### @from <a href="https://xxx.com">xxx</a> ###
 
 # 待补充...
-
+/work-user-centre-frontend/node_modules
+/work-user-centre-frontend/.next/
+/work-user-centre-frontend/.idea

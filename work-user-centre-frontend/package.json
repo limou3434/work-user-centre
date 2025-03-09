@@ -1,0 +1,40 @@
+{
+  "name": "work-user-centre-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && cp -r ./public .next/standalone/ && cp -r ./.next/static .next/standalone/.next/",
+    "start": "next start",
+    "lint": "next lint",
+    "package": "mkdir -p ./.next/target && zip -r ./.next/target/standalone.zip .next/standalone",
+    "openapi": "node --loader ts-node/esm openapi.config.ts"
+  },
+  "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.2",
+    "@ant-design/pro-components": "^2.8.6",
+    "@bytemd/plugin-gfm": "^1.22.0",
+    "@bytemd/plugin-highlight": "^1.22.0",
+    "@bytemd/react": "^1.22.0",
+    "@reduxjs/toolkit": "^2.6.1",
+    "antd": "^5.24.3",
+    "axios": "^1.8.2",
+    "next": "14.2.6",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-redux": "^9.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@umijs/openapi": "^1.13.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.6",
+    "eslint-config-prettier": "^10.1.1",
+    "prettier": "3.5.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
+  }
+}
