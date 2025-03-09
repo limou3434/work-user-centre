@@ -1,3 +1,3 @@
 #!/bin/bash
-docker save -o <work-xxx-xxx.tar> <work-xxx-xxx:x.y.z>
-
+# ./Dockerfile_package.sh
+docker save -o work-user-centre-backend.tar work-user-centre-backend:0.0.1

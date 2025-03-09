@@ -1,2 +1,3 @@
 #!/bin/bash
-docker build -t <work-xxx-xxx:x.y.z >.
+# Dockerfile_bulid.sh
+docker build -t work-user-centre-backend:0.0.1 .

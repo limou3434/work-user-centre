@@ -1,7 +1,7 @@
 #!/bin/bash
-docker container stop work-xxx-xxx ||
-  docker container rm work-xxx-xxx ||
-  docker run -d -p <本地端口号>:<暴露端口号> --name <work--xxx-xxx-x.y.z> <work-xxx-xxx:x.y.z> &&
-  docker container logs <work-xxx-xxx> &&
+# ./Dockerfile_run.sh
+docker container stop work-user-centre-backend ||
+  docker container rm work-user-centre-backend ||
+  docker run -d -p 8000:8000 --name work-user-centre-backend work-user-centre-backend:0.0.1 &&
+  docker container logs work-user-centre-backend &&
   docker container ls -a
-
