@@ -9,6 +9,7 @@ import com.work.workusercentre.request.DeleteUserRequest;
 import com.work.workusercentre.request.UserLoginRequest;
 import com.work.workusercentre.request.UserRegisterRequest;
 import com.work.workusercentre.response.BaseResponse;
+import com.work.workusercentre.response.ErrorCode;
 import com.work.workusercentre.response.TheResult;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.vo.UserVO;
@@ -27,7 +28,7 @@ import static com.work.workusercentre.response.ErrorCode.*;
 @RestController // 返回值默认为 json 类型
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true") // 允许前端域访问 // TODO: 实际部署需要代理, 所以这里的注解去除更加安全
 @RequestMapping("/user")
-public class UserController {
+public class UserController { // 通常控制层有服务层中的所有方法, 并且还有组合而成的方法, 如果组合的方法开始变得复杂就会封装到服务层内部
     @Resource
     private UserService userService;
 
@@ -45,7 +46,7 @@ public class UserController {
         }
 
         // 处理请求
-        long id = userService.userRegister(userRegisterRequest.getUserAccount(), userRegisterRequest.getUserPasswd(), userRegisterRequest.getCheckPasswd());
+        Long id = userService.userRegister(userRegisterRequest.getUserAccount(), userRegisterRequest.getUserPasswd(), userRegisterRequest.getCheckPasswd());
 
         // 返回响应
         return TheResult.success(id);
@@ -97,7 +98,7 @@ public class UserController {
      * @return 用户列表, 如果没有查询 id 就会得到所有用户
      */
     @GetMapping("/search")
-    public BaseResponse<List<UserVO>> searchUsers(@RequestParam(required = false) String userName, HttpServletRequest request) {
+    public BaseResponse<List<UserVO>> userSearch(@RequestParam(required = false) String userName, HttpServletRequest request) {
         // 参数校验
         if (request == null) {
             throw new ArgumentException(PARAMS_ERROR, "请求为空");
@@ -129,7 +130,7 @@ public class UserController {
      * @return 是否删除成功
      */
     @PostMapping("/delete")
-    public BaseResponse<Boolean> deleteUser(@RequestBody DeleteUserRequest deleteUserRequest, HttpServletRequest request) {
+    public BaseResponse<Boolean> userDelete(@RequestBody DeleteUserRequest deleteUserRequest, HttpServletRequest request) {
         // 参数校验
         if (request == null) {
             throw new ArgumentException(PARAMS_ERROR, "请求为空");
@@ -146,27 +147,39 @@ public class UserController {
     }
 
     /**
+     * 获取当前登录用户信息接口
+     *
+     * @return 脱敏后的用户信息
+     */
+    @GetMapping("/getLoginState")
+    public BaseResponse<UserVO> userGetLoginState(HttpServletRequest request) {
+        // 参数校验
+        if (request == null) {
+            throw new ArgumentException(PARAMS_ERROR, "请求为空");
+        }
+
+        // 返回响应
+        return TheResult.success(userService.userGetLoginState(request));
+    }
+
+    /**
      * 身份检查方法
      *
-     * @param request
+     * @param request // TODO: 权限修改自己本身也可以查看用户是否登录
      */
     private void authCheck(HttpServletRequest request) {
         if (request == null) {
             throw new ArgumentException(PARAMS_ERROR, "请求为空");
         }
 
-        var user = (UserVO) request.getSession().getAttribute(USER_LOGIN_STA);
+        Long userId = userService.userGetLoginState(request).getId(); // 不要从缓存中直接获取用户信息, 否则无法实时更新用户信息
 
-        if (user == null) {
-            throw new ArgumentException(NOT_LOGIN_ERROR, "请先进行登录");
+        if (userService.getById(userId).getUserRole() == BAN_ROLE) {
+            throw new NotRoleException(ErrorCode.NO_AUTH_ERROR, "该帐号被封禁");
         }
 
-        if (user.getUserRole() == BAN_ROLE) {
-            throw new NotRoleException(NO_AUTH_ERROR, "该帐号被封禁");
-        }
-
-        if (user.getUserRole() != ADMIN_ROLE) {
-            throw new NotRoleException(NO_AUTH_ERROR, "需要管理权限");
+        if (userService.getById(userId).getUserRole() != ADMIN_ROLE) {
+            throw new NotRoleException(ErrorCode.NO_AUTH_ERROR, "需要管理权限");
         }
     }
 }

@@ -9,7 +9,7 @@ public interface UserConstant {
     /**
      * 登录状态
      */
-    String USER_LOGIN_STA = "user_is_login";
+    String USER_LOGIN_STATE = "user_is_login";
 
     /**
      * 用户角色

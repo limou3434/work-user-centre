@@ -19,7 +19,7 @@ public interface UserService extends IService<User> {
      * @param checkPasswd
      * @return 用户 id
      */
-    long userRegister(String userAccount, String userPasswd, String checkPasswd);
+    Long userRegister(String userAccount, String userPasswd, String checkPasswd);
 
     /**
      * 用户登入服务
@@ -37,5 +37,12 @@ public interface UserService extends IService<User> {
      * @param request
      * @return 是否登出成功
      */
-    boolean userLogout(HttpServletRequest request);
+    Boolean userLogout(HttpServletRequest request);
+
+    /**
+     * 获取当前登录用户信息
+     * @param request
+     * @return 当前登录用户的脱敏信息
+     */
+    UserVO userGetLoginState(HttpServletRequest request);
 }

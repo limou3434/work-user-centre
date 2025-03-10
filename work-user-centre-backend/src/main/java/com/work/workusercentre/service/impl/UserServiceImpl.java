@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.work.workusercentre.entity.User;
 import com.work.workusercentre.exception.ArgumentException;
 import com.work.workusercentre.mapper.UserMapper;
+import com.work.workusercentre.response.ErrorCode;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +17,7 @@ import org.springframework.util.DigestUtils;
 import java.nio.charset.StandardCharsets;
 
 import static com.work.workusercentre.contant.ConfigConstant.SALT;
-import static com.work.workusercentre.contant.UserConstant.USER_LOGIN_STA;
+import static com.work.workusercentre.contant.UserConstant.USER_LOGIN_STATE;
 import static com.work.workusercentre.response.ErrorCode.*;
 
 /**
@@ -28,7 +29,7 @@ import static com.work.workusercentre.response.ErrorCode.*;
 @Transactional
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Override
-    public long userRegister(String userAccount, String userPasswd, String checkPasswd) {
+    public Long userRegister(String userAccount, String userPasswd, String checkPasswd) {
         // 1. 参数校验
         // 判断传入的所有字符串是否都是空白(null、空字符串、仅包含空格）
         if (StringUtils.isAllBlank(userAccount, userPasswd, checkPasswd)) {
@@ -110,14 +111,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         // 5. 创建会话
         // session 数据存储在应用服务器 Tomcat 中, 以后可以通过 request.getSession().getAttribute(USER_LOGIN_STA) 取出用户登陆自己浏览器中本应用的 session 信息 safetUser, 不过类型变成了 Object, 可以后续强转恢复
-        request.getSession().setAttribute(USER_LOGIN_STA, safetUser); // TODO: 改为 Redis 分布式存储
+        request.getSession().setAttribute(USER_LOGIN_STATE, safetUser); // TODO: 改为 Redis 分布式存储
 
         return safetUser;
     }
 
     @Override
-    public boolean userLogout(HttpServletRequest request) {
-        request.getSession().removeAttribute(USER_LOGIN_STA); // TODO: 改为 Redis 分布式存储
+    public Boolean userLogout(HttpServletRequest request) {
+        request.getSession().removeAttribute(USER_LOGIN_STATE); // TODO: 改为 Redis 分布式存储
         return true;
+    }
+
+    @Override
+    public UserVO userGetLoginState(HttpServletRequest request) {
+        // 先判断是否已登录
+        var localCurrentUser = (UserVO)request.getSession().getAttribute(USER_LOGIN_STATE);
+
+        if (localCurrentUser == null) {
+            throw new ArgumentException(ErrorCode.NOT_LOGIN_ERROR, "请先进行登录");
+        }
+
+        // 从数据库查询 // TODO: 追求性能的话可以注释, 直接走缓存
+        long userId = localCurrentUser.getId();
+        User remoteCurrentUser = this.getById(userId); // 由于 id 值不变就可以保证快速获取到被其他地方修改的用户信息
+        if (remoteCurrentUser == null) {
+            throw new ArgumentException(ErrorCode.NOT_FOUND_ERROR, "该用户已被管理员删除");
+        }
+        return UserVO.removeSensitiveData(remoteCurrentUser);
     }
 }
