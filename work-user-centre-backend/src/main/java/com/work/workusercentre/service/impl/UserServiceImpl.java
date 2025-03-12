@@ -123,7 +123,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public UserVO userGetLoginState(HttpServletRequest request) {
+    public UserVO getLoginUserState(HttpServletRequest request) {
         // 先判断是否已登录
         var localCurrentUser = (UserVO)request.getSession().getAttribute(USER_LOGIN_STATE);
 

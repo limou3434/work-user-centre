@@ -2,14 +2,13 @@ package com.work.workusercentre.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.work.workusercentre.annotation.AuthCheck;
 import com.work.workusercentre.entity.User;
 import com.work.workusercentre.exception.ArgumentException;
-import com.work.workusercentre.exception.NotRoleException;
 import com.work.workusercentre.request.DeleteUserRequest;
 import com.work.workusercentre.request.UserLoginRequest;
 import com.work.workusercentre.request.UserRegisterRequest;
 import com.work.workusercentre.response.BaseResponse;
-import com.work.workusercentre.response.ErrorCode;
 import com.work.workusercentre.response.TheResult;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.vo.UserVO;
@@ -19,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.work.workusercentre.contant.UserConstant.*;
-import static com.work.workusercentre.response.ErrorCode.*;
+import static com.work.workusercentre.response.ErrorCode.PARAMS_ERROR;
 
 /**
  * 用户控制层
@@ -81,6 +79,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * @return 是否登出成功
      */
     @PostMapping("/logout")
+    @AuthCheck()
     public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
         // 参数校验
         if (request == null) {
@@ -98,14 +97,12 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * @return 用户列表, 如果没有查询 id 就会得到所有用户
      */
     @GetMapping("/search")
+    @AuthCheck(mustRole = "admin")
     public BaseResponse<List<UserVO>> userSearch(@RequestParam(required = false) String userName, HttpServletRequest request) {
         // 参数校验
         if (request == null) {
             throw new ArgumentException(PARAMS_ERROR, "请求为空");
         }
-
-        // 权限校验
-        authCheck(request); // TODO: 这里的权限需要修改为 AOP
 
         // 处理请求
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -130,14 +127,13 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * @return 是否删除成功
      */
     @PostMapping("/delete")
+    @AuthCheck(mustRole = "admin")
     public BaseResponse<Boolean> userDelete(@RequestBody DeleteUserRequest deleteUserRequest, HttpServletRequest request) {
         // 参数校验
         if (request == null) {
             throw new ArgumentException(PARAMS_ERROR, "请求为空");
         }
 
-        // 权限校验
-        authCheck(request); // TODO: 这里的权限需要修改为 AOP
         if (deleteUserRequest.getId() <= 0) {
             throw new ArgumentException(PARAMS_ERROR, "参数用户 id 不能为空");
         }
@@ -152,6 +148,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * @return 脱敏后的用户信息
      */
     @GetMapping("/getLoginState")
+    @AuthCheck()
     public BaseResponse<UserVO> userGetLoginState(HttpServletRequest request) {
         // 参数校验
         if (request == null) {
@@ -159,27 +156,27 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
         }
 
         // 返回响应
-        return TheResult.success(userService.userGetLoginState(request));
+        return TheResult.success(userService.getLoginUserState(request));
     }
 
-    /**
-     * 身份检查方法
-     *
-     * @param request // TODO: 权限修改自己本身也可以查看用户是否登录
-     */
-    private void authCheck(HttpServletRequest request) {
-        if (request == null) {
-            throw new ArgumentException(PARAMS_ERROR, "请求为空");
-        }
-
-        Long userId = userService.userGetLoginState(request).getId(); // 不要从缓存中直接获取用户信息, 否则无法实时更新用户信息
-
-        if (userService.getById(userId).getUserRole() == BAN_ROLE) {
-            throw new NotRoleException(ErrorCode.NO_AUTH_ERROR, "该帐号被封禁");
-        }
-
-        if (userService.getById(userId).getUserRole() != ADMIN_ROLE) {
-            throw new NotRoleException(ErrorCode.NO_AUTH_ERROR, "需要管理权限");
-        }
-    }
+//    /**
+//     * 身份检查方法
+//     *
+//     * @param request // TODO: 权限修改自己本身也可以查看用户是否登录
+//     */
+//    private void authCheck(HttpServletRequest request) {
+//        if (request == null) {
+//            throw new ArgumentException(PARAMS_ERROR, "请求为空");
+//        }
+//
+//        Long userId = userService.getLoginUserState(request).getId(); // 不要从缓存中直接获取用户信息, 否则无法实时更新用户信息
+//
+//        if (userService.getById(userId).getUserRole() == UserRoleEnum.BAN_ROLE.getCode()) {
+//            throw new NotRoleException(ErrorCode.NO_AUTH_ERROR, "该帐号被封禁");
+//        }
+//
+//        if (userService.getById(userId).getUserRole() != UserRoleEnum.ADMIN_ROLE.getCode()) {
+//            throw new NotRoleException(ErrorCode.NO_AUTH_ERROR, "需要管理权限");
+//        }
+//    }
 }
