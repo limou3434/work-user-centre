@@ -16,7 +16,6 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/stores";
 import { ProForm } from "@ant-design/pro-form/lib";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import {message} from "antd";
 import {setLoginUser} from "@/stores/loginUser";
 import {userLogin} from "@/api/userController";
@@ -44,17 +43,14 @@ const UserLoginPage: React.FC = () => {
         try {
             const res = await userLogin(values);
             console.log(res);
-            console.log(res.data);
-            if (res.data) {
+            if (res?.data?.data) {
                 message.success("登入成功"); // 提示登入成功
-                // @ts-ignore
-                // dispatch(setLoginUser(res.data)); // 保存用户登入状态
+                dispatch(setLoginUser(res.data.data)); // 保存用户登入状态
                 router.replace("/"); // 跳转页面
                 form.resetFields(); // 重置表单
             }
         } catch (e) {
-            // @ts-ignore
-            message.error("登入失败: " + e.message); // 提示登入失败
+            message.error("登入失败, 请检查帐号密码是否正确, 或者联系管理员"); // 提示登入失败
         }
     };
 

@@ -59,7 +59,7 @@ export default function BasicLayout({ children }: Props) {
         avatarProps={{
           src: loginUser.userAvatar || "/assets/not_login_user.svg",
           size: "small",
-          title: loginUser.userName || "未登陆",
+          title: loginUser.userAccount || "未登陆",
           // @ts-ignore
           render: (_, dom) => {
             return (

@@ -4,14 +4,14 @@
 
 // 权限角色
 export const ACCESS_ENUM = {
-  NOT_LOGIN: "not_login",
-  USER: "user",
-  ADMIN: "admin",
+  NOT_LOGIN: -1,
+  USER: 0,
+  ADMIN: 1,
 };
 
 // 默认用户
 export const DEFAULT_USER: API.LoginUserVO = {
-  userName: "未登录",
+  userAccount: "未登录",
   userProfile: "暂无简介",
   userAvatar: "/assets/not_login_user.svg",
   userRole: ACCESS_ENUM.NOT_LOGIN,

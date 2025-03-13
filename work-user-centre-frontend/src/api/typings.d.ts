@@ -1,17 +1,35 @@
 declare namespace API {
-  type searchUsersParams = {
-    userName?: string;
+  type BaseResponseBoolean = {
+    code?: number;
+    message?: string;
+    data?: boolean;
   };
 
-  type User = {
+  type BaseResponseListLoginUserVO = {
+    code?: number;
+    message?: string;
+    data?: LoginUserVO[];
+  };
+
+  type BaseResponseLoginUserVO = {
+    code?: number;
+    message?: string;
+    data?: LoginUserVO;
+  };
+
+  type BaseResponseLong = {
+    code?: number;
+    message?: string;
+    data?: number;
+  };
+
+  type LoginUserVO = {
     id?: number;
     userAccount?: string;
     userWxUnion?: string;
     userMpOpen?: string;
     userEmail?: string;
     userPhone?: string;
-    userIdent?: string;
-    userPasswd?: string;
     userAvatar?: string;
     userTags?: string;
     userNick?: string;
@@ -23,9 +41,17 @@ declare namespace API {
     userRole?: number;
     userLevel?: number;
     userGender?: number;
-    deleted?: number;
-    createTime?: string;
-    updateTime?: string;
+  };
+
+  type UserAddRequest = {
+    userAccount?: string;
+    userPasswd?: string;
+    userAvatar?: string;
+    userRole?: string;
+  };
+
+  type UserDeleteRequest = {
+    id?: number;
   };
 
   type UserLoginRequest = {
@@ -37,5 +63,17 @@ declare namespace API {
     userAccount?: string;
     userPasswd?: string;
     checkPasswd?: string;
+  };
+
+  type userSearchParams = {
+    userName?: string;
+  };
+
+  type UserUpdateRequest = {
+    id?: number;
+    userName?: string;
+    userAvatar?: string;
+    userProfile?: string;
+    userRole?: number;
   };
 }
