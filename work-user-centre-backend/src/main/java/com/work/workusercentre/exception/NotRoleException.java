@@ -1,12 +1,12 @@
 package com.work.workusercentre.exception;
 
-import com.work.workusercentre.response.ErrorCode;
+import com.work.workusercentre.response.ErrorCodeBindMessage;
 import lombok.Getter;
 
 /**
  * 权限异常类
  *
- * @Author ljp
+ * @author ljp
  */
 @Getter
 public class NotRoleException extends RuntimeException {
@@ -18,11 +18,11 @@ public class NotRoleException extends RuntimeException {
     /**
      * 构造异常对象
      *
-     * @param errorCode
-     * @param exceptionMessage
+     * @param errorCodeBindMessage 错误-含义 枚举体
+     * @param exceptionMessage 异常信息
      */
-    public NotRoleException(ErrorCode errorCode, String exceptionMessage) {
-        super(errorCode.getMessage() + ": " + exceptionMessage);
-        this.code = errorCode.getCode();
+    public NotRoleException(ErrorCodeBindMessage errorCodeBindMessage, String exceptionMessage) {
+        super(errorCodeBindMessage.getMessage() + ": " + exceptionMessage);
+        this.code = errorCodeBindMessage.getCode();
     }
 }

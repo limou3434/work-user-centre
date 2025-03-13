@@ -8,7 +8,7 @@ import lombok.Getter;
  * @author ljp
  */
 @Getter // 等价于只能用在类上的 Data
-public enum ErrorCode {
+public enum ErrorCodeBindMessage {
     /**
      * 枚举常量
      */
@@ -34,10 +34,10 @@ public enum ErrorCode {
     /**
      * 内部构造方法, 可以自定义其他的错误码及其含义
      *
-     * @param code
-     * @param message
+     * @param code 状态
+     * @param message 含义
      */
-    ErrorCode(int code, String message) {
+    ErrorCodeBindMessage(int code, String message) {
         this.code = code;
         this.message = message;
     }

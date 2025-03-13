@@ -4,9 +4,9 @@ import com.work.workusercentre.annotation.AuthCheck;
 import com.work.workusercentre.enums.UserRoleEnum;
 import com.work.workusercentre.exception.ArgumentException;
 import com.work.workusercentre.exception.NotRoleException;
-import com.work.workusercentre.response.ErrorCode;
+import com.work.workusercentre.response.ErrorCodeBindMessage;
 import com.work.workusercentre.service.UserService;
-import com.work.workusercentre.vo.UserVO;
+import com.work.workusercentre.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -33,8 +33,8 @@ public class AuthInterceptor {
     /**
      * 拦截 @AuthCheck 注解, 用上注解就 "必须登录、必须未封、必须满足条件(除了管理)" 才能使用
      *
-     * @param joinPoint
-     * @param authCheck
+     * @param joinPoint 切点
+     * @param authCheck 注解
      * @return Object 对象
      */
     @Around("@annotation(authCheck)")
@@ -42,21 +42,21 @@ public class AuthInterceptor {
         // 获取当前登录角色并转化为枚举体实例
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes(); // RequestContextHolder 可以获取当前线程的请求上下文
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-        UserVO loginUser = userService.getLoginUserState(request);
+        LoginUserVO loginUser = userService.getLoginUserState(request);
         UserRoleEnum loginUserRoleEnum = UserRoleEnum.getEnumByCode(loginUser.getUserRole());
         // 如果没有登录, 直接拒绝
         if (loginUserRoleEnum == null) {
-            throw new ArgumentException(ErrorCode.NOT_LOGIN_ERROR, "请先进行登录");
+            throw new ArgumentException(ErrorCodeBindMessage.NOT_LOGIN_ERROR, "请先进行登录");
         }
         // 如果已被封号, 直接拒绝
         if (UserRoleEnum.BAN_ROLE.equals(loginUserRoleEnum)) {
-            throw new NotRoleException(ErrorCode.NO_AUTH_ERROR, "您已被封号, 请联系管理员");
+            throw new NotRoleException(ErrorCodeBindMessage.NO_AUTH_ERROR, "您已被封号, 请联系管理员");
         }
 
         // 获取必须得到角色并转化为枚举体实例
         String mustRole = authCheck.mustRole();
         UserRoleEnum mustRoleEnum = UserRoleEnum.getEnumByDescription(mustRole);
-        log.info("{} , 当前登录用户角色: {}, 必须得到角色: {}", mustRole, loginUserRoleEnum, mustRoleEnum);
+        log.debug("{} , 当前登录用户角色: {}, 必须得到角色: {}", mustRole, loginUserRoleEnum, mustRoleEnum);
 
         // 如果没有必须得到角色, 直接放行
         if (mustRoleEnum == null) {
@@ -73,6 +73,6 @@ public class AuthInterceptor {
             return joinPoint.proceed();
         }
 
-        throw new NotRoleException(ErrorCode.NO_AUTH_ERROR, "您没有该权限");
+        throw new NotRoleException(ErrorCodeBindMessage.NO_AUTH_ERROR, "您没有该权限");
     }
 }

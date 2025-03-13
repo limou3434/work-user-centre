@@ -37,7 +37,7 @@ public enum UserRoleEnum {
     /**
      * 根据角色码值获取枚举实例
      *
-     * @param code
+     * @param code 角色码值
      * @return 枚举实例
      */
     public static UserRoleEnum getEnumByCode(int code) {
@@ -52,7 +52,7 @@ public enum UserRoleEnum {
     /**
      * 根据角色描述获取枚举实例
      *
-     * @param description
+     * @param description 角色描述
      * @return 枚举实例
      */
     public static UserRoleEnum getEnumByDescription(String description) {

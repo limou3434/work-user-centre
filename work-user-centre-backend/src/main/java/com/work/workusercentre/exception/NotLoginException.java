@@ -1,13 +1,13 @@
 package com.work.workusercentre.exception;
 
-import com.work.workusercentre.response.ErrorCode;
+import com.work.workusercentre.response.ErrorCodeBindMessage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * 权限异常类
  *
- * @Author ljp
+ * @author ljp
  */
 @Getter
 @Slf4j
@@ -20,11 +20,11 @@ public class NotLoginException extends RuntimeException {
     /**
      * 构造异常对象
      *
-     * @param errorCode
-     * @param exceptionMessage
+     * @param errorCodeBindMessage 错误-含义 枚举体
+     * @param exceptionMessage 异常信息
      */
-    public NotLoginException(ErrorCode errorCode, String exceptionMessage) {
-        super(errorCode.getMessage() + ": " + exceptionMessage);
-        this.code = errorCode.getCode();
+    public NotLoginException(ErrorCodeBindMessage errorCodeBindMessage, String exceptionMessage) {
+        super(errorCodeBindMessage.getMessage() + ": " + exceptionMessage);
+        this.code = errorCodeBindMessage.getCode();
     }
 }

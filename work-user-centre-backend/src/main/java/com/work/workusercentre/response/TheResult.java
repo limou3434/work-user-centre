@@ -1,6 +1,6 @@
 package com.work.workusercentre.response;
 
-import static com.work.workusercentre.response.ErrorCode.SUCCESS;
+import static com.work.workusercentre.response.ErrorCodeBindMessage.SUCCESS;
 
 /**
  * 便捷响应体包装类
@@ -35,11 +35,11 @@ public class TheResult {
     /**
      * 构造失败响应体
      *
-     * @param errorCode
+     * @param errorCodeBindMessage
      * @return 通用响应体对象
      */
-    public static <T> BaseResponse<T> error(ErrorCode errorCode) {
-        return new BaseResponse<>(errorCode);
+    public static <T> BaseResponse<T> error(ErrorCodeBindMessage errorCodeBindMessage) {
+        return new BaseResponse<>(errorCodeBindMessage);
     }
 
     /**

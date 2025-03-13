@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-public class UserVO implements Serializable {
+public class LoginUserVO implements Serializable {
     /**
      * 本用户唯一标识(业务层需要考虑使用雪花算法用户标识的唯一性)
      */
@@ -100,14 +100,14 @@ public class UserVO implements Serializable {
     /**
      * 脱敏方法
      *
-     * @param user
+     * @param user 用户信息
      * @return 脱敏后的用户信息
      */
-    static public UserVO removeSensitiveData(User user) {
+    static public LoginUserVO removeSensitiveData(User user) {
         if (user == null) {
             return null;
         }
-        var userVO = new UserVO();
+        var userVO = new LoginUserVO();
         BeanUtils.copyProperties(user, userVO);
         return userVO;
     }

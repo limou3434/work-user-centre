@@ -28,21 +28,21 @@ public class BaseResponse<T> implements Serializable {
     /**
      * 构造方法
      *
-     * @param errorCode
-     * @param data
+     * @param errorCodeBindMessage 错误-含义 枚举体
+     * @param data 数据
      */
-    public BaseResponse(ErrorCode errorCode, T data) {
-        this.code = errorCode.getCode();
-        this.message = errorCode.getMessage();
+    public BaseResponse(ErrorCodeBindMessage errorCodeBindMessage, T data) {
+        this.code = errorCodeBindMessage.getCode();
+        this.message = errorCodeBindMessage.getMessage();
         this.data = data;
     }
 
     /**
      * 构造方法
      *
-     * @param code
-     * @param message
-     * @param data
+     * @param code 状态
+     * @param message 含义
+     * @param data 数据
      */
     public BaseResponse(int code, String message, T data) {
         this.code = code;
@@ -53,19 +53,19 @@ public class BaseResponse<T> implements Serializable {
     /**
      * 构造方法
      *
-     * @param errorCode
+     * @param errorCodeBindMessage 错误-含义 枚举体
      */
-    public BaseResponse(ErrorCode errorCode) {
-        this.code = errorCode.getCode();
-        this.message = errorCode.getMessage();
+    public BaseResponse(ErrorCodeBindMessage errorCodeBindMessage) {
+        this.code = errorCodeBindMessage.getCode();
+        this.message = errorCodeBindMessage.getMessage();
         this.data = null;
     }
 
     /**
      * 构造方法
      *
-     * @param code
-     * @param message
+     * @param code 状态
+     * @param message 含义
      */
     public BaseResponse(int code, String message) {
         this.code = code;
