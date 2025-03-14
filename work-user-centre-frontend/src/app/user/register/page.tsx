@@ -44,10 +44,7 @@ const UserRegisterPage: React.FC = () => {
                 router.replace("/user/login"); // 跳转页面
                 form.resetFields(); // 重置表单
             }
-        } catch (e) {
-            // @ts-ignore
-            message.error("注册失败: " + e.message); // 提示登入失败
-        }
+        } catch (e) {}
     };
 
     return (

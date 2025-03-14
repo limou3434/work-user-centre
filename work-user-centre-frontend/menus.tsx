@@ -17,7 +17,7 @@ const menus = [
         path: "/admin",
         name: "管理",
         icon: <CrownOutlined/>,
-        // TODO: access: ACCESS_ENUM.ADMIN,
+        access: ACCESS_ENUM.ADMIN,
         children: [
             {
                 path: "/admin/role",

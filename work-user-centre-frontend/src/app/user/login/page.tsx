@@ -1,7 +1,7 @@
 // src/app/user/login/page.tsx
 
 /* 渲染 */
-"use client"; // 注释本行则默认服务端渲染
+"use client";
 
 /* 样式 */
 import "./page.css";
@@ -39,13 +39,17 @@ const UserLoginPage: React.FC = () => {
 
     // 登入接口
     const doSubmit = async (values: API.UserLoginRequest): Promise<void> => {
+        console.log("执行一次登入操作") // TODO: 不确定是否需要屏蔽
+
         // 提交登入表单
         try {
             const res = await userLogin(values);
-            console.log(res);
-            if (res?.data?.data) {
-                message.success("登入成功"); // 提示登入成功
-                dispatch(setLoginUser(res.data.data)); // 保存用户登入状态
+
+            if (res?.data) {
+                message.success("登入成功, 欢迎回来"); // 提示登入成功
+                console.log("检查登录后的响应"); // TODO: 不确定是否需要屏蔽
+                console.log(res); // TODO: 不确定是否需要屏蔽
+                dispatch(setLoginUser(res.data as API.LoginUserVO)); // 保存用户登入状态, 这里时用 as 的原因是拦截器直接把 axios 中的 data 返回了, 但是类型没有被处理
                 router.replace("/"); // 跳转页面
                 form.resetFields(); // 重置表单
             }
