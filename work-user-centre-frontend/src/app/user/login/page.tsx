@@ -28,7 +28,7 @@ const UserLoginPage: React.FC = () => {
     // 项目信息
     const projectInfo = "科教平台工作室用户中心系统"; // TODO: 从文件中读取
 
-    // 登入状态
+    // 状态工具
     const dispatch = useDispatch<AppDispatch>();
 
     // 表单实例

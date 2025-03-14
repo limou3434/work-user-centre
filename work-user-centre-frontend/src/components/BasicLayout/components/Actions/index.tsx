@@ -4,7 +4,7 @@
 
 import "./index.css";
 import { GithubFilled } from "@ant-design/icons";
-import SearchInput from "@/layouts/BasicLayout/components/SearchInput";
+import SearchInput from "@/components/BasicLayout/components/SearchInput";
 import React from "react";
 
 interface ActionsProps {

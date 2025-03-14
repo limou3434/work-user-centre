@@ -1,5 +1,4 @@
 // ./src/layouts/BasicLayout/index.tsx: 基本布局组件
-
 "use client";
 
 import "./index.css";
@@ -11,9 +10,9 @@ import Image from "next/image";
 import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 import menus from "../../../menus";
-import Footer from "@/layouts/BasicLayout/components/Footer";
-import Header from "@/layouts/BasicLayout/components/Header";
-import Actions from "@/layouts/BasicLayout/components/Actions";
+import Footer from "@/components/BasicLayout/components/Footer";
+import Header from "@/components/BasicLayout/components/Header";
+import Actions from "@/components/BasicLayout/components/Actions";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/stores";
 import accessControlDisplay from "@/access/accessControlDisplay";
@@ -46,7 +45,6 @@ export default function BasicLayout({children}: Props) {
 
     return (
         <div
-            id="basicLayout"
             style={{
                 height: "100vh",
                 overflow: "auto",
@@ -123,7 +121,7 @@ export default function BasicLayout({children}: Props) {
                 // @ts-ignore
                 menuItemRender={(item, dom) => (
                     // 根据菜单进行页面跳转但需要约定路由的实际支持(也就是要编写对应的目录, 并且在这里可以拓展菜单的属性)
-                    <Link href={item.path || "/"} target={item.target}>
+                    <Link href={item.path || "/public"} target={item.target}>
                         {dom}
                     </Link>
                 )}
@@ -159,6 +157,7 @@ export default function BasicLayout({children}: Props) {
                             style={{
                                 textAlign: 'center',
                                 paddingBlockStart: 12,
+                                paddingBottom: 20,
                             }}
                         >
                             <Footer/>
