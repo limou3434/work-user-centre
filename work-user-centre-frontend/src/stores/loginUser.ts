@@ -7,6 +7,7 @@ export const loginUserSlice = createSlice({
   name: "loginUser", // 表名
   initialState: DEFAULT_USER, // 初始
   reducers: { // 操作
+    // 设置用户登陆状态(不过最好只使用状态中的 id 值来请求用户的信息, 否则就有可能在一些实时要求强的场景下)
     setLoginUser: (
         state, // state 表示当前切片的状态, 即尚未修改之前的状态
         action: PayloadAction<API.LoginUserVO> // action 表示触发的动作对象, 包含 type 和 payload 属性, 其中 payload 是传递的数据, PayloadAction<API.LoginUserVO> 表示 action 对象的 payload 属性应符合 API.LoginUserVO 类型
