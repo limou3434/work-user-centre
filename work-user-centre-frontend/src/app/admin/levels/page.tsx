@@ -1,13 +1,14 @@
-// ./src/app/admin/page.tsx: 管理页面
-
+/**
+ * ./src/app/admin/levels/page.tsx: 等级管理页面
+ */
 "use client";
 
 import "./page.css";
 
-export default function Admin() {
+export default function AdminLevelsPage() {
   return (
-    <div id="adminLevelPage">
-      <h1>adminLevelPage</h1>
+    <div id="adminLevelsPage">
+      <h1>adminLevelsPage</h1>
     </div>
   );
 }

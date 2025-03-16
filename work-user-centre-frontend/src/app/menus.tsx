@@ -1,10 +1,10 @@
-// ./menus.tsx: 配置菜单
-
+/**
+ * ./src/app/menus.tsx: 配置菜单
+ * 配置菜单的时候也必须保证具有对应约定路由
+ */
 import {MenuDataItem} from "@ant-design/pro-layout";
-import {BarChartOutlined, BulbOutlined, CrownOutlined, HomeOutlined} from "@ant-design/icons";
+import {BarChartOutlined, BulbOutlined, CrownOutlined, HomeOutlined, SnippetsOutlined} from "@ant-design/icons";
 import {ACCESS_ENUM} from "@/constants";
-
-// 配置菜单的时候也必须保证具有对应约定路由
 
 const menus = [
     {
@@ -20,18 +20,28 @@ const menus = [
         access: ACCESS_ENUM.USER,
     },
     {
+        path: "/form",
+        name: "表单",
+        icon: <SnippetsOutlined />,
+        access: ACCESS_ENUM.USER,
+    },
+    {
         path: "/admin",
         name: "管理",
         icon: <CrownOutlined/>,
         access: ACCESS_ENUM.ADMIN,
         children: [
             {
-                path: "/admin/role",
-                name: "按角色划分",
+                path: "/admin/users",
+                name: "用户列表",
             },
             {
-                path: "/admin/level",
-                name: "按等级划分",
+                path: "/admin/roles",
+                name: "角色列表",
+            },
+            {
+                path: "/admin/levels",
+                name: "等级列表",
             },
         ],
     },

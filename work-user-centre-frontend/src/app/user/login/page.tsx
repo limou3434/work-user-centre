@@ -7,15 +7,15 @@
 import "./page.css";
 
 /* 引入 */
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { LoginForm, ProFormText } from "@ant-design/pro-components";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {LoginForm, ProFormText} from "@ant-design/pro-components";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/stores";
-import { ProForm } from "@ant-design/pro-form/lib";
-import { useRouter } from "next/navigation";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/stores";
+import {ProForm} from "@ant-design/pro-form/lib";
+import {useRouter} from "next/navigation";
 import {message} from "antd";
 import {setLoginUser} from "@/stores/loginUser";
 import {userLogin} from "@/api/userController";
@@ -47,9 +47,12 @@ const UserLoginPage: React.FC = () => {
 
             if (res?.data) {
                 message.success("登入成功, 欢迎回来"); // 提示登入成功
+
                 console.log("检查登录后的响应"); // TODO: 不确定是否需要屏蔽
                 console.log(res); // TODO: 不确定是否需要屏蔽
+
                 dispatch(setLoginUser(res.data as API.LoginUserVO)); // 保存用户登入状态, 这里时用 as 的原因是拦截器直接把 axios 中的 data 返回了, 但是类型没有被处理
+
                 router.replace("/"); // 跳转页面
                 form.resetFields(); // 重置表单
             }
@@ -80,7 +83,7 @@ const UserLoginPage: React.FC = () => {
                     name="userAccount"
                     fieldProps={{
                         size: "large",
-                        prefix: <UserOutlined />,
+                        prefix: <UserOutlined/>,
                     }}
                     placeholder={"请输入正确的帐号"}
                     rules={[
@@ -95,7 +98,7 @@ const UserLoginPage: React.FC = () => {
                     name="userPasswd"
                     fieldProps={{
                         size: "large",
-                        prefix: <LockOutlined />,
+                        prefix: <LockOutlined/>,
                     }}
                     placeholder={"请输入正确的密码"}
                     rules={[
