@@ -1,4 +1,4 @@
-package com.work.workusercentre.response;
+package com.work.workusercentre.controller.response;
 
 import lombok.Getter;
 
@@ -18,6 +18,7 @@ public enum ErrorCodeBindMessage {
     NO_AUTH_ERROR(40101, "无权限"),
     NOT_FOUND_ERROR(40400, "请求数据不存在"),
     FORBIDDEN_ERROR(40300, "禁止访问"),
+    TIMEOUT_ERROR(40800, "请求超时"),
     SYSTEM_ERROR(50000, "系统内部异常"),
     OPERATION_ERROR(50001, "操作失败");
 

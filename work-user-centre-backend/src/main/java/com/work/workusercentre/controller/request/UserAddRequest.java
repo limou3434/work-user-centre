@@ -1,4 +1,4 @@
-package com.work.workusercentre.request;
+package com.work.workusercentre.controller.request;
 
 import java.io.Serial;
 import java.io.Serializable;

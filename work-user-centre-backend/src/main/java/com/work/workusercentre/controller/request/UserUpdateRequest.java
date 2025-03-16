@@ -1,4 +1,4 @@
-package com.work.workusercentre.request;
+package com.work.workusercentre.controller.request;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class UserUpdateRequest implements Serializable {
+
     private Long id;
 
     private String userName;
@@ -18,4 +19,5 @@ public class UserUpdateRequest implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
 }

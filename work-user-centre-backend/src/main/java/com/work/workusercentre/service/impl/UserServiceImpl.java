@@ -2,23 +2,26 @@ package com.work.workusercentre.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.work.workusercentre.controller.request.UserQueryRequest;
 import com.work.workusercentre.entity.User;
 import com.work.workusercentre.exception.ArgumentException;
 import com.work.workusercentre.mapper.UserMapper;
-import com.work.workusercentre.response.ErrorCodeBindMessage;
+import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import static com.work.workusercentre.contant.ConfigConstant.SALT;
 import static com.work.workusercentre.contant.UserConstant.USER_LOGIN_STATE;
-import static com.work.workusercentre.response.ErrorCodeBindMessage.*;
+import static com.work.workusercentre.controller.response.ErrorCodeBindMessage.*;
 
 /**
  * @author ljp
@@ -28,6 +31,7 @@ import static com.work.workusercentre.response.ErrorCodeBindMessage.*;
 @Service
 @Transactional
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
     @Override
     public Long userRegister(String userAccount, String userPasswd, String checkPasswd) {
         // 1. 参数校验
@@ -77,7 +81,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public LoginUserVO userLogin(String userAccount, String userPasswd, HttpServletRequest request) {
+    public LoginUserVO userLogin(String userAccount, String userPasswd, HttpServletRequest request, HttpServletResponse response) {
         // 1. 参数校验
         // 判断传入的所有字符串是否都是空白(null、空字符串、仅包含空格）
         if (StringUtils.isAllBlank(userAccount, userPasswd)) {
@@ -139,4 +143,36 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return LoginUserVO.removeSensitiveData(remoteCurrentUser);
     }
+
+    @Override
+    public LambdaQueryWrapper<User> getLambdaQueryWrapper(UserQueryRequest userQueryRequest) {
+        // 校验数据
+        if (userQueryRequest == null) {
+            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求参数为空");
+        }
+
+        // 处理数据
+        Long id = userQueryRequest.getId();
+        String userAccount = userQueryRequest.getUserAccount();
+        Integer userRole = userQueryRequest.getUserRole();
+        Integer userLevel = userQueryRequest.getUserLevel();
+        String sortOrder = userQueryRequest.getSortOrder();
+        String sortField = userQueryRequest.getSortField();
+
+        // 操作数据
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(id != null, User::getId, id);
+        lambdaQueryWrapper.eq(StringUtils.isNotBlank(userAccount), User::getUserAccount, userAccount);
+        lambdaQueryWrapper.eq(userRole != null, User::getUserRole, userRole);
+        lambdaQueryWrapper.eq(userLevel != null, User::getUserLevel, userLevel);
+        lambdaQueryWrapper.orderBy(
+                StringUtils.isNotBlank(sortField) && !StringUtils.containsAny(sortField, "=", "(", ")", " "),
+                sortOrder.equals("ascend"), // true 代表 ASC 升序, false 代表 DESC 降序
+                User::getUserAccount // TODO: 先默认按照账户排序
+        );
+
+        // 响应数据
+        return lambdaQueryWrapper;
+    }
+
 }

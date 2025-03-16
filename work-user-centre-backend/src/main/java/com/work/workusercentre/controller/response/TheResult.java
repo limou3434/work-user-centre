@@ -1,6 +1,6 @@
-package com.work.workusercentre.response;
+package com.work.workusercentre.controller.response;
 
-import static com.work.workusercentre.response.ErrorCodeBindMessage.SUCCESS;
+import static com.work.workusercentre.controller.response.ErrorCodeBindMessage.SUCCESS;
 
 /**
  * 便捷响应体包装类
@@ -11,8 +11,8 @@ public class TheResult {
     /**
      * 构造成功响应体
      *
-     * @param data
-     * @param <T>
+     * @param data 数据
+     * @param <T> data 的类型
      * @return 通用响应体对象
      */
     public static <T> BaseResponse<T> success(T data) {
@@ -22,10 +22,10 @@ public class TheResult {
     /**
      * 构造成功响应体
      *
-     * @param code
-     * @param message
-     * @param data
-     * @param <T>
+     * @param code 状态
+     * @param message 含义
+     * @param data 数据
+     * @param <T> data 的类型
      * @return 通用响应体对象
      */
     public static <T> BaseResponse<T> success(int code, String message, T data) {

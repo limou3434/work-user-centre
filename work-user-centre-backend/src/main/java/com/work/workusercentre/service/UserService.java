@@ -1,9 +1,12 @@
 package com.work.workusercentre.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.work.workusercentre.controller.request.UserQueryRequest;
 import com.work.workusercentre.entity.User;
 import com.work.workusercentre.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author ljp
@@ -29,7 +32,7 @@ public interface UserService extends IService<User> {
      * @param request 请求体
      * @return 脱敏后的用户信息
      */
-    LoginUserVO userLogin(String userAccount, String userPasswd, HttpServletRequest request);
+    LoginUserVO userLogin(String userAccount, String userPasswd, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 用户登出服务
@@ -45,4 +48,13 @@ public interface UserService extends IService<User> {
      * @return 当前登录用户的脱敏信息
      */
     LoginUserVO getLoginUserState(HttpServletRequest request);
+
+    /**
+     * 获取查询条件
+     *
+     * @param userQueryRequest 请求条件数据
+     * @return 查询
+     */
+    LambdaQueryWrapper<User> getLambdaQueryWrapper(UserQueryRequest userQueryRequest);
+
 }

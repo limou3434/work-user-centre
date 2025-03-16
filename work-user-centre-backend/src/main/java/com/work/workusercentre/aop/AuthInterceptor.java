@@ -4,7 +4,7 @@ import com.work.workusercentre.annotation.AuthCheck;
 import com.work.workusercentre.enums.UserRoleEnum;
 import com.work.workusercentre.exception.ArgumentException;
 import com.work.workusercentre.exception.NotRoleException;
-import com.work.workusercentre.response.ErrorCodeBindMessage;
+import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;

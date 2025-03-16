@@ -1,6 +1,6 @@
 package com.work.workusercentre.exception;
 
-import com.work.workusercentre.response.ErrorCodeBindMessage;
+import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
