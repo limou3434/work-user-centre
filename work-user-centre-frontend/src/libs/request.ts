@@ -33,13 +33,8 @@ myAxios.interceptors.response.use(
         // 解析数据
         const {data} = response;
 
-        // 处理错误(错误弹窗交给这里, 成功弹窗交给其他使用网络接口的函数)
-        // 尚未登录
-        if (data.code === 40000) {
-            message.error("请求参数错误, 请检查帐号和密码是否正确").then(r => {});
-        }
-        // 登录过期
-        else if (data.code === 40100) {
+        // 特殊处理
+        if (data.code === 40100) {
             message.error("登录已过期, 请重新登录").then(r => {});
             // 不是获取用户信息接口, 或者不是登录页面, 则重定向跳转到登录页面
             if (
@@ -48,10 +43,6 @@ myAxios.interceptors.response.use(
             ) {
                 window.location.href = `/user/login?redirect=${window.location.href}`; // 这一句代码的作用是将用户重定向到登录页面, 并在登录页面的 URL 中添加一个 redirect 参数, 方便用户登陆请求成功后切回原来的界面, 做到无缝体验， redirect 保存了当前页面的 URL
             }
-        }
-        // TODO: 其他错误
-        else if (data.code !== 0) {
-            throw new Error(data.message ?? "服务器错误");
         }
 
         // 允许返回

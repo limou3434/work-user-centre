@@ -57,7 +57,7 @@ const UserLoginPage: React.FC = () => {
                 form.resetFields(); // 重置表单
             }
         } catch (e) {
-            message.error("登入失败, 请检查帐号密码是否正确, 或者联系管理员"); // 提示登入失败
+            message.error("未知错误"); // 提示登入失败
         }
     };
 

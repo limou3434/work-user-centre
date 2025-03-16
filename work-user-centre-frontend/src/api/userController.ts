@@ -32,14 +32,6 @@ export async function userDelete(
   });
 }
 
-/** 此处后端没有提供注释 GET /user/get/login */
-export async function userGetLoginState(options?: { [key: string]: any }) {
-  return request<API.BaseResponseLoginUserVO>("/user/get/login", {
-    method: "GET",
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 POST /user/login */
 export async function userLogin(
   body: API.UserLoginRequest,
@@ -51,6 +43,14 @@ export async function userLogin(
       "Content-Type": "application/json",
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /user/login/get */
+export async function userLoginGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseLoginUserVO>("/user/login/get", {
+    method: "GET",
     ...(options || {}),
   });
 }
@@ -78,17 +78,32 @@ export async function userRegister(
   });
 }
 
-/** 此处后端没有提供注释 GET /user/search */
+/** 此处后端没有提供注释 POST /user/search */
 export async function userSearch(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.userSearchParams,
+  body: API.UserQueryRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseListLoginUserVO>("/user/search", {
-    method: "GET",
-    params: {
-      ...params,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /user/search/page */
+export async function userSearchPage(
+  body: API.UserQueryRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseListLoginUserVO>("/user/search/page", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: body,
     ...(options || {}),
   });
 }
@@ -99,6 +114,21 @@ export async function userUpdate(
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseBoolean>("/user/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /user/update/self */
+export async function userUpdateSelf(
+  body: API.UserUpdateRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean>("/user/update/self", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

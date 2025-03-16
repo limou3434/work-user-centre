@@ -61,7 +61,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({user}) => {
                             </Tag>
                         </Descriptions.Item>
                         <Descriptions.Item label={t("user_country")}>{user.userCountry || "未知"}</Descriptions.Item>
-                        <Descriptions.Item label={t("user_address_")}>{user.userAddress || "未知"}</Descriptions.Item>
+                        <Descriptions.Item label={t("user_address")}>{user.userAddress || "未知"}</Descriptions.Item>
                     </Descriptions>
                 </ClickSpark>
             </Card>

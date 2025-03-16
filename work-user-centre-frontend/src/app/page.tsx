@@ -8,7 +8,6 @@ import UserProfileCard from "@/components/UserProfileCard";
 import {useSelector} from "react-redux";
 import {RootState} from "@/stores";
 import LetterGlitch from "../components/LetterGlitch";
-import ClickSpark from "@/components/ClickSpark";
 
 export default function Home() {
     // 状态工具
@@ -26,8 +25,8 @@ export default function Home() {
             <div style={{width: "100%", height: "200px"}}>
                 <LetterGlitch
                     glitchSpeed={50}
-                    centerVignette={true}
-                    outerVignette={false}
+                    centerVignette={false}
+                    outerVignette={true}
                     smooth={true}
                 />
             </div>

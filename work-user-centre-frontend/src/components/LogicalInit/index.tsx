@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState, useTransition} from "react";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "@/stores";
 import {usePathname} from "next/navigation";
-import {userGetLoginState} from "@/api/userController";
+import {userLoginGet} from "@/api/userController";
 import {setLoginUser} from "@/stores/loginUser";
 import {Spin} from "antd";
 import { useTheme } from "@/components/ThemeProvider";
@@ -38,7 +38,7 @@ const LogicalInit: React.FC<
 
     // NOTE: 逻辑, 读取已登录用户信息
     const doInitLoginUser = useCallback(async () => {
-        const res = await userGetLoginState(); // 尝试获取到当前登陆用户的信息
+        const res = await userLoginGet(); // 尝试获取到当前登陆用户的信息
         if (res.data) {
             dispath(setLoginUser(res.data as API.LoginUserVO)); // 获取得到则说明用户短期内已经登陆了, 更新用户信息全局状态即可
         } else {
