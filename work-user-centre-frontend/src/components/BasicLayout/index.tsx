@@ -9,7 +9,7 @@ import React from "react";
 import Image from "next/image";
 import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
-import menus from "../../../menus";
+import menus from "@/app/menus";
 import Footer from "@/components/BasicLayout/components/Footer";
 import Header from "@/components/BasicLayout/components/Header";
 import Actions from "@/components/BasicLayout/components/Actions";
@@ -19,6 +19,7 @@ import accessControlDisplay from "@/access/accessControlDisplay";
 import {userLogout} from "@/api/userController";
 import {setLoginUser} from "@/stores/loginUser";
 import {DEFAULT_USER} from "@/constants";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     children: React.ReactNode;
@@ -26,12 +27,10 @@ interface Props {
 
 export default function BasicLayout({children}: Props) {
     const pathname = usePathname(); // 获取当前页面地址
-
     const loginUser = useSelector((state: RootState) => state.loginUser); // 获取用户登陆状态实例
-
     const dispatch = useDispatch<AppDispatch>(); // 登入状态
-
     const router = useRouter(); // 重定向页面路由工具
+    const { t } = useTranslation();
 
     // 用户登出
     const doUserLogout = async () => {
@@ -114,7 +113,7 @@ export default function BasicLayout({children}: Props) {
                 onMenuHeaderClick={(e) => console.log(e)}
                 // 菜单数据
                 menuDataRender={() => {
-                    // return menus;
+                    // return menus; // 无需考虑权限的写法
                     return accessControlDisplay(loginUser, menus); // 这个函数会自动根据页面权限的设置来过滤菜单项, 以控制对应用户看到对应的菜单项
                 }}
                 // 菜单跳转

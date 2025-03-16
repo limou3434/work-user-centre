@@ -14,6 +14,12 @@ const menus = [
         access: ACCESS_ENUM.NOT_LOGIN,
     },
     {
+        path: "/data",
+        name: "数据",
+        icon: <BarChartOutlined />,
+        access: ACCESS_ENUM.USER,
+    },
+    {
         path: "/admin",
         name: "管理",
         icon: <CrownOutlined/>,
@@ -28,12 +34,6 @@ const menus = [
                 name: "按等级划分",
             },
         ],
-    },
-    {
-        path: "/data",
-        name: "数据",
-        icon: <BarChartOutlined />,
-        access: ACCESS_ENUM.NOT_LOGIN,
     },
     {
         path: "/other",

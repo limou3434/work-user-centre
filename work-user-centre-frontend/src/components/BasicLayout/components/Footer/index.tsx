@@ -3,15 +3,17 @@
 "use client";
 
 import "./index.css";
-
+import {useTranslation} from "react-i18next";
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-  return (
+    const {t} = useTranslation();
+    const currentYear = new Date().getFullYear();
+
+    return (
     <div className="footer">
-      <div>© {currentYear} Made</div>
-      <div>by Work</div>
+      <div>© {currentYear} {t("made")}</div>
+      <div>{t("by_work")}</div>
     </div>
-  );
+    );
 };
 
 export default Footer;

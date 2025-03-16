@@ -1,88 +1,107 @@
+/**
+ * ./src/components/ProfileCompletion/index.tsx: 用户信息完成度组件(参考 https://www.kirilv.com/canvas-confetti/)
+ */
+"use client";
+
+// TODO: 这一段不是特别了解
+
+import "./index.css"
 import React from "react";
-import { Progress, List } from "antd";
+import {useSelector} from "react-redux";
+import {Card, List, Progress} from "antd";
+import {RootState} from "@/stores";
+import CompletionCheckmark from "@/components/CompletionCheckmark";
 
-// TODO: 这个组件有点问题
-
-// 定义 API 类型
-export type API = {
-    LoginUserVO: {
-        userAccount: string | null;
-        userEmail: string | null;
-        userPhone: string | null;
-        userAvatar: string | null;
-        userName: string | null;
-        userProfile: string | null;
-        userBirthday: string | null;
-        userCountry: string | null;
-        userGender: number | null;
-    };
+/**
+ * 提示字段
+ */
+const fieldLabels: Record<string, string> = {
+    userAvatar: "上传头像",
+    userName: "实名账户",
+    userEmail: "绑定邮箱",
+    userPhone: "绑定手机",
+    userProfile: "个人介绍",
+    userBirthday: "填写生日",
+    userCountry: "填写国家",
+    userGender: "填写性别",
 };
 
-// ProfileCompletion 组件的 props
-interface UserProfileCardProps {
-    user: API.LoginUserVO;
-}
+/**
+ * 字段权重
+ */
+const weights: Record<string, number> = {
+    userAvatar: 10,
+    userName: 10,
+    userEmail: 10,
+    userPhone: 10,
+    userProfile: 10,
+    userBirthday: 10,
+    userCountry: 10,
+    userGender: 10,
+};
 
-// 计算信息完成度
-const calculateCompletion = (data: Record<string, any>) => {
-    const fields = [
-        { key: "userAvatar", weight: 10 },
-        { key: "userName", weight: 10 },
-        { key: "userEmail", weight: 15 },
-        { key: "userPhone", weight: 15 },
-        { key: "userProfile", weight: 10 },
-        { key: "userBirthday", weight: 10 },
-        { key: "userCountry", weight: 10 },
-        { key: "userGender", weight: 10 },
-        { key: "userAccount", weight: 10 },
-    ];
-
-    const totalWeight = fields.reduce((sum, field) => sum + field.weight, 0);
-    const completedWeight = fields.reduce(
-        (sum, field) => sum + (data[field.key] !== null ? field.weight : 0),
-        0
-    );
+/**
+ * 计算信息完成度
+ *
+ * @param user 用户信息
+ */
+const calculateCompletion = (user: API.LoginUserVO): number => {
+    const fields = Object.keys(fieldLabels); // 获取所有字段
+    const totalWeight = fields.reduce((sum, key) => sum + weights[key], 0); // 计算总权重, sum 是上一次累加的结果(从 0 开始), key 是当前循环的字段
+    const completedWeight = fields.reduce((sum, key) => {
+        const value = user[key as keyof API.LoginUserVO];
+        return sum + ((value !== null && value !== "") ? weights[key] : 0); // 如果字段值不为空则加上权重
+    }, 0); // 计算已完成的权重
 
     return Math.round((completedWeight / totalWeight) * 100);
 };
 
-// 获取未完成项
-const getIncompleteFields = (data: Record<string, any>) => {
-    const fieldLabels: Record<string, string> = {
-        userAvatar: "上传头像",
-        userName: "填写用户名",
-        userEmail: "绑定邮箱",
-        userPhone: "绑定手机号",
-        userProfile: "填写个人介绍",
-        userBirthday: "填写生日",
-        userCountry: "填写国家",
-        userGender: "填写性别",
-        userAccount: "填写账户信息",
-    };
-
-    return Object.keys(data)
-        .filter((key) => data[key] === null) // 检查字段是否为 null
+/**
+ * 获取未完成的字段
+ *
+ * @param user 用户信息
+ */
+const getIncompleteFields = (user: API.LoginUserVO): string[] => {
+    return Object.keys(fieldLabels)
+        .filter((key) => user[key as keyof API.LoginUserVO] === null || user[key as keyof API.LoginUserVO] === "")
         .map((key) => fieldLabels[key]);
 };
 
-const ProfileCompletion: React.FC<UserProfileCardProps> = ({ user }) => {
-    const completion = calculateCompletion(user);
-    const incompleteFields = getIncompleteFields(user);
+const ProfileCompletion: React.FC = () => {
+    // 直接从 Redux 获取 loginUser 数据
+    const loginUser = useSelector((state: RootState) => state.loginUser);
 
+    if (!loginUser) return null; // 如果 Redux 状态为空，不渲染组件
+
+    const completion = calculateCompletion(loginUser);
+    const incompleteFields = getIncompleteFields(loginUser);
 
     return (
-        <div className="profile-completion" style={{ maxWidth: 400, margin: "20px auto" }}>
-            <h3>当前登陆用户信息完成度</h3>
-            <Progress percent={completion} status={completion < 100 ? "active" : "success"} />
+        <div className="profile-completion" style={{ width: "100%", margin: "0 auto" }}>
+            <Card variant="borderless" hoverable={true} style={{ width: "100%", height: "100%" }}>
+                {/* 标题 */}
+                <h3>当前登录用户信息完成度</h3>
 
-            {incompleteFields.length > 0 && (
-                <List
-                    header={<b>完善以下信息可提升完成度：</b>}
-                    dataSource={incompleteFields}
-                    // @ts-ignore
-                    renderItem={(item, index) => <List.Item key={index}>✗ {item}</List.Item>}
-                />
-            )}
+                {/* 进度 */}
+                <Progress percent={completion} status={completion < 100 ? "active" : "success"}/>
+                {incompleteFields.length > 0 && (
+                    <List
+                        header={<b>完善以下信息可提升完成度：</b>}
+                        dataSource={incompleteFields}
+                        renderItem={(item, index) => <List.Item style={{ color: 'red' }} key={index}>✗ {item}</List.Item>}
+                    />
+                )}
+
+                {/* 按钮 */}
+                {incompleteFields.length > 0 && (
+                    <div style={{ textAlign: "center" }}>
+                        {/* TODO: 跳转到完善信息页面 */}
+                        <a href="/form">完善信息</a>
+                    </div>
+                )}
+            </Card>
+            {/* 礼炮 */}
+            {completion >= 100 && (<CompletionCheckmark/>)}
         </div>
     );
 };

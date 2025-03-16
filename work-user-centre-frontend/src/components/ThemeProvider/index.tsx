@@ -1,12 +1,13 @@
-/**
- *  ./src/components/ThemeProvider/index.tsx: 主题提供者
- */
 "use client";
 
 import "./index.css";
-import React, { createContext, useContext, useState } from "react";
-import { ConfigProvider, theme, Button } from "antd";
+import React, { createContext, useContext, useState, useRef } from "react";
+import { ConfigProvider, theme, FloatButton } from "antd";
 import { BulbOutlined, MoonOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next"; // 引入 i18n
+
+// TODO: 有些不太明白
 
 // 创建主题上下文
 const ThemeContext = createContext({
@@ -16,28 +17,57 @@ const ThemeContext = createContext({
 
 // 主题提供者组件
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [isDark, setIsDark] = useState(false);
+    // TODO: 所有的状态和变量都放在一起会更好一些
+    const { t } = useTranslation(); // 获取翻译
+    const [isDark, setIsDark] = useState(true);
+    const [circleVisible, setCircleVisible] = useState(false);
+    const [circlePos, setCirclePos] = useState({ x: 0, y: 0 });
+    const buttonRef = useRef<HTMLDivElement | null>(null); // FloatButton 没有 `ref`，改为 `div`
 
     const toggleTheme = () => {
-        setIsDark((prev) => !prev);
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            setCirclePos({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+        }
+        setCircleVisible(true);
+        setTimeout(() => {
+            setIsDark((prev) => !prev);
+            setCircleVisible(false);
+        }, 600);
     };
 
     return (
         <ThemeContext.Provider value={{ isDark, toggleTheme }}>
             <ConfigProvider theme={{ algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm }}>
-                {/* 右下角主题切换按钮 */}
-                <Button
-                    type="primary"
-                    shape="circle"
-                    icon={isDark ? <BulbOutlined /> : <MoonOutlined />}
-                    onClick={toggleTheme}
-                    style={{
-                        position: "fixed",
-                        bottom: 20,
-                        right: 20,
-                        zIndex: 1000,
-                    }}
-                />
+                {/* 圆圈扩散动画 */}
+                {circleVisible && (
+                    <motion.div
+                        initial={{ scale: 0, opacity: 0.5, background: isDark ? "#000" : "#fff" }}
+                        animate={{ scale: 30, opacity: 1, background: isDark ? "#fff" : "#000" }}
+                        transition={{ duration: 0.6, ease: "linear" }}
+                        style={{
+                            position: "fixed",
+                            top: circlePos.y,
+                            left: circlePos.x,
+                            width: 200,
+                            height: 200,
+                            borderRadius: "50%",
+                            transform: "translate(-50%, -50%)",
+                            zIndex: 999,
+                            pointerEvents: "none",
+                        }}
+                    />
+                )}
+
+                {/* 使用 FloatButton 并包裹一个 div 以便获取位置 */}
+                <div ref={buttonRef} style={{ position: "fixed", bottom: 80, right: 20, zIndex: 1000 }}>
+                    <FloatButton
+                        icon={isDark ? <BulbOutlined /> : <MoonOutlined />}
+                        onClick={toggleTheme}
+                        tooltip={t("switch_theme_button")} // 这里设置提示文本
+                    />
+                </div>
+
                 {children}
             </ConfigProvider>
         </ThemeContext.Provider>
