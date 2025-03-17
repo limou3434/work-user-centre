@@ -1,4 +1,4 @@
-package com.work.workusercentre.exception;
+package com.work.workusercentre.controller.exception;
 
 import com.work.workusercentre.controller.response.BaseResponse;
 import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * 全局异常处理方法类
  *
+ * 截获异常, 把异常的 "错误-含义:消息" 作为响应传递给前端
  * @author ljp
  */
 @RestControllerAdvice(basePackages = "com.work.workusercentre.controller") // 使用 @RestControllerAdvice 可以拦截所有 @RestController 中抛出的异常, 并统一返回 JSON 格式的错误信息, 不过由于版本过新, 需要考虑问题 https://github.com/xiaoymin/knife4j/issues/884

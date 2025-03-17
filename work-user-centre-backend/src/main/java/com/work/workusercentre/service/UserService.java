@@ -2,13 +2,16 @@ package com.work.workusercentre.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.work.workusercentre.controller.request.UserQueryRequest;
+import com.work.workusercentre.controller.request.UserSearchRequest;
 import com.work.workusercentre.entity.User;
-import com.work.workusercentre.vo.LoginUserVO;
+import com.work.workusercentre.controller.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
+ * 用户服务层接口
+ *
+ * 服务层需做复杂的参数校验, 并且完成复杂的业务逻辑
  * @author ljp
  * @description 针对表【user(用户信息表)】的数据库操作 Service
  * @createDate 2025-03-06 10:25:51
@@ -52,9 +55,9 @@ public interface UserService extends IService<User> {
     /**
      * 获取查询条件
      *
-     * @param userQueryRequest 请求条件数据
+     * @param userSearchRequest 请求条件数据
      * @return 查询
      */
-    LambdaQueryWrapper<User> getLambdaQueryWrapper(UserQueryRequest userQueryRequest);
+    LambdaQueryWrapper<User> getLambdaQueryWrapper(UserSearchRequest userSearchRequest);
 
 }

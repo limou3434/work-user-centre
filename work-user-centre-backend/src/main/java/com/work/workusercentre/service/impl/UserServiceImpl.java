@@ -2,34 +2,37 @@ package com.work.workusercentre.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.work.workusercentre.controller.request.UserQueryRequest;
+import com.work.workusercentre.controller.request.UserSearchRequest;
 import com.work.workusercentre.entity.User;
-import com.work.workusercentre.exception.ArgumentException;
+import com.work.workusercentre.controller.exception.ArgumentException;
 import com.work.workusercentre.mapper.UserMapper;
 import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
 import com.work.workusercentre.service.UserService;
-import com.work.workusercentre.vo.LoginUserVO;
+import com.work.workusercentre.controller.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 import static com.work.workusercentre.contant.ConfigConstant.SALT;
 import static com.work.workusercentre.contant.UserConstant.USER_LOGIN_STATE;
 import static com.work.workusercentre.controller.response.ErrorCodeBindMessage.*;
 
 /**
+ * 用户服务层实现
+ *
  * @author ljp
  * @description 针对表【user(用户信息表)】的数据库操作 Service 实现
  * @createDate 2025-03-06 10:25:51
  */
 @Service
 @Transactional
+@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Override
@@ -145,19 +148,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public LambdaQueryWrapper<User> getLambdaQueryWrapper(UserQueryRequest userQueryRequest) {
+    public LambdaQueryWrapper<User> getLambdaQueryWrapper(UserSearchRequest userSearchRequest) {
         // 校验数据
-        if (userQueryRequest == null) {
+        if (userSearchRequest == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求参数为空");
         }
 
         // 处理数据
-        Long id = userQueryRequest.getId();
-        String userAccount = userQueryRequest.getUserAccount();
-        Integer userRole = userQueryRequest.getUserRole();
-        Integer userLevel = userQueryRequest.getUserLevel();
-        String sortOrder = userQueryRequest.getSortOrder();
-        String sortField = userQueryRequest.getSortField();
+        Long id = userSearchRequest.getId();
+        String userAccount = userSearchRequest.getUserAccount();
+        Integer userRole = userSearchRequest.getUserRole();
+        Integer userLevel = userSearchRequest.getUserLevel();
+        String sortOrder = userSearchRequest.getSortOrder();
+        String sortField = userSearchRequest.getSortField();
 
         // 操作数据
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();

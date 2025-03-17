@@ -1,16 +1,14 @@
 package com.work.workusercentre.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.work.workusercentre.annotation.AuthCheck;
 import com.work.workusercentre.controller.request.*;
 import com.work.workusercentre.entity.User;
-import com.work.workusercentre.exception.ArgumentException;
+import com.work.workusercentre.controller.exception.ArgumentException;
 import com.work.workusercentre.controller.response.BaseResponse;
 import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
 import com.work.workusercentre.controller.response.TheResult;
 import com.work.workusercentre.service.UserService;
-import com.work.workusercentre.vo.LoginUserVO;
+import com.work.workusercentre.controller.vo.LoginUserVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,8 +24,10 @@ import static com.work.workusercentre.contant.ConfigConstant.SALT;
 /**
  * 用户控制层
  *
- * 控制层的方法本身不准改动, 这样前端代码就可以利用这个方法名称来无缝导入
- * 但是 HTTP 接口可以随时修改, 前端导入接口文档时会自动修改且依旧使用之前的方法
+ * 1. 控制层只做简单的参数校验, 实际控制使用封装好的 Server
+ * 2. 所有接口默认只返回 200, 某些特殊的错误交给前端响应(比如 403、404 以及对应的页面), 详细错误(code-message)在响应 JSON 中体现
+ * 3. 控制层的方法本身最好不要改动, 这样前端代码就可以利用这个方法名称来无缝导入, 但是 HTTP 接口可以随时修改, 前端导入接口文档时会自动修改且依旧使用之前的方法
+ * @author ljp
  */
 @RestController // 返回值默认为 json 类型
 @RequestMapping("/user")
@@ -37,7 +37,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @Resource
     private UserService userService;
 
-    // NOTE: Conventional CRUD Module
+    // NOTE: Conventional CRUD Module()
     /**
      * 添加用户网络接口
      *
@@ -117,7 +117,11 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
 
         // 处理请求
         User user = new User();
+
+        System.out.println("xxxxxx" + userUpdateRequest);
         BeanUtils.copyProperties(userUpdateRequest, user);
+        System.out.println("xxxxxx" + user);
+
         boolean result = userService.updateById(user);
         if (!result) {
             throw new ArgumentException(ErrorCodeBindMessage.SYSTEM_ERROR, "需要指定参数用户 id 才能修改");
@@ -130,20 +134,20 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     /**
      * 查询用户网络接口
      *
-     * @param userQueryRequest 用户查询请求数据
+     * @param userSearchRequest 用户查询请求数据
      * @param request 请求体
      * @return 用户列表, 如果没有查询 id 就会得到所有用户
      */
     @PostMapping("/search")
     @AuthCheck(mustRole = "admin") // TODO: 身份权限不要使用字符串而使用常量
-    public BaseResponse<List<LoginUserVO>> userSearch(@RequestBody UserQueryRequest userQueryRequest, HttpServletRequest request) {
+    public BaseResponse<List<LoginUserVO>> userSearch(@RequestBody UserSearchRequest userSearchRequest, HttpServletRequest request) {
         // 参数校验
         if (request == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
         }
 
         // 处理请求
-        List<User> userList = userService.list(userService.getLambdaQueryWrapper(userQueryRequest));
+        List<User> userList = userService.list(userService.getLambdaQueryWrapper(userSearchRequest));
 
         // 返回响应
         List<LoginUserVO> loginUserVOList = userList
@@ -172,13 +176,13 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     /**
      * 查询用户网络接口(分页)
      *
-     * @param userQueryRequest 用户查询请求数据
+     * @param userSearchRequest 用户查询请求数据
      * @param request 请求体
      * @return 用户列表, 如果没有查询 id 就会得到所有用户
      */
     @PostMapping("/search/page")
     @AuthCheck(mustRole = "admin")
-    public BaseResponse<List<LoginUserVO>> userSearchPage(@RequestBody UserQueryRequest userQueryRequest, HttpServletRequest request) {
+    public BaseResponse<List<LoginUserVO>> userSearchPage(@RequestBody UserSearchRequest userSearchRequest, HttpServletRequest request) {
     return null;
     }
 

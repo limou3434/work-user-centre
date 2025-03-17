@@ -35,7 +35,7 @@ public class TheResult {
     /**
      * 构造失败响应体
      *
-     * @param errorCodeBindMessage
+     * @param errorCodeBindMessage 错误-含义 枚举体
      * @return 通用响应体对象
      */
     public static <T> BaseResponse<T> error(ErrorCodeBindMessage errorCodeBindMessage) {
@@ -45,8 +45,8 @@ public class TheResult {
     /**
      * 构造失败响应体
      *
-     * @param code
-     * @param message
+     * @param code 状态
+     * @param message 含义
      * @return 通用响应体对象
      */
     public static <T> BaseResponse<T> error(int code, String message) {

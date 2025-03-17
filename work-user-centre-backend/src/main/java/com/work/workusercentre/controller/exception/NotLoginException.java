@@ -1,15 +1,17 @@
-package com.work.workusercentre.exception;
+package com.work.workusercentre.controller.exception;
 
 import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 参数异常类
+ * 权限异常类
  *
  * @author ljp
  */
 @Getter
-public class ArgumentException extends RuntimeException {
+@Slf4j
+public class NotLoginException extends RuntimeException {
     /**
      * 错误码
      */
@@ -21,7 +23,7 @@ public class ArgumentException extends RuntimeException {
      * @param errorCodeBindMessage 错误-含义 枚举体
      * @param exceptionMessage 异常信息
      */
-    public ArgumentException(ErrorCodeBindMessage errorCodeBindMessage, String exceptionMessage) {
+    public NotLoginException(ErrorCodeBindMessage errorCodeBindMessage, String exceptionMessage) {
         super(errorCodeBindMessage.getMessage() + ": " + exceptionMessage);
         this.code = errorCodeBindMessage.getCode();
     }

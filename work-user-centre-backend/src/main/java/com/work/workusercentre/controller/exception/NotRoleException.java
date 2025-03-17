@@ -1,4 +1,4 @@
-package com.work.workusercentre.exception;
+package com.work.workusercentre.controller.exception;
 
 import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
 import lombok.Getter;

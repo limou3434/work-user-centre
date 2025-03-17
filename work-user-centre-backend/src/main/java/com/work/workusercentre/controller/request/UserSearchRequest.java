@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true) // TODO: 可以研究一下
 @Data
-public class UserQueryRequest extends PageRequest implements Serializable {
+public class UserSearchRequest extends PageRequest implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package com.work.workusercentre.vo;
+package com.work.workusercentre.controller.vo;
 
 import com.work.workusercentre.entity.User;
 import lombok.Data;
