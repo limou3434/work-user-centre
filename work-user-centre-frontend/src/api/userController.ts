@@ -80,7 +80,7 @@ export async function userRegister(
 
 /** 此处后端没有提供注释 POST /user/search */
 export async function userSearch(
-  body: API.UserQueryRequest,
+  body: API.UserSearchRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseListLoginUserVO>("/user/search", {
@@ -95,7 +95,7 @@ export async function userSearch(
 
 /** 此处后端没有提供注释 POST /user/search/page */
 export async function userSearchPage(
-  body: API.UserQueryRequest,
+  body: API.UserSearchRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseListLoginUserVO>("/user/search/page", {

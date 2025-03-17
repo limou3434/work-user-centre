@@ -18,7 +18,6 @@ import "nprogress/nprogress.css";
 import LogicalInit from "../components/LogicalInit";
 import LanguageSwitch from "@/components/LanguageSwitch"; // 英文
 import {useTranslation} from 'react-i18next';
-import ClickSpark from "@/components/ClickSpark";
 
 export default function RootLayout({
                                        children,

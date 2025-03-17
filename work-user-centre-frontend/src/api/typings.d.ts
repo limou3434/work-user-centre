@@ -59,19 +59,19 @@ declare namespace API {
     userPasswd?: string;
   };
 
-  type UserQueryRequest = {
+  type UserRegisterRequest = {
+    userAccount?: string;
+    userPasswd?: string;
+    checkPasswd?: string;
+  };
+
+  type UserSearchRequest = {
     sortField?: string;
     sortOrder?: string;
     id?: number;
     userAccount?: string;
     userRole?: number;
     userLevel?: number;
-  };
-
-  type UserRegisterRequest = {
-    userAccount?: string;
-    userPasswd?: string;
-    checkPasswd?: string;
   };
 
   type UserUpdateRequest = {

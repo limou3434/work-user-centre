@@ -3,7 +3,7 @@
 import "./page.css";
 import React from "react";
 
-export default function Form() {
+export default function FormPage() {
     const handleAnimationComplete = () => {
         console.log('All letters have animated!');
     };

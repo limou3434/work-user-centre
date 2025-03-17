@@ -1,5 +1,7 @@
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import {useTranslation} from "react-i18next";
+import {useTheme} from "@/components/ThemeProvider";
+import {Card} from "antd";
 
 const LetterGlitch = ({
                           glitchColors = ["#2b4539", "#61dca3", "#61b3dc"],
@@ -14,6 +16,7 @@ const LetterGlitch = ({
     smooth: boolean;
     glitchColors?: string[];  // 添加这个属性
 }) => {
+
     const {t} = useTranslation();
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const animationRef = useRef<number | null>(null);
@@ -28,11 +31,9 @@ const LetterGlitch = ({
     const grid = useRef({ columns: 0, rows: 0 });
     const context = useRef<CanvasRenderingContext2D | null>(null);
     const lastGlitchTime = useRef(Date.now());
-
     const fontSize = 16;
     const charWidth = 10;
     const charHeight = 20;
-
     const lettersAndSymbols = [
         "A",
         "B",
@@ -93,6 +94,8 @@ const LetterGlitch = ({
         "8",
         "9",
     ];
+    const { isDark } = useTheme(); // 获取当前主题状态
+
 
     const getRandomChar = () => {
         return lettersAndSymbols[
@@ -196,7 +199,8 @@ const LetterGlitch = ({
         ctx.font = `bold 32px monospace`;
         ctx.textBaseline = "middle";
         ctx.textAlign = "center";
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = "#ffffff"; // TODO: 可以考虑使用主题切换
+
         ctx.fillText(centerText, width / 2, height / 2);
     };
 
@@ -295,6 +299,7 @@ const LetterGlitch = ({
         height: "100%",
         backgroundColor: "#000000",
         overflow: "hidden",
+        borderRadius: "8px",
     };
 
     const canvasStyle = {
@@ -326,7 +331,7 @@ const LetterGlitch = ({
     };
 
     return (
-        <div style={containerStyle as React.CSSProperties}>
+        <div className="letter-glitch" style={containerStyle as React.CSSProperties} >
             <canvas ref={canvasRef} style={canvasStyle} />
             {outerVignette && (
                 <div style={outerVignetteStyle as React.CSSProperties}></div>
