@@ -47,14 +47,6 @@ export async function userLogin(
   });
 }
 
-/** 此处后端没有提供注释 GET /user/login/get */
-export async function userLoginGet(options?: { [key: string]: any }) {
-  return request<API.BaseResponseLoginUserVO>("/user/login/get", {
-    method: "GET",
-    ...(options || {}),
-  });
-}
-
 /** 此处后端没有提供注释 POST /user/logout */
 export async function userLogout(options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean>("/user/logout", {
@@ -104,6 +96,14 @@ export async function userSearchPage(
       "Content-Type": "application/json",
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /user/status */
+export async function userStatus(options?: { [key: string]: any }) {
+  return request<API.BaseResponseLoginUserVO>("/user/status", {
+    method: "GET",
     ...(options || {}),
   });
 }

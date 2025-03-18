@@ -55,7 +55,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({user}) => {
                         </Descriptions.Item>
                         <Descriptions.Item label={t("user_role")}>
                             <Tag
-                                color={user.userRole === 2 ? "green" : user.userRole === 1 ? "gold" : user.userRole === 0 ? "red" : "gray"}>
+                                color={user.userRole === 2 ? "red" : user.userRole === 1 ? "gold" : user.userRole === 0 ? "green" : "gray"}>
                                 {/*@ts-ignore*/}
                                 {roleMap[user.userRole ?? 0]}
                             </Tag>
