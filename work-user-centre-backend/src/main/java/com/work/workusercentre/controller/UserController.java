@@ -105,7 +105,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      */
     @PostMapping("/update")
     @AuthCheck(mustRole = "admin")
-    public BaseResponse<Boolean> userUpdate(@RequestBody UserUpdateRequest userUpdateRequest, HttpServletRequest request) {
+    public BaseResponse<LoginUserVO> userUpdate(@RequestBody UserUpdateRequest userUpdateRequest, HttpServletRequest request) {
         // 参数校验
         if (request == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
@@ -115,20 +115,21 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "参数用户 id 不能为空");
         }
 
+
         // 处理请求
         User user = new User();
 
-        System.out.println("xxxxxx" + userUpdateRequest);
-        BeanUtils.copyProperties(userUpdateRequest, user);
-        System.out.println("xxxxxx" + user);
+        BeanUtils.copyProperties(userUpdateRequest, user); // TODO: 添加内部方法
 
         boolean result = userService.updateById(user);
         if (!result) {
             throw new ArgumentException(ErrorCodeBindMessage.SYSTEM_ERROR, "需要指定参数用户 id 才能修改");
         }
 
+        LoginUserVO loginUserVO = LoginUserVO.removeSensitiveData(user);
+
         // 返回响应
-        return TheResult.success(true);
+        return TheResult.success(loginUserVO);
     }
 
     /**
