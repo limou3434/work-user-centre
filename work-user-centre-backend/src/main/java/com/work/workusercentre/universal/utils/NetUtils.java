@@ -1,4 +1,6 @@
-package com.work.workusercentre.utils;
+package com.work.workusercentre.universal.utils;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
 import javax.servlet.http.HttpServletRequest;
@@ -6,13 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 网络工具类
  */
+@Slf4j
 public class NetUtils {
 
     /**
-     * 获取客户端 IP 地址
+     * 获取客户端 IP 地址方法
      *
-     * @param request
-     * @return
+     * @param request 请求体
+     * @return 客户端 IP 地址
+     * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
      */
     public static String getIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
@@ -31,7 +35,7 @@ public class NetUtils {
                 try {
                     inet = InetAddress.getLocalHost();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error("获取本机 IP 失败", e);
                 }
                 if (inet != null) {
                     ip = inet.getHostAddress();

@@ -1,11 +1,11 @@
-package com.work.workusercentre.controller.response;
+package com.work.workusercentre.universal.response;
 
-import static com.work.workusercentre.controller.response.ErrorCodeBindMessage.SUCCESS;
+import static com.work.workusercentre.universal.response.ErrorCodeBindMessage.SUCCESS;
 
 /**
  * 便捷响应体包装类
  *
- * @author ljp
+  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 public class TheResult {
     /**

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
- * @author ljp
+  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  * @description 针对表【user(用户信息表)】的实体类
  * @createDate 2025-03-06 10:25:51
  */
@@ -119,7 +119,7 @@ public class User implements Serializable {
     private Integer userRole;
 
     /**
-     * 用户等级(业务层需知 0 为普通, 1 为高级, 2 为特权, 3 为企业, ...)
+     * 用户等级(业务层需知 0 为 level0, 1 为 level1, 2 为 level2, 3 为 level3, ...)
      */
     @TableField(value = "user_level")
     private Integer userLevel;

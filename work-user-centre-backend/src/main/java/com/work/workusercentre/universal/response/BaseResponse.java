@@ -1,4 +1,4 @@
-package com.work.workusercentre.controller.response;
+package com.work.workusercentre.universal.response;
 
 import java.io.Serializable;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * 通用响应体描述类
  *
- * @author ljp
+  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Data
 public class BaseResponse<T> implements Serializable {

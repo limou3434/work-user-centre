@@ -1,11 +1,11 @@
-package com.work.workusercentre.controller.response;
+package com.work.workusercentre.universal.response;
 
 import lombok.Getter;
 
 /**
  * 自定义 错误-含义 枚举体
  *
- * @author ljp
+  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Getter // 等价于只能用在类上的 Data
 public enum ErrorCodeBindMessage {

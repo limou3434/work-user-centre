@@ -1,12 +1,12 @@
 package com.work.workusercentre.controller;
 
-import com.work.workusercentre.annotation.AuthCheck;
+import com.work.workusercentre.universal.annotation.AuthCheck;
 import com.work.workusercentre.controller.request.*;
 import com.work.workusercentre.entity.User;
-import com.work.workusercentre.controller.exception.ArgumentException;
-import com.work.workusercentre.controller.response.BaseResponse;
-import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
-import com.work.workusercentre.controller.response.TheResult;
+import com.work.workusercentre.universal.exception.ArgumentException;
+import com.work.workusercentre.universal.response.BaseResponse;
+import com.work.workusercentre.universal.response.ErrorCodeBindMessage;
+import com.work.workusercentre.universal.response.TheResult;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.controller.vo.LoginUserVO;
 import jakarta.annotation.Resource;
@@ -24,10 +24,10 @@ import static com.work.workusercentre.contant.ConfigConstant.SALT;
 /**
  * 用户控制层
  *
- * 1. 控制层只做简单的参数校验, 实际控制使用封装好的 Server
+ * 1. 控制层只做简单的参数校验, 实际控制使用封装好的 Server, 因此一般先写控制层代码, 一直到后续寻找需要复用的逻辑即可
  * 2. 所有接口默认只返回 200, 某些特殊的错误交给前端响应(比如 403、404 以及对应的页面), 详细错误(code-message)在响应 JSON 中体现
  * 3. 控制层的方法本身最好不要改动, 这样前端代码就可以利用这个方法名称来无缝导入, 但是 HTTP 接口可以随时修改, 前端导入接口文档时会自动修改且依旧使用之前的方法
- * @author ljp
+  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @RestController // 返回值默认为 json 类型
 @RequestMapping("/user")
@@ -115,7 +115,6 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "参数用户 id 不能为空");
         }
 
-
         // 处理请求
         User user = new User();
 
@@ -158,7 +157,6 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
         return TheResult.success(loginUserVOList); // 终端操作, 收集器 Collectors.toList() 用来将流中的元素收集到一个新的 List 中
     }
 
-    // NOTE: Extended CRUD Module
     // TODO: 修改自己的信息
     /**
      * 修改用户网络接口(自己)
@@ -189,7 +187,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
 
     // NOTE: Authentication Module
     /**
-     * 用户注册接口
+     * 用户注册网络接口
      *
      * @param userRegisterRequest 用户注册请求数据
      * @return 用户 id
@@ -209,7 +207,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     }
 
     /**
-     * 用户登入接口
+     * 用户登入网络接口
      *
      * @param userLoginRequest 用户登入请求数据
      * @param request          请求体
@@ -233,14 +231,14 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     }
 
     /**
-     * 获取当前登录用户信息接口
+     * 获取状态网络接口
      *
      * @param request 请求体
      * @return 脱敏后的用户信息
      */
-    @GetMapping("/login/get")
+    @GetMapping("/status")
     @AuthCheck()
-    public BaseResponse<LoginUserVO> userLoginGet(HttpServletRequest request) {
+    public BaseResponse<LoginUserVO> userStatus(HttpServletRequest request) {
         // 参数校验
         if (request == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
@@ -251,7 +249,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     }
 
     /**
-     * 用户登出接口
+     * 用户登出网络接口
      *
      * @return 是否登出成功
      */

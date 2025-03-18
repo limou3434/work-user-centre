@@ -1,12 +1,12 @@
-package com.work.workusercentre.controller.exception;
+package com.work.workusercentre.universal.exception;
 
-import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
+import com.work.workusercentre.universal.response.ErrorCodeBindMessage;
 import lombok.Getter;
 
 /**
  * 参数异常类
  *
- * @author ljp
+  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Getter
 public class ArgumentException extends RuntimeException {

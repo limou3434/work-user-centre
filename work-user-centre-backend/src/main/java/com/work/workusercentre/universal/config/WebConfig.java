@@ -1,4 +1,4 @@
-package com.work.workusercentre.config;
+package com.work.workusercentre.universal.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

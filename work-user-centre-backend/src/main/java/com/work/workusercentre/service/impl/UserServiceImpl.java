@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.work.workusercentre.controller.request.UserSearchRequest;
 import com.work.workusercentre.entity.User;
-import com.work.workusercentre.controller.exception.ArgumentException;
+import com.work.workusercentre.universal.exception.ArgumentException;
 import com.work.workusercentre.mapper.UserMapper;
-import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
+import com.work.workusercentre.universal.response.ErrorCodeBindMessage;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.controller.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,12 +21,11 @@ import java.nio.charset.StandardCharsets;
 
 import static com.work.workusercentre.contant.ConfigConstant.SALT;
 import static com.work.workusercentre.contant.UserConstant.USER_LOGIN_STATE;
-import static com.work.workusercentre.controller.response.ErrorCodeBindMessage.*;
 
 /**
  * 用户服务层实现
  *
- * @author ljp
+  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  * @description 针对表【user(用户信息表)】的数据库操作 Service 实现
  * @createDate 2025-03-06 10:25:51
  */
@@ -40,30 +39,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 1. 参数校验
         // 判断传入的所有字符串是否都是空白(null、空字符串、仅包含空格）
         if (StringUtils.isAllBlank(userAccount, userPasswd, checkPasswd)) {
-            throw new ArgumentException(PARAMS_ERROR, "请输入账户、密码、确认密码后再注册");
+            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请输入账户、密码、确认密码后再注册");
         }
 
         // 判断账户和密码的长度是否符合要求
         if (userAccount.length() < 4 || userPasswd.length() < 6 || checkPasswd.length() < 6) {
-            throw new ArgumentException(PARAMS_ERROR, "账户不得小于 4 位、密码和确认密码均不小于 6 位");
+            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "账户不得小于 4 位、密码和确认密码均不小于 6 位");
         }
 
         // 避免账户中的非法字符
         String validPattern = "^[a-zA-Z0-9$_-]+$";
         if (!userPasswd.matches(validPattern)) {
-            throw new ArgumentException(PARAMS_ERROR, "密码和确认密码均不能包含特殊字符");
+            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "密码和确认密码均不能包含特殊字符");
         }
 
         // 判断两次输入的密码是否一致
         if (!userPasswd.equals(checkPasswd)) {
-            throw new ArgumentException(PARAMS_ERROR, "新密码和确认密码不一致");
+            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "新密码和确认密码不一致");
         }
 
         // 避免重复注册用户
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
         if (this.count(lambdaQueryWrapper) > 0) {
-            throw new ArgumentException(OPERATION_ERROR, "不允许重复注册已存在的用户");
+            throw new ArgumentException(ErrorCodeBindMessage.OPERATION_ERROR, "不允许重复注册已存在的用户");
         }
 
         // 2. 密码加密
@@ -77,7 +76,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 4. 注册用户
         boolean saveResult = this.save(user);
         if (!saveResult) {
-            throw new ArgumentException(SYSTEM_ERROR, "出现拆箱错误");
+            throw new ArgumentException(ErrorCodeBindMessage.SYSTEM_ERROR, "出现拆箱错误");
         }
 
         return user.getId();
@@ -88,18 +87,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 1. 参数校验
         // 判断传入的所有字符串是否都是空白(null、空字符串、仅包含空格）
         if (StringUtils.isAllBlank(userAccount, userPasswd)) {
-            throw new ArgumentException(PARAMS_ERROR, "请输入账户、密码后再登录");
+            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请输入账户、密码后再登录");
         }
 
         // 判断账户和密码的长度是否符合要求
         if (userAccount.length() < 4 || userPasswd.length() < 6) {
-            throw new ArgumentException(PARAMS_ERROR, "账户不得小于 4 位、密码不小于 6 位");
+            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "账户不得小于 4 位、密码不小于 6 位");
         }
 
         // 避免账户中的非法字符
         String validPattern = "^[a-zA-Z0-9$_-]+$";
         if (!userPasswd.matches(validPattern)) {
-            throw new ArgumentException(PARAMS_ERROR, "密码不能包含特殊字符");
+            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "密码不能包含特殊字符");
         }
 
         // 2. 密码加密
@@ -110,7 +109,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         lambdaQueryWrapper.eq(User::getUserAccount, userAccount).eq(User::getUserPasswd, newUserPasswd);
         User user = this.getOne(lambdaQueryWrapper);
         if (user == null) {
-            throw new ArgumentException(PARAMS_ERROR, "可能该用户不存在, 也可能是密码错误");
+            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "可能该用户不存在, 也可能是密码错误");
         }
 
         // 4. 脱敏信息

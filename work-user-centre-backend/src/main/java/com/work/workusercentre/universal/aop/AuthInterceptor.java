@@ -1,10 +1,10 @@
-package com.work.workusercentre.aop;
+package com.work.workusercentre.universal.aop;
 
-import com.work.workusercentre.annotation.AuthCheck;
+import com.work.workusercentre.universal.annotation.AuthCheck;
 import com.work.workusercentre.enums.UserRoleEnum;
-import com.work.workusercentre.controller.exception.ArgumentException;
-import com.work.workusercentre.controller.exception.NotRoleException;
-import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
+import com.work.workusercentre.universal.exception.ArgumentException;
+import com.work.workusercentre.universal.exception.NotRoleException;
+import com.work.workusercentre.universal.response.ErrorCodeBindMessage;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.controller.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * 权限校验 AOP
  *
- * @author ljp
+  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Slf4j
 @Aspect
