@@ -113,7 +113,7 @@ export async function userUpdate(
   body: API.UserUpdateRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseBoolean>("/user/update", {
+  return request<API.BaseResponseLoginUserVO>("/user/update", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

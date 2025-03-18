@@ -106,7 +106,7 @@ export default function AdminUsersPage() {
             const res = await userUpdate(values); // 传入表单数据
             if (res?.data) {
                 // @ts-ignore
-                setData(data.map(item => item.id === res.data.id ? res.data : item));
+                setData(data.map(item => item.id === res.data.id ? res.data : item)); // 更新子项数据
                 message.success(t("push_update_success"));
             } else {
                 message.error(t("push_update_failed"));
@@ -122,17 +122,18 @@ export default function AdminUsersPage() {
                 const res = await userSearch({});
                 console.log("查看访问到的数据");
                 console.log(res.data);
-                if (Array.isArray(res?.data)) {
-                    setData(res.data);
-                    message.success("访问数据库成功", 2);
-                } else {
-                    message.error("未知错误", 2);
-                }
+                // @ts-ignore
+                setData(res.data);
+                message.success("访问数据库成功", 2);
             } catch (error) {
                 message.error("未知错误", 2);
             }
         })();
     }, []);
+
+    useEffect(() => {
+        console.log("更新数据 data", data);
+    }, [data]);
 
     return (
         <div id="adminUsersPage">

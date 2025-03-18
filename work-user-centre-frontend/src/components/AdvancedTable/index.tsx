@@ -5,10 +5,10 @@
 "use client";
 
 import "./index.css";
-import type { ProColumns } from "@ant-design/pro-components";
-import { DragSortTable } from "@ant-design/pro-components";
-import { message } from "antd";
-import { useEffect, useState } from "react";
+import type {ProColumns} from "@ant-design/pro-components";
+import {DragSortTable} from "@ant-design/pro-components";
+import {message} from "antd";
+import {useEffect, useState} from "react";
 
 interface AdvancedTableProps<T> {
     data?: T[];
@@ -30,6 +30,7 @@ export default function AdvancedTable<T extends Record<string, any>>({
 
     useEffect(() => {
         setDataSource(data);
+        console.log("更新数据 data", data);
     }, [data]);
 
     const handleDragSortEnd = (
@@ -39,14 +40,15 @@ export default function AdvancedTable<T extends Record<string, any>>({
     ) => {
         console.log("排序后的数据", newDataSource);
         setDataSource(newDataSource);
-        message.success("修改列表排序成功").then(r => {});
+        message.success("修改列表排序成功").then(r => {
+        });
     };
 
     const enhancedColumns = columns.map((col) => ({
         ...col,
         onCell: (record: T) => ({
             onClick: () => onRowClick?.(record),
-            style: { cursor: "pointer" },
+            style: {cursor: "pointer"},
         }),
     }));
 
@@ -61,7 +63,7 @@ export default function AdvancedTable<T extends Record<string, any>>({
                 dataSource={dataSource}
                 dragSortKey="sort"
                 onDragSortEnd={handleDragSortEnd}
-                scroll={{ x: "max-content" }}
+                scroll={{x: "max-content"}}
             />
         </div>
     );

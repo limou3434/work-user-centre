@@ -76,9 +76,11 @@ declare namespace API {
 
   type UserUpdateRequest = {
     id?: number;
-    userName?: string;
+    userAccount?: string;
     userAvatar?: string;
     userProfile?: string;
     userRole?: number;
+    userLevel?: number;
+    userGender?: number;
   };
 }
