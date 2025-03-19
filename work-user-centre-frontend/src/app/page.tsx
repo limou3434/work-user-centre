@@ -9,7 +9,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/stores";
 import LetterGlitch from "../components/LetterGlitch";
 
-export default function Home() {
+export default function HomePage() {
     // 状态工具
     const loginUser = useSelector((state: RootState) => state.loginUser); // 获取用户登陆状态实例
 

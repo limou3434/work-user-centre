@@ -34,7 +34,7 @@ export default function RootLayout({
             {/* 加语言切换 */}
             <LanguageSwitch>
                 {/* 加页面水印 */}
-                <WaterMark content={t('work_user_centre')} fontSize={18}> {/* TODO: 可以加上用户的 account */}
+                <WaterMark content={t('work_user_centre')} fontSize={18}> {/* TODO: 可以加上用户的 account, 并且打算配置化 */}
                     {/* 状态管理器 */}
                     <Provider store={store}>
                         {/* 主题提供者 */}

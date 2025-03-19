@@ -8,15 +8,19 @@ import {useEffect, useState} from "react";
 import type {ProColumns} from "@ant-design/pro-components";
 import {useTranslation} from "react-i18next";
 
+/**
+ * 管理员用户列表页面
+ */
 export default function AdminUsersPage() {
-    const [data, setData] = useState<API.LoginUserVO[]>([]);
     const {t} = useTranslation();
+
+    // NOTE: Data
     const columns: ProColumns<API.LoginUserVO>[] = [
         {
             title: t("sort"),
-            dataIndex: "sort", // 在 data 中的索引
+            dataIndex: "sort",
             width: 50,
-            fixed: "left", // 固定在左侧
+            fixed: "left",
         },
         {
             title: t("id"),
@@ -90,15 +94,20 @@ export default function AdminUsersPage() {
             title: t("user_gender"),
             dataIndex: "userGender",
         },
-    ]; // 定义与 API.LoginUserVO 字段一致的列配置渲染到高级表格中
+    ];
+
+    const [data, setData] = useState<API.LoginUserVO[]>([]);
+
+    const [form] = Form.useForm();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedRecord, setSelectedRecord] = useState<API.LoginUserVO | null>(null);
-    const [form] = Form.useForm(); // 用于存储表单数据
+
+    // NOTE: Func
     const handleRowClick = (record: API.LoginUserVO) => {
-        setSelectedRecord(record);
         form.setFieldsValue(record); // 填充表单数据
         setIsModalOpen(true);
     };
+
     const handleConfirm = async () => {
         try {
             setIsModalOpen(false);
@@ -116,43 +125,38 @@ export default function AdminUsersPage() {
         }
     };
 
+    // NOTE: Hook
     useEffect(() => {
         (async () => {
             try {
                 const res = await userSearch({});
-                console.log("查看访问到的数据");
-                console.log(res.data);
-                // @ts-ignore
-                setData(res.data);
-                message.success("访问数据库成功", 2);
+                setData(Array.isArray(res?.data) ? res.data : []);
+                void message.success("访问数据库成功");
             } catch (error) {
-                message.error("未知错误", 2);
+                void message.error("未知错误");
             }
         })();
     }, []);
 
-    useEffect(() => {
-        console.log("更新数据 data", data);
-    }, [data]);
-
+    // NOTE: Render
     return (
         <div id="adminUsersPage">
             {/* 用户列表 */}
             <AdvancedTable<API.LoginUserVO>
-                data={data}
+                title={t("user_table")}
                 columns={columns}
-                rowKey="id"
-                title="用户列表"
+                data={data}
+                rowKey={"id"}
                 onRowClick={handleRowClick}
             />
-
-            {/* 弹出表单 */}
+            {/* 修改弹窗 */}
             <Modal
-                title="用户信息"
+                title={t("modify_form")}
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
                 footer={null} // 先不加按钮
             >
+                {/* 修改表单 */}
                 <Form form={form} layout="vertical">
                     <Row gutter={16}>
                         <Col span={12}>
@@ -162,7 +166,7 @@ export default function AdminUsersPage() {
                         </Col>
                         <Col span={12}>
                             <Form.Item label={t("user_account")} name="userAccount">
-                                <Input/>
+                                <Input disabled/>
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -240,6 +244,7 @@ export default function AdminUsersPage() {
                         </Col>
                     </Row>
                 </Form>
+                {/* 确认按钮 */}
                 <Popconfirm
                     placement="top"
                     title={t("are_you_sure_to_submit_the_changes")}

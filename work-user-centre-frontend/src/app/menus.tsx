@@ -14,8 +14,8 @@ const menus = [
         access: ACCESS_ENUM.NOT_LOGIN,
     },
     {
-        path: "/data",
-        name: "数据",
+        path: "/status",
+        name: "状态",
         icon: <BarChartOutlined />,
         access: ACCESS_ENUM.USER,
     },

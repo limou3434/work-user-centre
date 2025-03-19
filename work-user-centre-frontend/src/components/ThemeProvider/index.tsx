@@ -7,6 +7,13 @@ import { BulbOutlined, MoonOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next"; // 引入 i18n
 
+// 最小的支持黑白主题组件例子
+// const MyButton = () => (
+//     <button style={{ backgroundColor: "var(--ant-primary-color)", color: "var(--ant-text-color)" }}>
+//         按钮
+//     </button>
+// );
+
 // TODO: 有些不太明白
 
 // 创建主题上下文
@@ -67,7 +74,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                         tooltip={t("switch_theme_button")} // 这里设置提示文本
                     />
                 </div>
-
                 {children}
             </ConfigProvider>
         </ThemeContext.Provider>

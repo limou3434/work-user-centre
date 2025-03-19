@@ -1,12 +1,6 @@
-// src/app/user/login/page.tsx
-
-/* 渲染 */
 "use client";
 
-/* 样式 */
 import "./page.css";
-
-/* 引入 */
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {LoginForm, ProFormText} from "@ant-design/pro-components";
 import React from "react";
@@ -20,8 +14,10 @@ import {message} from "antd";
 import {setLoginUser} from "@/stores/loginUser";
 import {userLogin} from "@/api/userController";
 
-/* 定义 */
-const UserLoginPage: React.FC = () => {
+/**
+ * 用户登入页面
+ */
+export default function UserLoginPage() {
     // 项目名称
     const projectName = "工作室用户中心"; // TODO: 从文件中读取
 
@@ -47,9 +43,6 @@ const UserLoginPage: React.FC = () => {
 
             if (res?.data) {
                 message.success("登入成功, 欢迎回来"); // 提示登入成功
-
-                console.log("检查登录后的响应"); // TODO: 不确定是否需要屏蔽
-                console.log(res); // TODO: 不确定是否需要屏蔽
 
                 dispatch(setLoginUser(res.data as API.LoginUserVO)); // 保存用户登入状态, 这里时用 as 的原因是拦截器直接把 axios 中的 data 返回了, 但是类型没有被处理
 
@@ -128,6 +121,3 @@ const UserLoginPage: React.FC = () => {
         </div>
     );
 };
-
-/* 导出 */
-export default UserLoginPage;

@@ -17,12 +17,6 @@ declare namespace API {
     data?: LoginUserVO;
   };
 
-  type BaseResponseLong = {
-    code?: number;
-    message?: string;
-    data?: number;
-  };
-
   type LoginUserVO = {
     id?: number;
     userAccount?: string;
@@ -45,9 +39,22 @@ declare namespace API {
 
   type UserAddRequest = {
     userAccount?: string;
-    userPasswd?: string;
+    userWxUnion?: string;
+    userMpOpen?: string;
+    userEmail?: string;
+    userPhone?: string;
+    userIdent?: string;
     userAvatar?: string;
+    userTags?: string;
+    userNick?: string;
+    userName?: string;
+    userProfile?: string;
+    userBirthday?: string;
+    userCountry?: string;
+    userAddress?: string;
     userRole?: string;
+    userLevel?: number;
+    userGender?: number;
   };
 
   type UserDeleteRequest = {
@@ -74,11 +81,39 @@ declare namespace API {
     userLevel?: number;
   };
 
+  type UserUpdataSelfRequest = {
+    userWxUnion?: string;
+    userMpOpen?: string;
+    userEmail?: string;
+    userPhone?: string;
+    userIdent?: string;
+    userAvatar?: string;
+    userTags?: string;
+    userNick?: string;
+    userName?: string;
+    userProfile?: string;
+    userBirthday?: string;
+    userCountry?: string;
+    userAddress?: string;
+    userGender?: number;
+  };
+
   type UserUpdateRequest = {
     id?: number;
     userAccount?: string;
+    userWxUnion?: string;
+    userMpOpen?: string;
+    userEmail?: string;
+    userPhone?: string;
+    userIdent?: string;
     userAvatar?: string;
+    userTags?: string;
+    userNick?: string;
+    userName?: string;
     userProfile?: string;
+    userBirthday?: string;
+    userCountry?: string;
+    userAddress?: string;
     userRole?: number;
     userLevel?: number;
     userGender?: number;

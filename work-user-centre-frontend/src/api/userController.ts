@@ -7,12 +7,20 @@ export async function userAdd(
   body: API.UserAddRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseLong>("/user/add", {
+  return request<API.BaseResponseBoolean>("/user/add", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /user/add/batch */
+export async function userAddBatch(options?: { [key: string]: any }) {
+  return request<API.BaseResponseBoolean>("/user/add/batch", {
+    method: "POST",
     ...(options || {}),
   });
 }
@@ -32,6 +40,14 @@ export async function userDelete(
   });
 }
 
+/** 此处后端没有提供注释 POST /user/delete/batch */
+export async function userDeleteBatch(options?: { [key: string]: any }) {
+  return request<API.BaseResponseBoolean>("/user/delete/batch", {
+    method: "POST",
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /user/login */
 export async function userLogin(
   body: API.UserLoginRequest,
@@ -47,10 +63,26 @@ export async function userLogin(
   });
 }
 
+/** 此处后端没有提供注释 POST /user/login/wx */
+export async function userLoginWx(options?: { [key: string]: any }) {
+  return request<API.BaseResponseLoginUserVO>("/user/login/wx", {
+    method: "POST",
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /user/logout */
 export async function userLogout(options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean>("/user/logout", {
     method: "POST",
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /user/logout/wx */
+export async function userLogoutWx(options?: { [key: string]: any }) {
+  return request<API.BaseResponseBoolean>("/user/logout/wx", {
+    method: "GET",
     ...(options || {}),
   });
 }
@@ -60,12 +92,20 @@ export async function userRegister(
   body: API.UserRegisterRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseLong>("/user/register", {
+  return request<API.BaseResponseBoolean>("/user/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /user/register/wx */
+export async function userRegisterWx(options?: { [key: string]: any }) {
+  return request<API.BaseResponseBoolean>("/user/register/wx", {
+    method: "POST",
     ...(options || {}),
   });
 }
@@ -86,7 +126,7 @@ export async function userSearch(
 }
 
 /** 此处后端没有提供注释 POST /user/search/page */
-export async function userSearchPage(
+export async function userSearchPagegit(
   body: API.UserSearchRequest,
   options?: { [key: string]: any }
 ) {
@@ -108,6 +148,14 @@ export async function userStatus(options?: { [key: string]: any }) {
   });
 }
 
+/** 此处后端没有提供注释 POST /user/status/wx */
+export async function userStatusWx(options?: { [key: string]: any }) {
+  return request<API.BaseResponseLoginUserVO>("/user/status/wx", {
+    method: "POST",
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /user/update */
 export async function userUpdate(
   body: API.UserUpdateRequest,
@@ -125,10 +173,10 @@ export async function userUpdate(
 
 /** 此处后端没有提供注释 POST /user/update/self */
 export async function userUpdateSelf(
-  body: API.UserUpdateRequest,
+  body: API.UserUpdataSelfRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseBoolean>("/user/update/self", {
+  return request<API.BaseResponseLoginUserVO>("/user/update/self", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
