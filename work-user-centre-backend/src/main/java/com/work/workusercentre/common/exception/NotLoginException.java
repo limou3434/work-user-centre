@@ -1,13 +1,13 @@
-package com.work.workusercentre.universal.exception;
+package com.work.workusercentre.common.exception;
 
-import com.work.workusercentre.universal.response.ErrorCodeBindMessage;
+import com.work.workusercentre.common.response.ErrorCodeBindMessage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * 权限异常类
  *
-  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Getter
 @Slf4j

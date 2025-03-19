@@ -1,4 +1,6 @@
--- ./sql/init_structure.sql: 数据源整体结构
+-- 数据源整体结构
+--
+-- <a href="https://github.com/xiaogithuboo">limou3434</a>
 -- 项目数库
 DROP DATABASE IF EXISTS work_user_centre;
 CREATE DATABASE work_user_centre COLLATE = utf8mb4_unicode_ci;
@@ -35,7 +37,7 @@ CREATE TABLE user (
     user_email      VARCHAR(256)       NULL                                                  COMMENT '邮箱号',
     user_phone      VARCHAR(20)        NULL                                                  COMMENT '电话号',
     user_ident      VARCHAR(50)        NULL                                                  COMMENT '身份证',
-    user_passwd     VARCHAR(512)       NOT NULL                                              COMMENT '用户密码(业务层强制刚刚注册的用户重新设置密码, 交给用户时默认密码为 1234567890, 并且加盐密码)',
+    user_passwd     VARCHAR(512)       NOT NULL                                              COMMENT '用户密码(业务层强制刚刚注册的用户重新设置密码, 交给用户时默认密码为 123456, 并且加盐密码)',
     user_avatar     VARCHAR(1024)      NULL                                                  COMMENT '用户头像(业务层需要考虑默认头像使用 cos 对象存储)',
     user_tags       VARCHAR(1024)      NULL                                                  COMMENT '用户标签(业务层需要 json 数组格式存储用户标签数组)',
     user_nick       VARCHAR(256)       NULL                                                  COMMENT '用户昵称',

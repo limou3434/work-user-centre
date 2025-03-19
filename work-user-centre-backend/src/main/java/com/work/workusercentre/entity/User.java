@@ -1,14 +1,14 @@
 package com.work.workusercentre.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import lombok.Data;
 
 /**
-  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  * @description 针对表【user(用户信息表)】的实体类
  * @createDate 2025-03-06 10:25:51
  */
@@ -19,7 +19,7 @@ public class User implements Serializable {
     /**
      * 本用户唯一标识(业务层需要考虑使用雪花算法用户标识的唯一性)
      */
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    @TableId(value = "id", type = IdType.ASSIGN_ID) // 因此这里的雪花算法是自己添加的
     private Long id;
 
     /**
@@ -250,4 +250,5 @@ public class User implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
 }

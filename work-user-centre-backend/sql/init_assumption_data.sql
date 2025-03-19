@@ -1,5 +1,6 @@
--- ./sql/init_assumption_data.sql: 数据源模拟数据
--- 模拟数据
+-- 假数据
+--
+-- <a href="https://github.com/xiaogithuboo">limou3434</a>
 TRUNCATE TABLE user;
 INSERT INTO user (user_account, user_wx_union, user_mp_open, user_email, user_phone, user_ident, user_passwd, user_avatar, user_tags, user_nick, user_name, user_profile, user_birthday, user_country, user_address, user_role, user_level, user_gender, deleted)
 VALUES

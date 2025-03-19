@@ -1,14 +1,15 @@
-package com.work.workusercentre.universal.response;
+package com.work.workusercentre.common.response;
 
 import lombok.Getter;
 
 /**
  * 自定义 错误-含义 枚举体
  *
-  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Getter // 等价于只能用在类上的 Data
 public enum ErrorCodeBindMessage {
+
     /**
      * 枚举常量
      */
@@ -42,4 +43,5 @@ public enum ErrorCodeBindMessage {
         this.code = code;
         this.message = message;
     }
+
 }

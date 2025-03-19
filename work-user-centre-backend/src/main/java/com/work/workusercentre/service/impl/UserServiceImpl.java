@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.work.workusercentre.controller.request.UserSearchRequest;
 import com.work.workusercentre.entity.User;
-import com.work.workusercentre.universal.exception.ArgumentException;
+import com.work.workusercentre.common.exception.ArgumentException;
 import com.work.workusercentre.mapper.UserMapper;
-import com.work.workusercentre.universal.response.ErrorCodeBindMessage;
+import com.work.workusercentre.common.response.ErrorCodeBindMessage;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.controller.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ import static com.work.workusercentre.contant.UserConstant.USER_LOGIN_STATE;
 /**
  * 用户服务层实现
  *
-  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  * @description 针对表【user(用户信息表)】的数据库操作 Service 实现
  * @createDate 2025-03-06 10:25:51
  */

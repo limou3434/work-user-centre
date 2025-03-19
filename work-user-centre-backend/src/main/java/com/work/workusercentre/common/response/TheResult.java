@@ -1,13 +1,20 @@
-package com.work.workusercentre.universal.response;
+package com.work.workusercentre.common.response;
 
-import static com.work.workusercentre.universal.response.ErrorCodeBindMessage.SUCCESS;
+import static com.work.workusercentre.common.response.ErrorCodeBindMessage.SUCCESS;
 
 /**
  * 便捷响应体包装类
+ * 1. 返回成功
+ *  (1) 返回成功, 自动处理, {code: 200, message: "success", data: {...}}
+ *  (2) 返回成功, 手动处理, {code: xxx, message: "xxxxxxx", data: {...}}
+ * 2. 返回失败
+ *  (1) 返回失败, 自动处理, 系统内部使用
+ *  (2) 返回失败, 手动处理, 全局异常使用
  *
-  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 public class TheResult {
+
     /**
      * 构造成功响应体
      *
@@ -52,4 +59,5 @@ public class TheResult {
     public static <T> BaseResponse<T> error(int code, String message) {
         return new BaseResponse<>(code, message);
     }
+
 }

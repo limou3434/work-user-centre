@@ -1,5 +1,4 @@
-// ./src/main/java/com/work/workusercentre/universal/annotation/AuthCheck.java
-package com.work.workusercentre.universal.annotation;
+package com.work.workusercentre.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 权限校验注解
+ * 权限校验注解实现
+ * 用上注解就需要保证 "必须登录、必须未封、必须满足条件(除了管理)" 才能使用
  *
  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */

@@ -1,10 +1,10 @@
-package com.work.workusercentre.universal.aop;
+package com.work.workusercentre.annotation.aop;
 
-import com.work.workusercentre.universal.annotation.AuthCheck;
+import com.work.workusercentre.annotation.AuthCheck;
 import com.work.workusercentre.enums.UserRoleEnum;
-import com.work.workusercentre.universal.exception.ArgumentException;
-import com.work.workusercentre.universal.exception.NotRoleException;
-import com.work.workusercentre.universal.response.ErrorCodeBindMessage;
+import com.work.workusercentre.common.exception.ArgumentException;
+import com.work.workusercentre.common.exception.NotRoleException;
+import com.work.workusercentre.common.response.ErrorCodeBindMessage;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.controller.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,24 +19,18 @@ import jakarta.annotation.Resource;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
- * 权限校验 AOP
+ * 权限校验注解实现
  *
-  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Slf4j
 @Aspect
 @Component
 public class AuthInterceptor {
+
     @Resource
     private UserService userService;
 
-    /**
-     * 拦截 @AuthCheck 注解, 用上注解就 "必须登录、必须未封、必须满足条件(除了管理)" 才能使用
-     *
-     * @param joinPoint 切点
-     * @param authCheck 注解
-     * @return Object 对象
-     */
     @Around("@annotation(authCheck)")
     public Object doInterceptor(ProceedingJoinPoint joinPoint, AuthCheck authCheck) throws Throwable {
         // 获取当前登录角色并转化为枚举体实例
@@ -75,4 +69,5 @@ public class AuthInterceptor {
 
         throw new NotRoleException(ErrorCodeBindMessage.NO_AUTH_ERROR, "您没有该权限");
     }
+
 }

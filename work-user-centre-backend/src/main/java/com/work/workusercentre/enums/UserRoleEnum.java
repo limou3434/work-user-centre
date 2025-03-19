@@ -2,8 +2,14 @@ package com.work.workusercentre.enums;
 
 import lombok.Getter;
 
+/**
+ * 用户角色枚举
+ *
+ * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ */
 @Getter
-public enum UserRoleEnum { // TODO: 其实也是可以考虑使用数据库来实现的, 不过由于效率问题, 暂时不必这么做(本项目的数据库里真的有一个用户角色表, 但是只能手动插入无法使用接口调整, 暂时只是起到了一个约束的作用, 因此如果其他项目复用了本项目就需要修改代码逻辑才可以做到, 目前还没有这个需求, 因此先忽略)
+public enum UserRoleEnum { // TODO: 其实也是可以考虑使用数据库来实现的, 不过由于效率问题, 暂时不必这么做, 目前还没有这个需求, 因此先忽略
+
     /**
      * 用户角色枚举实例
      */
@@ -63,4 +69,5 @@ public enum UserRoleEnum { // TODO: 其实也是可以考虑使用数据库来�
         }
         return null;
     }
+
 }

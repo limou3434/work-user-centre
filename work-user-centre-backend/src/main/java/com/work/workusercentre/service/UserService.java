@@ -10,13 +10,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 用户服务层接口
- *
  * 服务层需做复杂的参数校验, 并且完成复杂的业务逻辑
-  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ *
+ * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  * @description 针对表【user(用户信息表)】的数据库操作 Service
  * @createDate 2025-03-06 10:25:51
  */
 public interface UserService extends IService<User> {
+
     /**
      * 用户注册服务
      *

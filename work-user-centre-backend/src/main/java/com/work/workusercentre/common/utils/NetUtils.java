@@ -1,22 +1,24 @@
-package com.work.workusercentre.universal.utils;
+package com.work.workusercentre.common.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.net.InetAddress;
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
 
 /**
  * 网络工具类
+ *
+ * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Slf4j
 public class NetUtils {
 
     /**
      * 获取客户端 IP 地址方法
+     * 只做了简单的判断, 如果需要更加复杂的逻辑就需要自己定制化
      *
      * @param request 请求体
      * @return 客户端 IP 地址
-     * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
      */
     public static String getIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");

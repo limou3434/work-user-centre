@@ -1,15 +1,17 @@
-package com.work.workusercentre.universal.response;
+package com.work.workusercentre.common.response;
+
+import lombok.Data;
 
 import java.io.Serializable;
-import lombok.Data;
 
 /**
  * 通用响应体描述类
  *
-  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Data
 public class BaseResponse<T> implements Serializable {
+
     /**
      * 状态
      */
@@ -72,4 +74,5 @@ public class BaseResponse<T> implements Serializable {
         this.message = message;
         this.data = null;
     }
+
 }
