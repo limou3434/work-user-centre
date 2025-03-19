@@ -38,10 +38,12 @@ const menus = [
             {
                 path: "/admin/roles",
                 name: "角色列表",
+                hideInMenu: true,
             },
             {
                 path: "/admin/levels",
                 name: "等级列表",
+                hideInMenu: true,
             },
         ],
     },

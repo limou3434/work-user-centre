@@ -32,6 +32,12 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({user}) => {
 
     const {t} = useTranslation();
 
+    const colors = ["magenta", "red", "volcano", "orange", "gold", "lime", "green", "cyan", "blue", "geekblue", "purple"];
+
+    function getRandomColor() {
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
     return (
         <div className="user-profile-card" style={{width: "100%", height: "80vh", margin: "0 auto"}}>
             <Card variant="borderless" hoverable={true} style={{width: "100%"}}>
@@ -43,21 +49,42 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({user}) => {
                     </div>
                     <Descriptions bordered column={1} size="small" style={{marginTop: 20}}>
                         <Descriptions.Item label={t("user_account")}>{user.userAccount || "N/A"}</Descriptions.Item>
+                        <Descriptions.Item label={t("user_wx_union")}>{user.userWxUnion || "N/A"}</Descriptions.Item>
+                        <Descriptions.Item label={t("user_mp_open")}>{user.userMpOpen || "N/A"}</Descriptions.Item>
                         <Descriptions.Item label={t("user_email")}>{user.userEmail || "N/A"}</Descriptions.Item>
                         <Descriptions.Item label={t("user_phone")}>{user.userPhone || "N/A"}</Descriptions.Item>
-                        <Descriptions.Item label={t("user_birthday")}>{user.userBirthday || "xxxx-xx-xx"}</Descriptions.Item>
-                        <Descriptions.Item label={t("user_gender")}>
-                            <Tag
-                                color={user.userGender === 0 ? "gray" : user.userGender === 1 ? "blue" : user.userGender === 2 ? "pink" : "gray"}>
-                                {/*@ts-ignore*/}
-                                {genderMap[user.userGender ?? 0]}
-                            </Tag>
+                        <Descriptions.Item label={t("user_tags")}>
+                            {user.userTags
+                                ? user.userTags
+                                    .replace(/^\[|\]$/g, "") // 去掉首尾的 [ 和 ]
+                                    .replace(/"/g, "") // 去掉所有的 "
+                                    .split(/\s*,\s*/) // 按逗号分割，并去除多余空格
+                                    .map((tag: string) => (
+                                        <Tag color={getRandomColor()} key={tag}>
+                                            {tag}
+                                        </Tag>
+                                    ))
+                                : "N/A"
+                            }
                         </Descriptions.Item>
+                        <Descriptions.Item label={t("user_nick")}>{user.userNick || "N/A"}</Descriptions.Item>
+                        <Descriptions.Item label={t("user_name")}>{user.userName || "N/A"}</Descriptions.Item>
+                        <Descriptions.Item label={t("user_profile")}>{user.userProfile || "N/A"}</Descriptions.Item>
+                        <Descriptions.Item label={t("user_birthday")}>{user.userBirthday || "N/A"}</Descriptions.Item>
+                        <Descriptions.Item label={t("user_country")}>{user.userCountry || "N/A"}</Descriptions.Item>
+                        <Descriptions.Item label={t("user_address")}>{user.userAddress || "N/A"}</Descriptions.Item>
                         <Descriptions.Item label={t("user_role")}>
                             <Tag
                                 color={user.userRole === 2 ? "red" : user.userRole === 1 ? "gold" : user.userRole === 0 ? "green" : "gray"}>
                                 {/*@ts-ignore*/}
                                 {roleMap[user.userRole ?? 0]}
+                            </Tag>
+                        </Descriptions.Item>
+                        <Descriptions.Item label={t("user_gender")}>
+                            <Tag
+                                color={user.userGender === 0 ? "gray" : user.userGender === 1 ? "blue" : user.userGender === 2 ? "pink" : "gray"}>
+                                {/*@ts-ignore*/}
+                                {genderMap[user.userGender ?? 0]}
                             </Tag>
                         </Descriptions.Item>
                         <Descriptions.Item label={t("user_country")}>{user.userCountry || "未知"}</Descriptions.Item>

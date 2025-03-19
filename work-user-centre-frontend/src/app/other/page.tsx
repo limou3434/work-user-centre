@@ -3,40 +3,44 @@
 "use client";
 
 import "./page.css";
-import MdViewer from "@/components/MdViewer";
-import {Card, Col, Row} from "antd";
 import React from "react";
+import GridMotion from "@/components/GridMotion";
+import {useTranslation} from "react-i18next";
 
 export default function OtherPage() {
+    const {t} = useTranslation();
+
+    const items = [
+        t("work_user_centre"),
+        <div key='jsx-item-1'>{t("work_user_centre")}</div>,
+        'https://images.unsplash.com/photo-1723403804231-f4e9b515fe9d?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        t("work_user_centre"),
+        <div key='jsx-item-2'>{t("work_user_centre")}</div>,
+        t("work_user_centre"),
+        <div key='jsx-item-2'>{t("work_user_centre")}</div>,
+        'https://images.unsplash.com/photo-1723403804231-f4e9b515fe9d?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        t("work_user_centre"),
+        <div key='jsx-item-2'>{t("work_user_centre")}</div>,
+        '这是一个用户中心项目，用于管理用户信息，并作为微服务的一环存在于工作室微服务架构中。',
+        'https://images.unsplash.com/photo-1723403804231-f4e9b515fe9d?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        <div key='jsx-item-2'>支持用户查看自己的登陆数据，并且借用该服务进行单点登陆。</div>,
+        t("work_user_centre"),
+        <div key='jsx-item-2'>{t("work_user_centre")}</div>,
+        t("work_user_centre"),
+        <div key='jsx-item-3'>{"开放的 OpenAPI 接口文档让您不再需要编写复杂的登陆逻辑。"}</div>,
+        'https://images.unsplash.com/photo-1723403804231-f4e9b515fe9d?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        '支持管理查看自己的登陆服务，并且借用该服务进行用户操作。',
+        <div key='jsx-item-2'>{t("work_user_centre")}</div>,
+        t("work_user_centre"),
+        <div key='jsx-item-4'>{t("work_user_centre")}</div>,
+        'https://images.unsplash.com/photo-1723403804231-f4e9b515fe9d?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        t("work_user_centre"),
+    ];
+
     return (
         <div id="otherPage" style={{width: "100%", margin: "0 auto"}}>
-            <Row gutter={[{xs: 8, sm: 16, md: 24, lg: 32}, {xs: 8, sm: 16, md: 24, lg: 32}]}>
-                <Col span={12}>
-                    <Card title="项目简介" variant="borderless" hoverable={true}
-                          style={{width: "100%", height: "100%"}}>
-                        <MdViewer
-                            value={`这是一个用户中心项目，用于管理用户信息，并且作为微服务的一环存在于工作室的微服务架构中。`}/>
-                    </Card>
-                </Col>
-                <Col span={12}>
-                    <Card title="项目特征" variant="borderless" hoverable={true}
-                          style={{width: "100%", height: "100%"}}>
-                        <MdViewer value={`开放的 \`OpenAPI\` 接口文档让您不再需要编写复杂的登陆逻辑。`}/>
-                    </Card>
-                </Col>
-                <Col span={12}>
-                    <Card title="用户友好" variant="borderless" hoverable={true}
-                          style={{width: "100%", height: "100%"}}>
-                        <MdViewer value={`支持用户查看自己的登陆数据，并且借用该服务进行单点登陆。`}/>
-                    </Card>
-                </Col>
-                <Col span={12}>
-                    <Card title="管理友好" variant="borderless" hoverable={true}
-                          style={{width: "100%", height: "100%"}}>
-                        <MdViewer value={`支持管理查看自己的登陆服务，并且借用该服务进行用户操作。`}/>
-                    </Card>
-                </Col>
-            </Row>
+            {/* @ts-ignore */}
+            <GridMotion items={items}/>
         </div>
     );
 }
