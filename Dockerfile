@@ -2,18 +2,16 @@
 # @author <a href="https://github.com/xiaogithubooo">limou3434</a>
 # @from <a href="https://workhub.com">大数据工作室</a>
 
-# 基于镜像
-FROM <镜像名>:<版本号>
+# 使用官方 OpenJDK 镜像作为基础镜像
+FROM openjdk:17-jdk-slim
 
-# 拷贝文件
-COPY <宿主主机文件路径> <容器主机文件绝对路径>
+# 使用通配符复制 target 目录下的 JAR 文件
+COPY ./work-user-centre-backend/target/*.jar /app.jar
 
-# 运行指令
-RUN <指令>
+# 设置容器启动时运行的命令
+ENTRYPOINT ["java", "-jar", "/app.jar"]
 
-# 暴露端口
-EXPOSE <端口号>
+# 容器运行时监听的端口
+EXPOSE 8000
 
-# 启动指令
-CMD ["xxx", "-xxx", "xxx", "..."]
 
