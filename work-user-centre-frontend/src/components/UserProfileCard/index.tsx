@@ -1,6 +1,4 @@
-/**
- *  ./src/components/UserProfileCard/index.tsx: 用户信息卡片
- */
+
 "use client";
 
 import "./index.css";
@@ -11,11 +9,19 @@ import {useTranslation} from "react-i18next";
 
 const {Title, Paragraph} = Typography;
 
+/**
+ * 属性
+ */
 interface UserProfileCardProps {
     user: API.LoginUserVO;
 }
 
+/**
+ * 用户卡片组件
+ */
 const UserProfileCard: React.FC<UserProfileCardProps> = ({user}) => {
+
+    // NOTE: Data
     // 角色映射
     const roleMap = {
         0: "普通用户",
@@ -34,13 +40,15 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({user}) => {
 
     const colors = ["magenta", "red", "volcano", "orange", "gold", "lime", "green", "cyan", "blue", "geekblue", "purple"];
 
+    // NOTE: Func
     function getRandomColor() {
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
+    // NOTE: Render
     return (
-        <div className="user-profile-card" style={{width: "100%", height: "80vh", margin: "0 auto"}}>
-            <Card variant="borderless" hoverable={true} style={{width: "100%"}}>
+        <div className="user-profile-card" style={{width: "100%", margin: "0 auto", display: "flex", justifyContent: "center", marginTop: 50}}>
+            <Card variant="borderless" hoverable={true} style={{width: "100%", height: "100%"}}>
                 <ClickSpark>
                     <div style={{textAlign: "center", marginTop: -50}}>
                         <Avatar size={80} src={user.userAvatar || "/assets/logo.svg"}/>
@@ -94,6 +102,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({user}) => {
             </Card>
         </div>
     );
+
 };
 
 export default UserProfileCard;

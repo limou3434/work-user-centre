@@ -1,5 +1,3 @@
-// ./src/app/other/page.tsx: 其他页面
-
 "use client";
 
 import "./page.css";
@@ -7,7 +5,12 @@ import React from "react";
 import GridMotion from "@/components/GridMotion";
 import {useTranslation} from "react-i18next";
 
+/**
+ * 其他页面
+ */
 export default function OtherPage() {
+
+    // NOTE: Data
     const {t} = useTranslation();
 
     const items = [
@@ -37,10 +40,12 @@ export default function OtherPage() {
         t("work_user_centre"),
     ];
 
+    // NOTE: Reducer
     return (
         <div id="otherPage" style={{width: "100%", margin: "0 auto"}}>
             {/* @ts-ignore */}
             <GridMotion items={items}/>
         </div>
     );
+
 }

@@ -9,12 +9,13 @@ import type {ProColumns} from "@ant-design/pro-components";
 import {useTranslation} from "react-i18next";
 
 /**
- * 管理员用户列表页面
+ * 管理 - 用户列表页面
  */
 export default function AdminUsersPage() {
-    const {t} = useTranslation();
 
     // NOTE: Data
+    const {t} = useTranslation();
+
     const columns: ProColumns<API.LoginUserVO>[] = [
         {
             title: t("sort"),

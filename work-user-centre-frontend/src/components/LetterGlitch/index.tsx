@@ -1,22 +1,30 @@
-import React, { useRef, useEffect } from "react";
+"use client"
+
+import "./index.css";
+import React, {useEffect, useRef} from "react";
 import {useTranslation} from "react-i18next";
 import {useTheme} from "@/components/ThemeProvider";
-import {Card} from "antd";
 
-const LetterGlitch = ({
-                          glitchColors = ["#2b4539", "#61dca3", "#61b3dc"],
-                          glitchSpeed = 50,
-                          centerVignette = false,
-                          outerVignette = true,
-                          smooth = true,
-                      }: {
-    glitchSpeed: number;
-    centerVignette: boolean;
-    outerVignette: boolean;
-    smooth: boolean;
-    glitchColors?: string[];  // 添加这个属性
-}) => {
+/**
+ * 乱序代码组件
+ */
+const LetterGlitch = (
+    {
+        glitchColors = ["#2b4539", "#61dca3", "#61b3dc"],
+        glitchSpeed = 50,
+        centerVignette = false,
+        outerVignette = true,
+        smooth = true,
+    }: {
+        glitchSpeed: number;
+        centerVignette: boolean;
+        outerVignette: boolean;
+        smooth: boolean;
+        glitchColors?: string[];  // 添加这个属性
+    }
+) => {
 
+    // NOTE: Data
     const {t} = useTranslation();
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const animationRef = useRef<number | null>(null);
@@ -28,7 +36,7 @@ const LetterGlitch = ({
             colorProgress: number;
         }[]
     >([]);
-    const grid = useRef({ columns: 0, rows: 0 });
+    const grid = useRef({columns: 0, rows: 0});
     const context = useRef<CanvasRenderingContext2D | null>(null);
     const lastGlitchTime = useRef(Date.now());
     const fontSize = 16;
@@ -94,9 +102,46 @@ const LetterGlitch = ({
         "8",
         "9",
     ];
-    const { isDark } = useTheme(); // 获取当前主题状态
+    const {isDark} = useTheme(); // 获取当前主题状态
 
+    const containerStyle = {
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#000000",
+        overflow: "hidden",
+        borderRadius: "8px",
+    };
 
+    const canvasStyle = {
+        display: "block",
+        width: "100%",
+        height: "100%",
+    };
+
+    const outerVignetteStyle = {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        background:
+            "radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,1) 100%)",
+    };
+
+    const centerVignetteStyle = {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        background:
+            "radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%)",
+    };
+
+    // NOTE: Func
     const getRandomChar = () => {
         return lettersAndSymbols[
             Math.floor(Math.random() * lettersAndSymbols.length)
@@ -139,13 +184,13 @@ const LetterGlitch = ({
     const calculateGrid = (width: number, height: number) => {
         const columns = Math.ceil(width / charWidth);
         const rows = Math.ceil(height / charHeight);
-        return { columns, rows };
+        return {columns, rows};
     };
 
     const initializeLetters = (columns: number, rows: number) => {
-        grid.current = { columns, rows };
+        grid.current = {columns, rows};
         const totalLetters = columns * rows;
-        letters.current = Array.from({ length: totalLetters }, () => ({
+        letters.current = Array.from({length: totalLetters}, () => ({
             char: getRandomChar(),
             color: getRandomColor(),
             targetColor: getRandomColor(),
@@ -172,7 +217,7 @@ const LetterGlitch = ({
             context.current.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
-        const { columns, rows } = calculateGrid(rect.width, rect.height);
+        const {columns, rows} = calculateGrid(rect.width, rect.height);
         initializeLetters(columns, rows);
         drawLetters();
     };
@@ -180,9 +225,9 @@ const LetterGlitch = ({
     const drawLetters = () => {
         if (!context.current || letters.current.length === 0) return;
         const ctx = context.current;
-        const { width, height } = canvasRef.current
+        const {width, height} = canvasRef.current
             ? canvasRef.current!.getBoundingClientRect()
-            : { width: 0, height: 0 };
+            : {width: 0, height: 0};
         ctx.clearRect(0, 0, width, height);
         ctx.font = `${fontSize}px monospace`;
         ctx.textBaseline = "top";
@@ -265,6 +310,7 @@ const LetterGlitch = ({
         animationRef.current = requestAnimationFrame(animate);
     };
 
+    // NOTE: Hook
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -293,46 +339,10 @@ const LetterGlitch = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [glitchSpeed, smooth]);
 
-    const containerStyle = {
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#000000",
-        overflow: "hidden",
-        borderRadius: "8px",
-    };
-
-    const canvasStyle = {
-        display: "block",
-        width: "100%",
-        height: "100%",
-    };
-
-    const outerVignetteStyle = {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-        background:
-            "radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,1) 100%)",
-    };
-
-    const centerVignetteStyle = {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-        background:
-            "radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%)",
-    };
-
+    // NOTE: Render
     return (
-        <div className="letter-glitch" style={containerStyle as React.CSSProperties} >
-            <canvas ref={canvasRef} style={canvasStyle} />
+        <div className="letter-glitch" style={{ ...containerStyle as React.CSSProperties, width: "100%", height: "200px"}}>
+            <canvas ref={canvasRef} style={canvasStyle}/>
             {outerVignette && (
                 <div style={outerVignetteStyle as React.CSSProperties}></div>
             )}

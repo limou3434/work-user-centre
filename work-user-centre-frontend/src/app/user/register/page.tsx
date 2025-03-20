@@ -1,12 +1,6 @@
-// src/app/user/register/page.tsx
+"use client";
 
-/* 渲染 */
-"use client"; // 注释本行则默认服务端渲染
-
-/* 样式 */
 import "./page.css";
-
-/* 引入 */
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { LoginForm, ProFormText } from "@ant-design/pro-components";
 import React from "react";
@@ -18,9 +12,12 @@ import { useRouter } from "next/navigation";
 import {userRegister} from "@/api/userController";
 
 // TODO: 把这个登陆页面集成到模板中
+/**
+ * 用户 - 注册页面
+ */
+export default function UserRegisterPage() {
 
-/* 定义 */
-const UserRegisterPage: React.FC = () => {
+    // NOTE: Data
     // 项目名称
     const projectName = "工作室用户中心"; // TODO: 从文件中读取
 
@@ -33,6 +30,7 @@ const UserRegisterPage: React.FC = () => {
     // 重定向页面
     const router = useRouter();
 
+    // NOTE: Func
     // 注册接口
     const doSubmit = async (values: API.UserRegisterRequest): Promise<void> => {
         // TODO: 拦截前端部分不正确的请求, 减轻后端压力
@@ -47,6 +45,7 @@ const UserRegisterPage: React.FC = () => {
         } catch (e) {}
     };
 
+    // NOTE: Render
     return (
         <div id="userRegisterPage" className="max-width-content">
             {/* 登入组件 */}
@@ -134,6 +133,3 @@ const UserRegisterPage: React.FC = () => {
         </div>
     );
 };
-
-/* 导出 */
-export default UserRegisterPage;

@@ -15,9 +15,11 @@ import {setLoginUser} from "@/stores/loginUser";
 import {userLogin} from "@/api/userController";
 
 /**
- * 用户登入页面
+ * 用户 - 登入页面
  */
 export default function UserLoginPage() {
+
+    // NOTE: Data
     // 项目名称
     const projectName = "工作室用户中心"; // TODO: 从文件中读取
 
@@ -33,6 +35,7 @@ export default function UserLoginPage() {
     // 重定向页面
     const router = useRouter();
 
+    // NOTE: Func
     // 登入接口
     const doSubmit = async (values: API.UserLoginRequest): Promise<void> => {
         console.log("执行一次登入操作") // TODO: 不确定是否需要屏蔽
@@ -54,6 +57,7 @@ export default function UserLoginPage() {
         }
     };
 
+    // NOTE: Render
     return (
         <div id="userLoginPage" className="max-width-content">
             {/* 登入组件 */}
@@ -120,4 +124,5 @@ export default function UserLoginPage() {
             </LoginForm>
         </div>
     );
+
 };

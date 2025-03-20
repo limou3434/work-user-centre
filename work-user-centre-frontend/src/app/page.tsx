@@ -1,6 +1,3 @@
-/**
- *  ./src/app/page.tsx: 应用页面
- */
 "use client";
 
 import React from 'react';
@@ -8,31 +5,39 @@ import UserProfileCard from "@/components/UserProfileCard";
 import {useSelector} from "react-redux";
 import {RootState} from "@/stores";
 import LetterGlitch from "../components/LetterGlitch";
+import {Space} from "antd";
 
+/**
+ * 主页页面
+ */
 export default function HomePage() {
-    // 状态工具
+
+    // NOTE: Data
     const loginUser = useSelector((state: RootState) => state.loginUser); // 获取用户登陆状态实例
 
+    // NOTE: Func
     const mockUser: API.LoginUserVO = {
         ...loginUser
     };
 
+    // NOTE: Render
     return (
         <main
-            id="mainPage"
+            id="homePage"
             className="flex min-h-screen flex-col items-center justify-between p-24"
         >
-            <div style={{width: "100%", height: "200px"}}>
+            <Space direction="vertical" size="small" style={{display: 'flex'}}>
+                {/* 乱序代码 */}
                 <LetterGlitch
                     glitchSpeed={50}
                     centerVignette={false}
                     outerVignette={true}
                     smooth={true}
                 />
-            </div>
-            <div style={{display: "flex", justifyContent: "center", marginTop: 50}}>
+                {/* 用户卡片 */}
                 <UserProfileCard user={mockUser}/>
-            </div>
+            </Space>
         </main>
     );
+
 }
