@@ -15,7 +15,11 @@ public class CrossDomainConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://localhost:3000") // 允许的前端地址
+                .allowedOriginPatterns( // TODO: 修改为环境变量
+                    "http://localhost:3000", // 开发环境
+                    "http://192.168.101.254:80", // 测试环境
+                    "http://134.175.86.228:80" // 生产环境
+                )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true)
                 .maxAge(3600);
