@@ -1,15 +1,25 @@
-// ./libs/request.ts: 封装 Axios 请求后得到的一个请求库
 import axios from "axios";
 import {message} from "antd";
 
-// 创建 Axios 实例
+const hosts = { // TODO: 修改为环境变量
+    "develop": "127.0.0.1:8000", // 开发环境
+    "release": "192.168.101.254:80", // 测试环境
+    "main": "134.175.86.228:80" // 生产环境
+};
+const api = "work_user_centre_api";
+
+/**
+ * 创建 Axios 实例(如果需要选择多个 api 服务需要配置多个 axios 实例)
+ */
 const myAxios = axios.create({
-    baseURL: "http://localhost:8000/work_user_centre_api", // 请求后端(IP+PORT)
+    baseURL: `http://${hosts["release"]}/${api}`, // 请求后端(IP+PORT)
     timeout: 10000, // 响应时间(10s)
     withCredentials: true, // 凭证携带(开启)
 });
 
-// 拦截后调用的函数
+/**
+ * 拦截后调用的函数
+ */
 const handleLoginError = (data: any, preUrl: any) => { // TODO: any 有点不太好
     // 特殊处理
     if (data.code === 40100) {
@@ -20,11 +30,13 @@ const handleLoginError = (data: any, preUrl: any) => { // TODO: any 有点不太
         ) {
             window.location.href = `/user/login?redirect=${window.location.href}`; // 这一句代码的作用是将用户重定向到登录页面, 并在登录页面的 URL 中添加一个 redirect 参数, 方便用户登陆请求成功后切回原来的界面, 做到无缝体验， redirect 保存了当前页面的 URL
         }
-        message.error("登录已过期, 请重新登录").then(r => {});
+        void message.error("登录已过期, 请重新登录");
     }
 }
 
-// 创建请求拦截器
+/**
+ * 创建请求拦截器
+ */
 myAxios.interceptors.request.use(
     // 处理请求前执行, 整体为一个回调函数被调用
     function (config) {
@@ -43,15 +55,17 @@ myAxios.interceptors.request.use(
     },
 );
 
-// 创建响应拦截器
+/**
+ * 创建响应拦截器
+ */
 myAxios.interceptors.response.use(
     // 响应成功(为 2xx 响应触发), 整体为一个回调函数被调用
     function (response) {
         console.log("检查响应后的报文"); // TODO: 不确定是否需要屏蔽
         console.log(response); // TODO: 不确定是否需要屏蔽
+
         const {data} = response;
         const preUrl = response.request.responseURL;
-
         handleLoginError(data, preUrl);
 
         return data; // 当前端打印 res 时, 看到的是 Axios 包装的完整响应对象, 而 res.data 才是服务器返回的实际数据部分, 这里返回 data 有助于前端请求函数不用写 res.data.data 这种冗长的写法
