@@ -10,7 +10,7 @@
     "start": "next start",
     "build": "next build && cp -r ./public .next/standalone/ && cp -r ./.next/static .next/standalone/.next/",
     "package": "mkdir -p ./.next/target && zip -r ./.next/target/standalone.zip .next/standalone",
-    "pm2-start": "pm2 start ./.next/standalone/server.js --name work-user-centre-frontend",
+    "pm2-start": "pm2-runtime start ./.next/standalone/server.js --name work-user-centre-frontend",
     "pm2-stop": "pm2 stop work-user-centre-frontend",
     "pm2-delete": "pm2 delete work-user-centre-frontend && rm -rf ~/.pm2 && sudo rm -rf /root/.pm2",
     "pm2-log": "pm2 log work-user-centre-frontend"
