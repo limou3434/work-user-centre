@@ -13,6 +13,7 @@ import {useRouter} from "next/navigation";
 import {message} from "antd";
 import {setLoginUser} from "@/stores/loginUser";
 import {userLogin} from "@/api/userController";
+import {useTranslation} from "react-i18next";
 
 /**
  * 用户 - 登入页面
@@ -20,6 +21,8 @@ import {userLogin} from "@/api/userController";
 export default function UserLoginPage() {
 
     // NOTE: Data
+    const { t } = useTranslation();
+
     // 项目名称
     const projectName = "工作室用户中心"; // TODO: 从文件中读取
 
@@ -71,7 +74,7 @@ export default function UserLoginPage() {
                         width={45}
                     />
                 }
-                title={projectName + " - 登入"}
+                title={t("login")}
                 subTitle={projectInfo}
                 onFinish={doSubmit}
             >
