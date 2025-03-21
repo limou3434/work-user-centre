@@ -1,5 +1,16 @@
-### @author <a href="https://github.com/xxx">xxx</a> ###
-### @from <a href="https://xxx.com">xxx</a> ###
+### @author <a href="https://github.com/xiaogithubooo">xxx</a> ##
 
-# 待补充...
+# 后端相关忽略文件
+/work-user-centre-backend/.idea
+/work-user-centre-backend/.mvn
+/work-user-centre-backend/mvnw
+/work-user-centre-backend/mvnw.cmd
+/work-user-centre-backend/target
+/work-user-centre-frontend/*.tar
+
+# 前端相关忽略文件
+/work-user-centre-frontend/.idea
+/work-user-centre-frontend/.next/
+/work-user-centre-frontend/node_modules
+/work-user-centre-frontend/*.tar
 
