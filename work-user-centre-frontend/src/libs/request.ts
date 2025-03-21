@@ -9,7 +9,7 @@ const hosts: Record<string, string> = { // 读取 XXX_HOST 环境变量, 默认�
     "main": process.env.MAIN_HOST || "134.175.86.228:80", // 生产环境(有代理)
 };
 
-const selectedHost = hosts[MODE] || hosts["develop"];
+const selectedHost = hosts[MODE];
 
 const api = "work_user_centre_api";
 
