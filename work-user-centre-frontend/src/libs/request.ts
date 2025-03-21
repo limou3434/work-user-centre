@@ -3,7 +3,7 @@ import {message} from "antd";
 
 const hosts = { // TODO: 修改为环境变量
     "develop": "127.0.0.1:8000", // 开发环境(无代理)
-    "release": "192.168.101.254:80", // 测试环境(有代理)
+    "release": "10.10.174.95:80", // 测试环境(有代理)
     "main": "134.175.86.228:80", // 生产环境(有代理)
 };
 const api = "work_user_centre_api";

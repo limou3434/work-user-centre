@@ -2,9 +2,9 @@ package com.work.workusercentre.annotation.aop;
 
 import com.work.workusercentre.annotation.AuthCheck;
 import com.work.workusercentre.enums.UserRoleEnum;
-import com.work.workusercentre.common.exception.ArgumentException;
-import com.work.workusercentre.common.exception.NotRoleException;
-import com.work.workusercentre.common.response.ErrorCodeBindMessage;
+import com.work.workusercentre.exception.ArgumentException;
+import com.work.workusercentre.exception.NotRoleException;
+import com.work.workusercentre.response.ErrorCodeBindMessage;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.controller.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;

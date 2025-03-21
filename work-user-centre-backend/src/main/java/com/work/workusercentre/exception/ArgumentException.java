@@ -1,6 +1,6 @@
-package com.work.workusercentre.common.exception;
+package com.work.workusercentre.exception;
 
-import com.work.workusercentre.common.response.ErrorCodeBindMessage;
+import com.work.workusercentre.response.ErrorCodeBindMessage;
 import lombok.Getter;
 
 /**

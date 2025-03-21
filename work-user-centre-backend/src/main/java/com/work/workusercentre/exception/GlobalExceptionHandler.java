@@ -1,8 +1,8 @@
-package com.work.workusercentre.common.exception;
+package com.work.workusercentre.exception;
 
-import com.work.workusercentre.common.response.BaseResponse;
-import com.work.workusercentre.common.response.ErrorCodeBindMessage;
-import com.work.workusercentre.common.response.TheResult;
+import com.work.workusercentre.response.BaseResponse;
+import com.work.workusercentre.response.ErrorCodeBindMessage;
+import com.work.workusercentre.response.TheResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
