@@ -1,5 +1,5 @@
 #!/bin/bash
-# 镜像终止脚本
+# ./Dockerfile_stop.sh
 sudo docker container stop work-user-centre-backend || true
 sudo docker container rm work-user-centre-backend || true
 sudo docker container logs work-user-centre-frontend
