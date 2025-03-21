@@ -90,6 +90,7 @@ i18n.use(initReactI18next).init({
                 user_address: "Address",
                 user_role: "Role",
                 user_level: "Level",
+                user_gender: "User Gender"
             }
         },
     },
