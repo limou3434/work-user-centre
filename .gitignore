@@ -6,7 +6,7 @@
 /work-user-centre-backend/mvnw
 /work-user-centre-backend/mvnw.cmd
 /work-user-centre-backend/target
-/work-user-centre-frontend/*.tar
+/work-user-centre-backend/*.tar
 
 # 前端相关忽略文件
 /work-user-centre-frontend/.idea
