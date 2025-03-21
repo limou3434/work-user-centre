@@ -1,18 +1,23 @@
 import axios from "axios";
 import {message} from "antd";
 
-const hosts = { // TODO: 修改为环境变量
-    "develop": "127.0.0.1:8000", // 开发环境(无代理)
-    "release": "10.10.174.95:80", // 测试环境(有代理)
-    "main": "134.175.86.228:80", // 生产环境(有代理)
+const MODE = process.env.MODE || "develop"; // 读取 MODE 环境变量, 默认为 develop 模式
+
+const hosts: Record<string, string> = { // 读取 XXX_HOST 环境变量, 默认为 127.0.0.1:8000
+    "develop": process.env.DEVELOP_HOST || "127.0.0.1:8000", // 开发环境(无代理)
+    "release": process.env.RELEASE_HOST || "10.10.174.95:80", // 测试环境(有代理)
+    "main": process.env.MAIN_HOST || "134.175.86.228:80", // 生产环境(有代理)
 };
+
+const selectedHost = hosts[MODE] || hosts["develop"];
+
 const api = "work_user_centre_api";
 
 /**
  * 创建 Axios 实例(如果需要选择多个 api 服务需要配置多个 axios 实例)
  */
 const myAxios = axios.create({
-    baseURL: `http://${hosts["release"]}/${api}`, // 请求后端(IP+PORT)
+    baseURL: `http://${selectedHost}/${api}`, // 请求后端(IP+PORT)
     timeout: 10000, // 响应时间(10s)
     withCredentials: true, // 凭证携带(开启)
 });
