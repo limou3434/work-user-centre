@@ -1,4 +1,4 @@
-package com.work.workusercentre.response;
+package com.work.workusercentre.controller.response;
 
 import lombok.Getter;
 

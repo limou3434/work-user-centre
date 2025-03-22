@@ -1,6 +1,6 @@
-package com.work.workusercentre.response;
+package com.work.workusercentre.controller.response;
 
-import static com.work.workusercentre.response.ErrorCodeBindMessage.SUCCESS;
+import static com.work.workusercentre.controller.response.ErrorCodeBindMessage.SUCCESS;
 
 /**
  * 便捷响应体包装类

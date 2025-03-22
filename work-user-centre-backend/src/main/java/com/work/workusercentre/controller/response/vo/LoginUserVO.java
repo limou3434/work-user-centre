@@ -1,4 +1,4 @@
-package com.work.workusercentre.controller.vo;
+package com.work.workusercentre.controller.response.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
