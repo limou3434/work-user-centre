@@ -1,5 +1,7 @@
 #!/bin/bash
 # 镜像编译脚本
+#
+# @author <a href="https://github.com/xiaogithuboo">limou3434</a>
 npm install
 npm run build
 npm run package

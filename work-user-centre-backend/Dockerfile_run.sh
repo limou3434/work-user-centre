@@ -1,5 +1,7 @@
 #!/bin/bash
 # 镜像运行脚本
+#
+# @author <a href="https://github.com/xiaogithuboo">limou3434</a>
 sudo docker container stop work-user-centre-backend || true
 sudo docker container rm work-user-centre-backend || true
 sudo docker run -d --restart=always --network host --name work-user-centre-backend work-user-centre-backend:0.0.1

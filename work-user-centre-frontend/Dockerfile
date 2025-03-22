@@ -1,4 +1,5 @@
 # Dockerfile
+#
 # @author <a href="https://github.com/xiaogithubooo">limou3434</a>
 
 # 使用基础镜像
@@ -16,5 +17,5 @@ EXPOSE 3000
 # 设置环境变量修改地址
 ENV HOSTNAME=127.0.0.1
 
-# 使用 PM2 启动 Next.js
+# 使用启动 Next.js
 CMD ["node", "--harmony", "server.js"]
