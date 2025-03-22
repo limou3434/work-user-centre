@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Slf4j
 public class NotLoginException extends RuntimeException {
+
     /**
      * 错误码
      */
@@ -27,4 +28,5 @@ public class NotLoginException extends RuntimeException {
         super(errorCodeBindMessage.getMessage() + ": " + exceptionMessage);
         this.code = errorCodeBindMessage.getCode();
     }
+
 }

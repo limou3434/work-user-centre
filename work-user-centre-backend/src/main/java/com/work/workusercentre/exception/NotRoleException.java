@@ -10,6 +10,7 @@ import lombok.Getter;
  */
 @Getter
 public class NotRoleException extends RuntimeException {
+
     /**
      * 错误码
      */
@@ -25,4 +26,5 @@ public class NotRoleException extends RuntimeException {
         super(errorCodeBindMessage.getMessage() + ": " + exceptionMessage);
         this.code = errorCodeBindMessage.getCode();
     }
+
 }
