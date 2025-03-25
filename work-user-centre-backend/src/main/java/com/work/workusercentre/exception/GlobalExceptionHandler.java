@@ -1,8 +1,8 @@
-package com.work.workusercentre.common.exception;
+package com.work.workusercentre.exception;
 
-import com.work.workusercentre.common.response.BaseResponse;
-import com.work.workusercentre.common.response.ErrorCodeBindMessage;
-import com.work.workusercentre.common.response.TheResult;
+import com.work.workusercentre.controller.response.BaseResponse;
+import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
+import com.work.workusercentre.controller.response.TheResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice(basePackages = "com.work.workusercentre.controller") // 使用 @RestControllerAdvice 可以拦截所有 @RestController 中抛出的异常, 并统一返回 JSON 格式的错误信息, 不过由于版本过新, 需要考虑问题 https://github.com/xiaoymin/knife4j/issues/884
 @Slf4j
 public class GlobalExceptionHandler {
+
     /**
      * 参数异常处理方法
      *
@@ -60,4 +61,5 @@ public class GlobalExceptionHandler {
         log.error("系统异常", e);
         return TheResult.error(ErrorCodeBindMessage.SYSTEM_ERROR);
     }
+    
 }

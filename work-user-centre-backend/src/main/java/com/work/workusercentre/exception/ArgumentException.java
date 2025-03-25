@@ -1,6 +1,6 @@
-package com.work.workusercentre.common.exception;
+package com.work.workusercentre.exception;
 
-import com.work.workusercentre.common.response.ErrorCodeBindMessage;
+import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
 import lombok.Getter;
 
 /**
@@ -10,6 +10,7 @@ import lombok.Getter;
  */
 @Getter
 public class ArgumentException extends RuntimeException {
+
     /**
      * 错误码
      */
@@ -25,4 +26,5 @@ public class ArgumentException extends RuntimeException {
         super(errorCodeBindMessage.getMessage() + ": " + exceptionMessage);
         this.code = errorCodeBindMessage.getCode();
     }
+
 }

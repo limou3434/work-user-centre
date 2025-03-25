@@ -1,4 +1,4 @@
-package com.work.workusercentre.common.utils;
+package com.work.workusercentre.utils;
 
 import lombok.extern.slf4j.Slf4j;
 

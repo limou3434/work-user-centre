@@ -10,6 +10,7 @@ import { message } from "antd";
 import { ProForm } from "@ant-design/pro-form/lib";
 import { useRouter } from "next/navigation";
 import {userRegister} from "@/api/userController";
+import {useTranslation} from "react-i18next";
 
 // TODO: 把这个登陆页面集成到模板中
 /**
@@ -18,6 +19,8 @@ import {userRegister} from "@/api/userController";
 export default function UserRegisterPage() {
 
     // NOTE: Data
+    const { t } = useTranslation();
+
     // 项目名称
     const projectName = "工作室用户中心"; // TODO: 从文件中读取
 
@@ -59,11 +62,11 @@ export default function UserRegisterPage() {
                         width={45}
                     />
                 }
-                title={projectName + " - 注册"}
+                title={t("register")}
                 subTitle={projectInfo}
                 submitter={{
                     searchConfig: {
-                        submitText: "注册",
+                        submitText: t("register"),
                     },
                 }}
                 onFinish={doSubmit}

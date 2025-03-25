@@ -1,8 +1,7 @@
-package com.work.workusercentre.common.exception;
+package com.work.workusercentre.exception;
 
-import com.work.workusercentre.common.response.ErrorCodeBindMessage;
+import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 权限异常类
@@ -10,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Getter
-@Slf4j
-public class NotLoginException extends RuntimeException {
+public class NotRoleException extends RuntimeException {
+
     /**
      * 错误码
      */
@@ -23,8 +22,9 @@ public class NotLoginException extends RuntimeException {
      * @param errorCodeBindMessage 错误-含义 枚举体
      * @param exceptionMessage 异常信息
      */
-    public NotLoginException(ErrorCodeBindMessage errorCodeBindMessage, String exceptionMessage) {
+    public NotRoleException(ErrorCodeBindMessage errorCodeBindMessage, String exceptionMessage) {
         super(errorCodeBindMessage.getMessage() + ": " + exceptionMessage);
         this.code = errorCodeBindMessage.getCode();
     }
+
 }

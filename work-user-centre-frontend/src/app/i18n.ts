@@ -37,6 +37,8 @@ i18n.use(initReactI18next).init({
                 push_update_failed: "提交更新失败",
                 user_table: "用户表格",
                 modify_form: "修改表单",
+                login: "登入",
+                register: "注册",
                 id: "ID",
                 user_account: "账号",
                 user_wx_union: "微信号",
@@ -74,6 +76,8 @@ i18n.use(initReactI18next).init({
                 push_update_failed: "Push Update Failed",
                 user_table: "User Table",
                 modify_form: "Modify Form",
+                login: "Login",
+                register: "Register",
                 id: "ID",
                 user_account: "Account",
                 user_wx_union: "WxUnion",
@@ -90,6 +94,7 @@ i18n.use(initReactI18next).init({
                 user_address: "Address",
                 user_role: "Role",
                 user_level: "Level",
+                user_gender: "User Gender"
             }
         },
     },

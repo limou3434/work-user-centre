@@ -1,18 +1,29 @@
 import axios from "axios";
 import {message} from "antd";
 
-const hosts = { // TODO: 修改为环境变量
-    "develop": "127.0.0.1:8000", // 开发环境(无代理)
-    "release": "192.168.101.254:80", // 测试环境(有代理)
-    "main": "134.175.86.228:80", // 生产环境(有代理)
-};
-const api = "work_user_centre_api";
+const mode = "release"; // 读取 MODE 环境变量得到运行模式
 
+const hosts: Record<string, string> = { // 读取 XXXXXXX_HOST 环境变量
+    "develop": "127.0.0.1:8000", // 开发环境(无代理)
+    "release": "10.10.174.95:80", // 测试环境(有代理)
+    "product": "", // 生产环境(有代理)
+};
+
+const host = hosts[mode]; // 必须先读取为常量, 否则浏览器中无法动态获取...
+// console.info(mode);
+// console.info(host);
+
+const api = "work_user_centre_api";
+// console.info(api);
+
+const baseURL = `http://${host}/${api}`;
+// console.info(baseURL);
+``
 /**
  * 创建 Axios 实例(如果需要选择多个 api 服务需要配置多个 axios 实例)
  */
 const myAxios = axios.create({
-    baseURL: `http://${hosts["release"]}/${api}`, // 请求后端(IP+PORT)
+    baseURL: baseURL, // 请求后端(IP+PORT)
     timeout: 10000, // 响应时间(10s)
     withCredentials: true, // 凭证携带(开启)
 });

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.work.workusercentre.controller.request.UserSearchRequest;
 import com.work.workusercentre.entity.User;
-import com.work.workusercentre.controller.vo.LoginUserVO;
+import com.work.workusercentre.controller.response.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
