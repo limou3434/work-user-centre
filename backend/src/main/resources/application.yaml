@@ -16,6 +16,8 @@ spring:
   # (3)配置会话
   session:
     timeout: 86400 # 一天就失效
+  # (4)配置盐值
+  salt: work-user-centre
 
 # 配置日志
 logging:

@@ -16,7 +16,7 @@ public class CrossDomainConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry
             .addMapping("/**")
-            .allowedOriginPatterns( // TODO: 修改为环境变量
+            .allowedOriginPatterns(
                 "http://127.0.0.1:3000", // 开发环境(无代理)
                 "http://127.0.0.1:80" // 测试环境(有代理) 或 生产环境(有代理)
             )

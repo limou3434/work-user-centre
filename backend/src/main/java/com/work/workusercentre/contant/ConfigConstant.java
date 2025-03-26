@@ -8,13 +8,8 @@ package com.work.workusercentre.contant;
 public interface ConfigConstant {
 
     /**
-     * 项目名称
-     */
-    String PROJECT_NAME = "work-user-centre";
-
-    /**
      * 加密盐值
      */
-    String SALT = "work-user-centre";
+    String SALT = "work-user-centre"; // TODO: 修改为外部读取的常量
 
 }
