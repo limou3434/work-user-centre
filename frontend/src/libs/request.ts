@@ -1,7 +1,7 @@
 import axios from "axios";
 import {message} from "antd";
 
-const mode = "release"; // 读取 MODE 环境变量得到运行模式
+const mode = "develop"; // 读取 MODE 环境变量得到运行模式
 
 const hosts: Record<string, string> = { // 读取 XXXXXXX_HOST 环境变量
     "develop": "127.0.0.1:8000", // 开发环境(无代理)

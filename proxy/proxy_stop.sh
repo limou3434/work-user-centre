@@ -1,9 +1,12 @@
 #!/bin/bash
 # 停止代理脚本
-CONFIG_NAME="work-user-centre-proxy.conf"
+# 
+# @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+project_name=$(basename "$(dirname "$PWD")")
+config_name="proxy.conf"
 sudo systemctl stop nginx
-sudo rm /etc/nginx/sites-available/$CONFIG_NAME
-sudo rm /etc/nginx/sites-enabled/$CONFIG_NAME
+sudo rm -f "/etc/nginx/sites-available/${project_name}-${config_name}"
+sudo rm -f "/etc/nginx/sites-enabled/${project_name}-${config_name}"
 ls -al /etc/nginx/sites-available/
 ls -al /etc/nginx/sites-enabled/
 echo "脚本结束"

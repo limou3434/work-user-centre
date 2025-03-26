@@ -2,6 +2,16 @@
 # 镜像编译脚本
 #
 # @author <a href="https://github.com/xiaogithuboo">limou3434</a>
-java -Dmaven.multiModuleProjectDirectory=/home/ljp/git/work-user-centre/work-user-centre-backend -Djansi.passthrough=true -Dmaven.home=/snap/intellij-idea-ultimate/583/plugins/maven/lib/maven3 -Dclassworlds.conf=/snap/intellij-idea-ultimate/583/plugins/maven/lib/maven3/bin/m2.conf -Dmaven.ext.class.path=/snap/intellij-idea-ultimate/583/plugins/maven/lib/maven-event-listener.jar -javaagent:/snap/intellij-idea-ultimate/583/lib/idea_rt.jar=37007 -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath /snap/intellij-idea-ultimate/583/plugins/maven/lib/maven3/boot/plexus-classworlds-2.8.0.jar:/snap/intellij-idea-ultimate/583/plugins/maven/lib/maven3/boot/plexus-classworlds.license org.codehaus.classworlds.Launcher -Didea.version=2024.3.4.1 package
-sudo docker build -t work-user-centre-backend:0.0.1 .
-echo "脚本结束"
+# 设置版本号码
+version="0.2.0"
+
+# 拉取基础镜像
+sudo docker pull openjdk:17-jdk-slim
+
+# 编译项目源码
+# TODO: 由于 Java 语言的特殊性, 暂时需要拉取到 IDEA 中进行打包后再来执行
+
+# 打包项目镜像
+project_name=$(basename "$(dirname "$PWD")") # 设置当前目录名
+sudo docker build -t "${project_name}-backend:${version}" .
+echo "${project_name}:${version} 项目的脚本结束"
