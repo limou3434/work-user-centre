@@ -1,11 +1,11 @@
 package com.work.workusercentre.controller;
 
 import com.work.workusercentre.annotation.AuthCheck;
-import com.work.workusercentre.controller.request.*;
-import com.work.workusercentre.controller.response.BaseResponse;
-import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
-import com.work.workusercentre.controller.response.TheResult;
-import com.work.workusercentre.controller.vo.LoginUserVO;
+import com.work.workusercentre.request.*;
+import com.work.workusercentre.response.BaseResponse;
+import com.work.workusercentre.response.ErrorCodeBindMessage;
+import com.work.workusercentre.response.TheResult;
+import com.work.workusercentre.vo.LoginUserVO;
 import com.work.workusercentre.entity.User;
 import com.work.workusercentre.exception.ArgumentException;
 import com.work.workusercentre.service.UserService;

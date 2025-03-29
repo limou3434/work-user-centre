@@ -1,4 +1,4 @@
-package com.work.workusercentre.controller.request;
+package com.work.workusercentre.request;
 
 import lombok.Data;
 
@@ -6,14 +6,16 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 删除用户请求
+ * 登入用户请求
  *
  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Data
-public class UserDeleteRequest implements Serializable {
+public class UserLoginRequest implements Serializable {
 
-    private Long id;
+    private String userAccount;
+
+    private String userPasswd;
 
     @Serial
     private static final long serialVersionUID = 1L;

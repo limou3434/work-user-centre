@@ -1,4 +1,4 @@
-package com.work.workusercentre.controller.request;
+package com.work.workusercentre.request;
 
 import lombok.Data;
 
