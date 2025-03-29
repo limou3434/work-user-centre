@@ -12,4 +12,9 @@ public interface UserConstant {
      */
     String USER_LOGIN_STATE = "user_is_login";
 
+    /**
+     * 默认密码
+     */
+    String DEFAULT_PASSWD = "123456";
+
 }

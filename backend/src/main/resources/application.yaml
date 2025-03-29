@@ -11,13 +11,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # "com.mysql.jdbc.Driver" 已经过时
     url: jdbc:mysql://localhost:3306/work_user_centre
-    username: work_uc
-    password: 123456
+    username: wuc
+    password: Qwe54188_
   # (3)配置会话
   session:
     timeout: 86400 # 一天就失效
-  # (4)配置盐值
-  salt: work-user-centre
 
 # 配置日志
 logging:

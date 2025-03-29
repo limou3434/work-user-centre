@@ -7,9 +7,9 @@ CREATE DATABASE work_user_centre COLLATE = utf8mb4_unicode_ci;
 USE work_user_centre;
 
 -- 项目用户
-DROP USER IF EXISTS 'work_uc'@'%';
-CREATE USER 'work_uc'@'%' IDENTIFIED BY '123456';
-GRANT ALL PRIVILEGES ON work_user_centre.* TO 'work_uc'@'%';
+DROP USER IF EXISTS 'wuc'@'%';
+CREATE USER 'wuc'@'%' IDENTIFIED BY 'Qwe54188_';
+GRANT ALL PRIVILEGES ON work_user_centre.* TO 'wuc'@'%';
 FLUSH PRIVILEGES;
 
 -- 项目数表

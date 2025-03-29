@@ -2,23 +2,22 @@ package com.work.workusercentre.controller;
 
 import com.work.workusercentre.annotation.AuthCheck;
 import com.work.workusercentre.controller.request.*;
-import com.work.workusercentre.entity.User;
-import com.work.workusercentre.exception.ArgumentException;
 import com.work.workusercentre.controller.response.BaseResponse;
 import com.work.workusercentre.controller.response.ErrorCodeBindMessage;
 import com.work.workusercentre.controller.response.TheResult;
+import com.work.workusercentre.controller.vo.LoginUserVO;
+import com.work.workusercentre.entity.User;
+import com.work.workusercentre.exception.ArgumentException;
 import com.work.workusercentre.service.UserService;
-import com.work.workusercentre.controller.response.vo.LoginUserVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.BeanUtils;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.work.workusercentre.contant.ConfigConstant.SALT;
+//import static com.work.workusercentre.contant.ConfigConstant.SALT;
 
 /**
  * 用户控制层
@@ -44,33 +43,20 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * @return 是否添加成功
      */
     @PostMapping("/add")
-    @AuthCheck(mustRole = "admin") // TODO: 身份权限不要使用字符串而使用常量
+    @AuthCheck(mustRole = "admin")
     public BaseResponse<Boolean> userAdd(@RequestBody UserAddRequest userAddRequest, HttpServletRequest request) {
-        // 简单校验
+
+        // 1. 简单校验
         if (request == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
         }
 
-        // 调用服务
-        var user = new User();
+        // 2. 调用服务
+        boolean result = userService.userAdd(userAddRequest);
 
-        // 设置默认密码
-        String defaultPassword = "123456"; // TODO: 修改为配置文件
-        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + defaultPassword).getBytes());
-        user.setUserPasswd(encryptPassword);
+        // 3. 响应对象
+        return TheResult.success(result);
 
-        // 设置默认角色
-        user.setUserRole(0);
-
-        // 处理请求
-        BeanUtils.copyProperties(userAddRequest, user);
-        boolean result = userService.save(user);
-        if (!result) {
-            throw new ArgumentException(ErrorCodeBindMessage.SYSTEM_ERROR, "参数用户 id 不能为空");
-        }
-
-        // 响应对象
-        return TheResult.success(true);
     }
 
     /**
@@ -92,15 +78,17 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "参数用户 id 不能为空");
         }
 
+        boolean res = userService.removeById(userDeleteRequest.getId());
+
         // 返回响应
-        return TheResult.success(userService.removeById(userDeleteRequest.getId())); // 这里 MyBatisPlus 会自动转化为逻辑删除
+        return TheResult.success(res); // 这里 MyBatisPlus 会自动转化为逻辑删除
     }
 
     /**
      * 修改用户网络接口
      *
      * @param userUpdateRequest 用户修改请求数据
-     * @param request        请求体
+     * @param request           请求体
      * @return 是否修改成功
      */
     @PostMapping("/update")
@@ -135,7 +123,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * 查询用户网络接口
      *
      * @param userSearchRequest 用户查询请求数据
-     * @param request 请求体
+     * @param request           请求体
      * @return 用户列表, 如果没有查询 id 就会得到所有用户
      */
     @PostMapping("/search")
@@ -186,7 +174,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * TODO: 修改用户网络接口(自己)
      *
      * @param userUpdataSelfRequest 用户修改请求数据
-     * @param request        请求体
+     * @param request               请求体
      * @return 是否修改成功
      */
     @PostMapping("/update/self")
@@ -219,12 +207,12 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * TODO: 查询用户网络接口(分页)
      *
      * @param userSearchRequest 用户查询请求数据
-     * @param request 请求体
+     * @param request           请求体
      * @return 用户列表, 如果没有查询 id 就会得到所有用户
      */
     @PostMapping("/search/page")
     @AuthCheck(mustRole = "admin")
-    public BaseResponse<List<LoginUserVO>> userSearchPagegit (@RequestBody UserSearchRequest userSearchRequest, HttpServletRequest request) {
+    public BaseResponse<List<LoginUserVO>> userSearchPagegit(@RequestBody UserSearchRequest userSearchRequest, HttpServletRequest request) {
         return TheResult.success(404, "暂未开放该接口", null);
     }
 
@@ -299,6 +287,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @GetMapping("/status")
     @AuthCheck()
     public BaseResponse<LoginUserVO> userStatus(HttpServletRequest request) {
+
         // 参数校验
         if (request == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
@@ -306,6 +295,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
 
         // 返回响应
         return TheResult.success(userService.getLoginUserState(request));
+
     }
 
     // NOTE: Expansion Authentication Module
