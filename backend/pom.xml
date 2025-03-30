@@ -80,19 +80,6 @@
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
             <version>3.5.10.1</version>
         </dependency>
-<!--        <dependency>-->
-<!--            &lt;!&ndash; 编写关于 MyBatis 的测试代码可以用上 &ndash;&gt;-->
-<!--            <groupId>org.mybatis.spring.boot</groupId>-->
-<!--            <artifactId>mybatis-spring-boot-starter-test</artifactId>-->
-<!--            <version>3.0.4</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--        &lt;!&ndash; MyBatis + Spring Boot 整合的 Starter, 简化 MyBatis 的配置和使用(如果不使用 MyBatisPlus 则可以考虑直接使用 MyBatis) &ndash;&gt;-->
-<!--           <groupId>org.mybatis.spring.boot</groupId>-->
-<!--           <artifactId>mybatis-spring-boot-starter</artifactId>-->
-<!--           <version>3.0.4</version>-->
-<!--        </dependency>-->
 
         <!-- Lombok -->
         <dependency>
