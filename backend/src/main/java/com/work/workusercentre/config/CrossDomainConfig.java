@@ -18,7 +18,7 @@ public class CrossDomainConfig implements WebMvcConfigurer {
                 .addMapping("/**")
                 .allowedOriginPatterns(
                         "http://127.0.0.1:3000", // 开发环境(无代理)
-                        "http://127.0.0.1:80" // 测试环境(有代理) 或 生产环境(有代理)
+                        "http://10.10.174.243:3000" // 测试环境(有代理) 或 生产环境(有代理)
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true)
