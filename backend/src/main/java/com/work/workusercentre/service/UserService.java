@@ -2,9 +2,10 @@ package com.work.workusercentre.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.work.workusercentre.controller.request.UserSearchRequest;
+import com.work.workusercentre.request.UserAddRequest;
+import com.work.workusercentre.request.UserSearchRequest;
 import com.work.workusercentre.entity.User;
-import com.work.workusercentre.controller.response.vo.LoginUserVO;
+import com.work.workusercentre.vo.LoginUserVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -17,6 +18,14 @@ import jakarta.servlet.http.HttpServletResponse;
  * @createDate 2025-03-06 10:25:51
  */
 public interface UserService extends IService<User> {
+
+    /**
+     * 用户添加服务
+     *
+     * @param userAddRequest 用户添加请求数据
+     * @return 是否添加成功
+     */
+    Boolean userAdd(UserAddRequest userAddRequest);
 
     /**
      * 用户注册服务
@@ -56,7 +65,7 @@ public interface UserService extends IService<User> {
     /**
      * 获取查询条件
      *
-     * @param userSearchRequest 请求条件数据
+     * @param userSearchRequest 用户查询请求数据
      * @return 查询
      */
     LambdaQueryWrapper<User> getLambdaQueryWrapper(UserSearchRequest userSearchRequest);
