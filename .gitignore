@@ -1,16 +1,13 @@
-### @author <a href="https://github.com/xiaogithubooo">xxx</a> ##
+# 组件相关忽略文件
+docker/mysql/data/
 
 # 后端相关忽略文件
-/work-user-centre-backend/.idea
-/work-user-centre-backend/.mvn
-/work-user-centre-backend/mvnw
-/work-user-centre-backend/mvnw.cmd
-/work-user-centre-backend/target
-/work-user-centre-backend/*.tar
+backend/.idea/
+backend/target/
+backend/.dockerignore.swp
 
 # 前端相关忽略文件
-/work-user-centre-frontend/.idea
-/work-user-centre-frontend/.next/
-/work-user-centre-frontend/node_modules
-/work-user-centre-frontend/*.tar
-
+frontend/.idea/
+frontend/.next/
+frontend/node_modules/
+frontend/.dockerignore.swp

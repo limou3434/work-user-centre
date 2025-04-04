@@ -1,0 +1,51 @@
+services:
+  # 存储
+  work-user-centre-mysql:
+    image: mysql:8.0.41
+    container_name: work-user-centre-mysql
+    restart: always
+    privileged: true
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: Qwe54188_
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+    volumes:
+      - "./docker/mysql/data/:/var/lib/mysql/"
+      - "./docker/mysql/init/:/docker-entrypoint-initdb.d/"
+    networks:
+      - work-user-centre-network
+
+  # 后端
+  work-user-centre-server:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: work-user-centre-server:1.0.0
+    container_name: work-user-centre-server
+    ports:
+      - "8000:8000"
+    restart: always
+    networks:
+      - work-user-centre-network
+    depends_on:
+      - work-user-centre-mysql
+
+  # 前端
+  work-user-centre-client:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: work-user-centre-client:1.0.0
+    container_name: work-user-centre-client
+    ports:
+      - "3000:3000"
+    restart: always
+    networks:
+      - work-user-centre-network
+
+networks:
+  work-user-centre-network:
+    name: work-user-centre-network
