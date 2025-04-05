@@ -1,4 +1,4 @@
-// ./src/layouts/BasicLayout/components/Footer/index.tsx: 网页页脚组件
+// ./src/layouts/BasicLayout/components/Footer/page.tsx: 网页页脚组件
 
 "use client";
 

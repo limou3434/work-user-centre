@@ -4,8 +4,9 @@ import {message} from "antd";
 const mode = "release"; // 读取 MODE 环境变量得到运行模式
 
 const hosts: Record<string, string> = {
-    "develop": "127.0.0.1:8000", // 开发环境(无代理)
-    "release": "10.10.174.243:8000", // 测试环境(有代理) 
+    "develop": "127.0.0.1:8000", // 开发环境
+    "release": "10.10.174.243:80", // 测试环境
+    "production": "", // 部署环境
 };
 
 const host = hosts[mode]; // 必须先读取为常量, 否则浏览器中无法动态获取...

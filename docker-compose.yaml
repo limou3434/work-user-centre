@@ -46,6 +46,22 @@ services:
     networks:
       - work-user-centre-network
 
+  # 代理
+  work-user-centre-nginx:
+    build:
+    context: ./backend
+    dockerfile: Dockerfile
+    image: work-user-centre-nginx:1.0.0
+    container_name: work-user-centre-nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - work-user-centre-server
+      - work-user-centre-client
+    networks:
+      - work-user-centre-network
+
 networks:
   work-user-centre-network:
     name: work-user-centre-network
