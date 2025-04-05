@@ -46,15 +46,15 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @AuthCheck(mustRole = "admin")
     public BaseResponse<Boolean> userAdd(@RequestBody UserAddRequest userAddRequest, HttpServletRequest request) {
 
-        // 1. 简单校验
+        // 参数校验
         if (request == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
         }
 
-        // 2. 调用服务
+        // 调用服务
         boolean result = userService.userAdd(userAddRequest);
 
-        // 3. 响应对象
+        // 响应对象
         return TheResult.success(result);
 
     }
@@ -69,19 +69,18 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @PostMapping("/delete")
     @AuthCheck(mustRole = "admin")
     public BaseResponse<Boolean> userDelete(@RequestBody UserDeleteRequest userDeleteRequest, HttpServletRequest request) {
+
         // 参数校验
         if (request == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
         }
 
-        if (userDeleteRequest.getId() <= 0) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "参数用户 id 不能为空");
-        }
+        // 调用服务
+        boolean resault = userService.userDelete(userDeleteRequest);
 
-        boolean res = userService.removeById(userDeleteRequest.getId());
+        // 响应对象
+        return TheResult.success(resault);
 
-        // 返回响应
-        return TheResult.success(res); // 这里 MyBatisPlus 会自动转化为逻辑删除
     }
 
     /**
@@ -94,29 +93,18 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @PostMapping("/update")
     @AuthCheck(mustRole = "admin")
     public BaseResponse<LoginUserVO> userUpdate(@RequestBody UserUpdateRequest userUpdateRequest, HttpServletRequest request) {
+
         // 参数校验
         if (request == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
         }
 
-        if (userUpdateRequest.getId() == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "参数用户 id 不能为空");
-        }
+        // 调用服务
+        LoginUserVO loginUserVO = userService.userUpdate(userUpdateRequest);
 
-        // 处理请求
-        User user = new User();
-
-        BeanUtils.copyProperties(userUpdateRequest, user); // TODO: 添加内部方法
-
-        boolean result = userService.updateById(user);
-        if (!result) {
-            throw new ArgumentException(ErrorCodeBindMessage.SYSTEM_ERROR, "需要指定参数用户 id 才能修改");
-        }
-
-        LoginUserVO loginUserVO = LoginUserVO.removeSensitiveData(user);
-
-        // 返回响应
+        // 响应对象
         return TheResult.success(loginUserVO);
+
     }
 
     /**
@@ -129,20 +117,18 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @PostMapping("/search")
     @AuthCheck(mustRole = "admin")
     public BaseResponse<List<LoginUserVO>> userSearch(@RequestBody UserSearchRequest userSearchRequest, HttpServletRequest request) {
+
         // 参数校验
         if (request == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
         }
 
-        // 处理请求
-        List<User> userList = userService.list(userService.getLambdaQueryWrapper(userSearchRequest));
+        // 调用服务
+        List<LoginUserVO> loginUserVOList = userService.userSearch(userSearchRequest);
 
-        // 返回响应
-        List<LoginUserVO> loginUserVOList = userList
-                .stream() // 转化操作, 将 userList 转换为一个流
-                .map(LoginUserVO::removeSensitiveData) // 中间操作, 将流中的每个元素都通过指定的函数进行转换
-                .toList();
+        // 响应对象
         return TheResult.success(loginUserVOList); // 终端操作, 收集器 Collectors.toList() 用来将流中的元素收集到一个新的 List 中
+
     }
 
     // NOTE: Expansion CRUD Module
@@ -224,17 +210,19 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * @return 是否注册成功
      */
     @PostMapping("/register")
-    public BaseResponse<Boolean> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
+    public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
+
         // 参数校验
         if (userRegisterRequest == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求体为空");
         }
 
-        // 处理请求
+        // 调用服务
         Long id = userService.userRegister(userRegisterRequest.getUserAccount(), userRegisterRequest.getUserPasswd(), userRegisterRequest.getCheckPasswd());
 
-        // 返回响应
-        return TheResult.success(true);
+        // 响应对象
+        return TheResult.success(id);
+
     }
 
     /**
@@ -246,6 +234,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      */
     @PostMapping("/login")
     public BaseResponse<LoginUserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
+
         // 参数校验
         if (userLoginRequest == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求体为空");
@@ -254,11 +243,12 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
         }
 
-        // 处理请求
+        // 调用服务
         LoginUserVO loginUserVO = userService.userLogin(userLoginRequest.getUserAccount(), userLoginRequest.getUserPasswd(), request, response);
 
         // 返回响应
         return TheResult.success(loginUserVO);
+
     }
 
     /**
@@ -269,13 +259,18 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @PostMapping("/logout")
     @AuthCheck()
     public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
+
         // 参数校验
         if (request == null) {
             throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
         }
 
+        // 调用服务
+        boolean result = userService.userLogout(request);
+
         // 返回响应
-        return TheResult.success(userService.userLogout(request));
+        return TheResult.success(result);
+
     }
 
     /**

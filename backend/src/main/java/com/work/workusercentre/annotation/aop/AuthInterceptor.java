@@ -53,7 +53,7 @@ public class AuthInterceptor {
         // 获取必须得到角色并转化为枚举体实例
         String mustRole = authCheck.mustRole();
         UserRoleEnum mustRoleEnum = UserRoleEnum.getEnumByDescription(mustRole);
-        log.debug("{} , 当前登录用户角色: {}, 必须得到角色: {}", mustRole, loginUserRoleEnum, mustRoleEnum);
+        log.debug("接口需要角色 {}, 映射角色枚举: {}, 当前登录角色: {}", mustRole.isEmpty() ? "null" : mustRole, mustRoleEnum, loginUserRoleEnum);
 
         // 如果没有必须得到角色, 直接放行
         if (mustRoleEnum == null) {

@@ -4,13 +4,14 @@ FROM openjdk:17-jdk-slim
 # 工作目录
 # WORKDIR /app
 
-# 编译代码
-# 请在本地直接使用 ./mvnw clean package -DskipTests 进行编译避免容器过大
+# 编译代码(请在本地直接使用 ./mvnw clean package -DskipTests 进行编译避免容器过大)
 COPY ./target/*.jar ./app.jar
 
 # 运行端口
 EXPOSE 8000
 
+# 环境变量(可以通过 SPRING_PROFILES_ACTIVE=develop | release | production 修改运行环境的配置)
+ENV SPRING_PROFILES_ACTIVE=develop
+
 # 启动命令
 CMD ["java", "-jar", "app.jar"]
-
