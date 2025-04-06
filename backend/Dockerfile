@@ -10,8 +10,5 @@ COPY ./target/*.jar ./app.jar
 # 运行端口
 EXPOSE 8000
 
-# 环境变量(可以通过 SPRING_PROFILES_ACTIVE=develop | release | production 修改运行环境的配置)
-ENV SPRING_PROFILES_ACTIVE=develop
-
 # 启动命令
 CMD ["java", "-jar", "app.jar"]

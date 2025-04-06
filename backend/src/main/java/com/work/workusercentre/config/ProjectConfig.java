@@ -19,10 +19,11 @@ public class ProjectConfig {
     @Value("${server.servlet.context-path}")
     String apiPrefix;
 
+    @Value("${server.address}")
+    String ip;
+
     @Value("${server.port}")
     String port;
-
-    String ip = "127.0.0.1";
 
     String apiDoscUrl = "/doc.html";
 
