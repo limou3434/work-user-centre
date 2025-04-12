@@ -40,12 +40,12 @@ public interface UserService extends IService<User> {
     /**
      * 用户登入服务
      */
-    User userLogin(String account, String passwd);
+    User userLogin(String account, String passwd, String device);
 
     /**
      * 用户登出服务
      */
-    Boolean userLogout();
+    Boolean userLogout(String device);
 
     /**
      * 用户状态服务

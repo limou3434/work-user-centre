@@ -20,20 +20,21 @@ public class WorkUserCentreApplication {
     public static void main(String[] args) {
 
         var context = SpringApplication.run(WorkUserCentreApplication.class, args);
-        log.debug("本项目启动成功");
+        log.debug("Spring Boot 启动成功");
 
         ProjectConfig projectConfig = context.getBean(ProjectConfig.class);
         String baseUrl = "http://" + projectConfig.getIp() + ":" + projectConfig.getPort() + projectConfig.getApiPrefix();
         log.debug(
-                "OpenAPI 配置: 访问 {} 即可得到在线文档, 访问 {} 即可得到文档配置",
+                "OpenAPI 启动成功: 访问 {} 即可得到在线文档, 访问 {} 即可得到文档配置",
                 baseUrl + projectConfig.getApiDoscUrl(),
                 baseUrl + projectConfig.getApiDoscInfoUrl()
         );
 
         log.debug(
-                "Sa-Token 配置: {}",
+                "Sa-Token 启动成功: {}",
                 SaManager.getConfig()
         );
+
 
     }
 

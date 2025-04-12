@@ -11,9 +11,11 @@ import com.work.workusercentre.enums.CodeBindMessage;
 import com.work.workusercentre.response.TheResult;
 import com.work.workusercentre.service.UserService;
 import com.work.workusercentre.model.vo.UserVO;
+import com.work.workusercentre.utils.DeviceUtils;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,8 +103,8 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      */
     @SaIgnore
     @PostMapping("/login")
-    public BaseResponse<UserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest) {
-        User user = userService.userLogin(userLoginRequest.getAccount(), userLoginRequest.getPasswd());
+    public BaseResponse<UserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
+        User user = userService.userLogin(userLoginRequest.getAccount(), userLoginRequest.getPasswd(), DeviceUtils.getRequestDevice(request)); // 这里同时解析用户的设备, 以支持同端互斥
         UserVO userVo = UserVO.removeSensitiveData(user);
         return TheResult.success(CodeBindMessage.SUCCESS, userVo);
     }
@@ -112,8 +114,8 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      */
     @SaCheckLogin
     @PostMapping("/logout")
-    public BaseResponse<Boolean> userLogout() {
-        Boolean result = userService.userLogout();
+    public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
+        Boolean result = userService.userLogout(DeviceUtils.getRequestDevice(request));
         return TheResult.success(CodeBindMessage.SUCCESS, result);
     }
 

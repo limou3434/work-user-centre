@@ -1,4 +1,4 @@
-package com.work.workusercentre.annotation.aop;
+package com.work.workusercentre.aop;
 
 import com.work.workusercentre.annotation.NotEmptyCheck; // ← 正确引入你自己定义的注解
 import lombok.extern.slf4j.Slf4j;

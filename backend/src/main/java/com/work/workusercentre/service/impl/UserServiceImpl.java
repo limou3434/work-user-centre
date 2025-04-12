@@ -16,6 +16,7 @@ import com.work.workusercentre.request.UserUpdateRequest;
 import com.work.workusercentre.enums.CodeBindMessage;
 import com.work.workusercentre.service.UserService;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
@@ -34,6 +35,7 @@ import java.util.List;
  * 这样对于服务层来说可以不再理会报文, 只需要处理异常就可以了, 和控制层解耦
  */
 @Service
+@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Resource
@@ -88,7 +90,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public User userLogin(String account, String passwd) {
+    public User userLogin(String account, String passwd, String device) {
         checkAccountAndPasswd(account, passwd);
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(User::getAccount, account).eq(User::getPasswd, DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + passwd).getBytes()));
@@ -96,13 +98,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (user == null) {
             throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "该用户可能不存在, 也可能是密码错误");
         }
-        StpUtil.login(user.getId());
+        StpUtil.login(user.getId(), device);
+        log.debug("查询一次设备类型是否真的被设置: {}", StpUtil.getLoginDevice());
         return user;
     }
 
     @Override
-    public Boolean userLogout() {
+    public Boolean userLogout(String device) {
         StpUtil.logout();
+        log.debug("查询一次设备类型是否真的被取消: {}", StpUtil.getLoginDevice());
         return true;
     }
 

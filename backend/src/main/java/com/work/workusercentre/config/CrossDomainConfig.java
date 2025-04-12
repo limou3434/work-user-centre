@@ -1,7 +1,10 @@
 package com.work.workusercentre.config;
 
+import com.work.workusercentre.aop.RequestLogInterceptor;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -12,6 +15,22 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CrossDomainConfig implements WebMvcConfigurer {
 
+    @Resource
+    private RequestLogInterceptor requestLogInterceptor;
+
+    /**
+     * 拦截所有接口调用
+     * @param registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(requestLogInterceptor).addPathPatterns("/**");
+    }
+
+    /**
+     * 配置跨域共享
+     * @param registry
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry
@@ -25,5 +44,6 @@ public class CrossDomainConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .maxAge(3600);
     }
+
 
 }

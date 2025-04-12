@@ -2,16 +2,16 @@ package com.work.workusercentre.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 
 /**
- * 网络工具类
+ * 地址工具类
  *
  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Slf4j
-public class NetUtils {
+public class IpUtils {
 
     /**
      * 获取客户端 IP 地址方法
@@ -53,6 +53,8 @@ public class NetUtils {
         if (ip == null) {
             return "127.0.0.1";
         }
+
+        log.debug("查询一次客户端的 IP 地址: {}", ip);
         return ip;
     }
 
