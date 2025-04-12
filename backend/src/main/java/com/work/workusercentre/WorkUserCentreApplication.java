@@ -1,5 +1,6 @@
 package com.work.workusercentre;
 
+import cn.dev33.satoken.SaManager;
 import com.work.workusercentre.config.ProjectConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
@@ -19,12 +20,19 @@ public class WorkUserCentreApplication {
     public static void main(String[] args) {
 
         var context = SpringApplication.run(WorkUserCentreApplication.class, args);
+        log.debug("本项目启动成功");
+
         ProjectConfig projectConfig = context.getBean(ProjectConfig.class);
         String baseUrl = "http://" + projectConfig.getIp() + ":" + projectConfig.getPort() + projectConfig.getApiPrefix();
         log.debug(
-                "访问 {} 即可得到在线文档, 访问 {} 即可得到文档配置",
+                "OpenAPI 配置: 访问 {} 即可得到在线文档, 访问 {} 即可得到文档配置",
                 baseUrl + projectConfig.getApiDoscUrl(),
                 baseUrl + projectConfig.getApiDoscInfoUrl()
+        );
+
+        log.debug(
+                "Sa-Token 配置: {}",
+                SaManager.getConfig()
         );
 
     }

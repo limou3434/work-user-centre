@@ -15,13 +15,30 @@ import java.io.Serializable;
 @Data
 public class UserSearchRequest extends PageRequest implements Serializable {
 
+    /**
+     * 本用户唯一标识(业务层需要考虑使用雪花算法用户标识的唯一性)
+     */
     private Long id;
 
-    private String userAccount;
+    /**
+     * 账户号(业务层需要决定某一种或多种登录方式, 因此这里不限死为非空)
+     */
+    private String account;
 
-    private Integer userRole;
+    /**
+     * 用户名字
+     */
+    private String name;
 
-    private Integer userLevel;
+    /**
+     * 用户角色(业务层需知 -1 为封号, 0 为用户, 1 为管理, ...)
+     */
+    private Integer role;
+
+    /**
+     * 用户等级(业务层需知 0 为 level0, 1 为 level1, 2 为 level2, 3 为 level3, ...)
+     */
+    private Integer level;
 
     @Serial
     private static final long serialVersionUID = 1L;

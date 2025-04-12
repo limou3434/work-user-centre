@@ -90,6 +90,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Hutool -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.37</version>
+        </dependency>
+
         <!-- Commons Lang3-->
         <dependency>
             <!-- Apache 提供的 Java 工具类库, 包含: StringUtils(字符串处理)、ObjectUtils(对象工具)、RandomStringUtils(随机字符串生成)-->
@@ -120,6 +127,13 @@
             <!-- Spring Boot 监控组件, 主要用来给 IDEA 作为 Bean 检测所使用的 -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Sa-token -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
+            <version>1.42.0</version>
         </dependency>
 
     </dependencies>

@@ -1,343 +1,130 @@
 package com.work.workusercentre.controller;
 
-import com.work.workusercentre.annotation.AuthCheck;
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckRole;
+import cn.dev33.satoken.annotation.SaIgnore;
+import com.work.workusercentre.model.dto.UserStatus;
+import com.work.workusercentre.model.entity.User;
 import com.work.workusercentre.request.*;
 import com.work.workusercentre.response.BaseResponse;
-import com.work.workusercentre.response.ErrorCodeBindMessage;
+import com.work.workusercentre.enums.CodeBindMessage;
 import com.work.workusercentre.response.TheResult;
-import com.work.workusercentre.vo.LoginUserVO;
-import com.work.workusercentre.entity.User;
-import com.work.workusercentre.exception.ArgumentException;
 import com.work.workusercentre.service.UserService;
+import com.work.workusercentre.model.vo.UserVO;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-//import static com.work.workusercentre.contant.ConfigConstant.SALT;
+import java.util.stream.Collectors;
 
 /**
  * 用户控制层
- * 1. 控制层只做简单的参数校验, 实际控制使用封装好的 Server, 因此一般先写控制层代码, 一直到后续寻找需要复用的逻辑即可
- * 2. 所有接口默认只返回 200, 某些特殊的错误交给前端响应(比如 403、404 以及对应的页面), 详细错误(code-message)在响应 JSON 中体现
- * 3. 控制层的方法本身最好不要改动, 这样前端代码就可以利用这个方法名称来无缝导入, 但是 HTTP 接口可以随时修改, 前端导入接口文档时会自动修改且依旧使用之前的方法
- *
- * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * 1. 登录认证、角色认证、权限认证注解
+ * 2. 解析请求
+ * 3. 调用服务
+ * 4. 封装响应
+ * 默认只返回 200, 某些特殊的错误交给前端响应, 比如 403、404 以及对应的页面, 详细错误 code-message 在响应 JSON 中体现
  */
 @RestController // 返回值默认为 json 类型
 @RequestMapping("/user")
 public class UserController { // 通常控制层有服务层中的所有方法, 并且还有组合而成的方法, 如果组合的方法开始变得复杂就会封装到服务层内部
 
+    /**
+     * 映射对象
+     */
     @Resource
     private UserService userService;
 
-    // NOTE: Basic CRUD Module
+    // NOTE: CRUD Module
     /**
      * 添加用户网络接口
-     *
-     * @param userAddRequest 用户添加请求数据
-     * @param request        请求体
-     * @return 是否添加成功
      */
+    @SaCheckLogin
+    @SaCheckRole("admin")
     @PostMapping("/add")
-    @AuthCheck(mustRole = "admin")
-    public BaseResponse<Boolean> userAdd(@RequestBody UserAddRequest userAddRequest, HttpServletRequest request) {
-
-        // 参数校验
-        if (request == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
-        }
-
-        // 调用服务
-        boolean result = userService.userAdd(userAddRequest);
-
-        // 响应对象
-        return TheResult.success(result);
-
+    public BaseResponse<UserVO> userAdd(@RequestBody UserAddRequest userAddRequest) {
+        User user = userService.userAdd(userAddRequest);
+        UserVO userVo = UserVO.removeSensitiveData(user);
+        return TheResult.success(CodeBindMessage.SUCCESS, userVo);
     }
 
     /**
      * 删除用户网络接口
-     *
-     * @param userDeleteRequest 用户删除请求数据
-     * @param request           请求体
-     * @return 是否删除成功
      */
+    @SaCheckLogin
+    @SaCheckRole("admin")
     @PostMapping("/delete")
-    @AuthCheck(mustRole = "admin")
-    public BaseResponse<Boolean> userDelete(@RequestBody UserDeleteRequest userDeleteRequest, HttpServletRequest request) {
-
-        // 参数校验
-        if (request == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
-        }
-
-        // 调用服务
-        boolean resault = userService.userDelete(userDeleteRequest);
-
-        // 响应对象
-        return TheResult.success(resault);
-
+    public BaseResponse<Boolean> userDelete(@RequestBody UserDeleteRequest userDeleteRequest) {
+        Boolean result = userService.userDelete(userDeleteRequest);
+        return TheResult.success(CodeBindMessage.SUCCESS, result);
     }
 
     /**
      * 修改用户网络接口
-     *
-     * @param userUpdateRequest 用户修改请求数据
-     * @param request           请求体
-     * @return 是否修改成功
      */
+    @SaCheckLogin
+    @SaCheckRole("admin")
     @PostMapping("/update")
-    @AuthCheck(mustRole = "admin")
-    public BaseResponse<LoginUserVO> userUpdate(@RequestBody UserUpdateRequest userUpdateRequest, HttpServletRequest request) {
-
-        // 参数校验
-        if (request == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
-        }
-
-        // 调用服务
-        LoginUserVO loginUserVO = userService.userUpdate(userUpdateRequest);
-
-        // 响应对象
-        return TheResult.success(loginUserVO);
-
+    public BaseResponse<UserVO> userUpdate(@RequestBody UserUpdateRequest userUpdateRequest) {
+        User user = userService.userUpdate(userUpdateRequest);
+        UserVO userVo = UserVO.removeSensitiveData(user);
+        return TheResult.success(CodeBindMessage.SUCCESS, userVo);
     }
 
     /**
      * 查询用户网络接口
-     *
-     * @param userSearchRequest 用户查询请求数据
-     * @param request           请求体
-     * @return 用户列表, 如果没有查询 id 就会得到所有用户
      */
+    @SaCheckLogin
+    @SaCheckRole("admin")
     @PostMapping("/search")
-    @AuthCheck(mustRole = "admin")
-    public BaseResponse<List<LoginUserVO>> userSearch(@RequestBody UserSearchRequest userSearchRequest, HttpServletRequest request) {
-
-        // 参数校验
-        if (request == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
-        }
-
-        // 调用服务
-        List<LoginUserVO> loginUserVOList = userService.userSearch(userSearchRequest);
-
-        // 响应对象
-        return TheResult.success(loginUserVOList); // 终端操作, 收集器 Collectors.toList() 用来将流中的元素收集到一个新的 List 中
-
+    public BaseResponse<List<UserVO>> userSearch(@RequestBody UserSearchRequest userSearchRequest) {
+        List<User> users = userService.userSearch(userSearchRequest);
+        List<UserVO> userVoList = users.stream()
+                .map(UserVO::removeSensitiveData)
+                .collect(Collectors.toList());
+        return TheResult.success(CodeBindMessage.SUCCESS, userVoList);
     }
 
-    // NOTE: Expansion CRUD Module
-    /**
-     * TODO: 添加用户网络接口(批量)
-     *
-     * @param request 请求体
-     * @return 是否添加成功
-     */
-    @PostMapping("/add/batch")
-    @AuthCheck(mustRole = "admin")
-    public BaseResponse<Boolean> userAddBatch(HttpServletRequest request) {
-        return TheResult.success(404, "暂未开放该接口", null);
-    }
-
-    /**
-     * TODO: 删除用户网络接口(批量)
-     *
-     * @param request 请求体
-     * @return 是否删除成功
-     */
-    @PostMapping("/delete/batch")
-    @AuthCheck(mustRole = "admin")
-    public BaseResponse<Boolean> userDeleteBatch(HttpServletRequest request) {
-        return TheResult.success(404, "暂未开放该接口", null);
-    }
-
-    /**
-     * TODO: 修改用户网络接口(自己)
-     *
-     * @param userUpdataSelfRequest 用户修改请求数据
-     * @param request               请求体
-     * @return 是否修改成功
-     */
-    @PostMapping("/update/self")
-    @AuthCheck(mustRole = "user")
-    public BaseResponse<LoginUserVO> userUpdateSelf(@RequestBody UserUpdataSelfRequest userUpdataSelfRequest, HttpServletRequest request) {
-        // 参数校验
-        if (request == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
-        }
-
-        // 处理请求
-        User user = new User();
-
-        BeanUtils.copyProperties(userUpdataSelfRequest, user); // TODO: 添加内部方法
-
-        user.setId(userService.getLoginUserState(request).getId());
-
-        boolean result = userService.updateById(user);
-        if (!result) {
-            throw new ArgumentException(ErrorCodeBindMessage.SYSTEM_ERROR, "需要指定参数用户 id 才能修改");
-        }
-
-        LoginUserVO loginUserVO = LoginUserVO.removeSensitiveData(user);
-
-        // 返回响应
-        return TheResult.success(loginUserVO);
-    }
-
-    /**
-     * TODO: 查询用户网络接口(分页)
-     *
-     * @param userSearchRequest 用户查询请求数据
-     * @param request           请求体
-     * @return 用户列表, 如果没有查询 id 就会得到所有用户
-     */
-    @PostMapping("/search/page")
-    @AuthCheck(mustRole = "admin")
-    public BaseResponse<List<LoginUserVO>> userSearchPagegit(@RequestBody UserSearchRequest userSearchRequest, HttpServletRequest request) {
-        return TheResult.success(404, "暂未开放该接口", null);
-    }
-
-    // NOTE: Basic Authentication Module
+    // NOTE: Authentication Module
     /**
      * 用户注册网络接口
-     *
-     * @param userRegisterRequest 用户注册请求数据
-     * @return 是否注册成功
      */
+    @SaIgnore
     @PostMapping("/register")
-    public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
-
-        // 参数校验
-        if (userRegisterRequest == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求体为空");
-        }
-
-        // 调用服务
-        Long id = userService.userRegister(userRegisterRequest.getUserAccount(), userRegisterRequest.getUserPasswd(), userRegisterRequest.getCheckPasswd());
-
-        // 响应对象
-        return TheResult.success(id);
-
+    public BaseResponse<Boolean> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
+        Boolean result = userService.userRegister(userRegisterRequest.getAccount(), userRegisterRequest.getPasswd(), userRegisterRequest.getCheckPasswd());
+        return TheResult.success(CodeBindMessage.SUCCESS, result);
     }
 
     /**
      * 用户登入网络接口
-     *
-     * @param userLoginRequest 用户登入请求数据
-     * @param request          请求体
-     * @return 脱敏后的用户信息
      */
+    @SaIgnore
     @PostMapping("/login")
-    public BaseResponse<LoginUserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
-
-        // 参数校验
-        if (userLoginRequest == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求体为空");
-        }
-        if (request == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
-        }
-
-        // 调用服务
-        LoginUserVO loginUserVO = userService.userLogin(userLoginRequest.getUserAccount(), userLoginRequest.getUserPasswd(), request, response);
-
-        // 返回响应
-        return TheResult.success(loginUserVO);
-
+    public BaseResponse<UserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest) {
+        User user = userService.userLogin(userLoginRequest.getAccount(), userLoginRequest.getPasswd());
+        UserVO userVo = UserVO.removeSensitiveData(user);
+        return TheResult.success(CodeBindMessage.SUCCESS, userVo);
     }
 
     /**
      * 用户登出网络接口
-     *
-     * @return 是否登出成功
      */
+    @SaCheckLogin
     @PostMapping("/logout")
-    @AuthCheck()
-    public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
-
-        // 参数校验
-        if (request == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
-        }
-
-        // 调用服务
-        boolean result = userService.userLogout(request);
-
-        // 返回响应
-        return TheResult.success(result);
-
+    public BaseResponse<Boolean> userLogout() {
+        Boolean result = userService.userLogout();
+        return TheResult.success(CodeBindMessage.SUCCESS, result);
     }
 
     /**
      * 获取状态网络接口
-     *
-     * @param request 请求体
-     * @return 脱敏后的用户信息
      */
+    @SaIgnore
     @GetMapping("/status")
-    @AuthCheck()
-    public BaseResponse<LoginUserVO> userStatus(HttpServletRequest request) {
-
-        // 参数校验
-        if (request == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求为空");
-        }
-
-        // 返回响应
-        return TheResult.success(userService.getLoginUserState(request));
-
-    }
-
-    // NOTE: Expansion Authentication Module
-    /**
-     * TODO: 用户注册网络接口(微信小程序)
-     *
-     * @param request 请求体
-     * @return 是否注册成功
-     */
-    @PostMapping("/register/wx")
-    public BaseResponse<Boolean> userRegisterWx(HttpServletRequest request) {
-        return TheResult.success(404, "暂未开放该接口", null);
-    }
-
-    /**
-     * TODO: 用户登入网络接口(微信小程序)
-     *
-     * @param request 请求体
-     * @return 脱敏后的用户信息
-     */
-    @PostMapping("/login/wx")
-    public BaseResponse<LoginUserVO> userLoginWx(HttpServletRequest request) {
-        return TheResult.success(404, "暂未开放该接口", null);
-    }
-
-    /**
-     * TODO: 用户登出网络接口(微信小程序)
-     *
-     * @param request 请求体
-     * @return 是否登出成功
-     */
-    @GetMapping("/logout/wx")
-    @AuthCheck()
-    public BaseResponse<Boolean> userLogoutWx(HttpServletRequest request) {
-        return TheResult.success(404, "暂未开放该接口", null);
-    }
-
-    /**
-     * TODO: 获取状态网络接口(微信小程序)
-     *
-     * @param request 请求体
-     * @return 脱敏后的用户信息
-     */
-    @PostMapping("/status/wx")
-    @AuthCheck()
-    public BaseResponse<LoginUserVO> userStatusWx(HttpServletRequest request) {
-        return TheResult.success(404, "暂未开放该接口", null);
+    public BaseResponse<UserStatus> userStatus() {
+        UserStatus userStatus = userService.userStatus();
+        return TheResult.success(CodeBindMessage.SUCCESS, userStatus);
     }
 
 }

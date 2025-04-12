@@ -1,269 +1,175 @@
 package com.work.workusercentre.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.work.workusercentre.config.PasswdSaltConfig;
 import com.work.workusercentre.contant.UserConstant;
+import com.work.workusercentre.model.dto.UserStatus;
+import com.work.workusercentre.model.entity.User;
+import com.work.workusercentre.exception.BusinessException;
+import com.work.workusercentre.mapper.UserMapper;
 import com.work.workusercentre.request.UserAddRequest;
 import com.work.workusercentre.request.UserDeleteRequest;
 import com.work.workusercentre.request.UserSearchRequest;
 import com.work.workusercentre.request.UserUpdateRequest;
-import com.work.workusercentre.response.ErrorCodeBindMessage;
-import com.work.workusercentre.vo.LoginUserVO;
-import com.work.workusercentre.entity.User;
-import com.work.workusercentre.exception.ArgumentException;
-import com.work.workusercentre.mapper.UserMapper;
+import com.work.workusercentre.enums.CodeBindMessage;
 import com.work.workusercentre.service.UserService;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
  * 用户服务层实现
- *
- * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
- * @description 针对表【user(用户信息表)】的数据库操作 Service 实现
- * @createDate 2025-03-06 10:25:51
+ * 1. 复杂校验
+ * 2. 业务逻辑
+ * 尽可能不要使用 Request 作为参数, 但是增删改查服务除外
+ * 同时业务中出错只需抛出 BusinessException 异常再填入对于的 CodeBindMessage.xxx 和 exceptionMessage 就可以让控制层响应异常给前端
+ * 其他框架组件出错可以在全局异常拦截器中捕获处理, 以达到自动让控制层响应异常给前端
+ * 这样对于服务层来说可以不再理会报文, 只需要处理异常就可以了, 和控制层解耦
  */
 @Service
-@Transactional
-@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Resource
     private PasswdSaltConfig passwdSaltConfig;
 
     @Override
-    public Boolean userAdd(UserAddRequest userAddRequest) {
-
-        // TODO: 1. 复杂校验
-
-        // 处理请求
+    public User userAdd(UserAddRequest userAddRequest) {
+        checkAccountAndPasswd(userAddRequest.getAccount(), userAddRequest.getPasswd());
         var user = new User();
-        String encryptPassword = DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + UserConstant.DEFAULT_PASSWD).getBytes());
-        user.setUserPasswd(encryptPassword); // 设置默认密码
-        user.setUserRole(0); // 设置默认角色
         BeanUtils.copyProperties(userAddRequest, user);
-        return this.save(user);
-
+        String passwd = user.getPasswd().isEmpty() ? UserConstant.DEFAULT_PASSWD : user.getPasswd(); // 如果密码为空则需要设置默认密码
+        user.setPasswd(DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + passwd).getBytes())); // 需要加密密码
+        try {
+            this.save(user);
+        } catch (DuplicateKeyException e) {
+            throw new BusinessException(CodeBindMessage.OPERATION_ERROR, "已经存在该用户, 或者曾经被删除");
+        }
+        return user;
     }
 
     @Override
     public Boolean userDelete(UserDeleteRequest userDeleteRequest) {
-
-        // 参数校验
-        if (userDeleteRequest.getId() <= 0) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "参数用户 id 不能为空");
+        if (userDeleteRequest.getId() == null || userDeleteRequest.getId() <= 0) {
+            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "参数用户 id 不合法");
         }
-
-        // 处理请求
         return this.removeById(userDeleteRequest.getId()); // 这里 MyBatisPlus 会自动转化为逻辑删除
-
     }
 
     @Override
-    public LoginUserVO userUpdate(UserUpdateRequest userUpdateRequest) {
-
-        // 参数校验
-        if (userUpdateRequest.getId() == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "参数用户 id 不能为空");
+    public User userUpdate(UserUpdateRequest userUpdateRequest) {
+        if (userUpdateRequest.getId() == null || userUpdateRequest.getId() <= 0) {
+            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "参数用户 id 不合法");
         }
-
-        // 处理请求
         User user = new User();
-
         BeanUtils.copyProperties(userUpdateRequest, user);
-
-        boolean result = this.updateById(user);
-        if (!result) {
-            throw new ArgumentException(ErrorCodeBindMessage.SYSTEM_ERROR, "需要指定参数用户 id 才能修改");
-        }
-
-        return LoginUserVO.removeSensitiveData(user);
-
+        user.setPasswd(DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + user.getPasswd()).getBytes())); // 需要加密密码
+        this.updateById(user);
+        return user;
     }
 
     @Override
-    public List<LoginUserVO> userSearch(UserSearchRequest userSearchRequest) {
-
-        // TODO: 参数校验
-
-        // 处理请求
+    public List<User> userSearch(UserSearchRequest userSearchRequest) {
         List<User> userList = this.list(this.getLambdaQueryWrapper(userSearchRequest));
         return userList
                 .stream() // 转化操作, 将 userList 转换为一个流
-                .map(LoginUserVO::removeSensitiveData) // 中间操作, 将流中的每个元素都通过指定的函数进行转换
                 .toList();
-
     }
 
     @Override
-    public Long userRegister(String userAccount, String userPasswd, String checkPasswd) {
-
-        // TODO: 复杂校验
-        // 判断传入的所有字符串是否都是空白(null、空字符串、仅包含空格）
-        if (StringUtils.isAllBlank(userAccount, userPasswd, checkPasswd)) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请输入账户、密码、确认密码后再注册");
-        }
-
-        // 判断账户和密码的长度是否符合要求
-        if (userAccount.length() < 4 || userPasswd.length() < 6 || checkPasswd.length() < 6) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "账户不得小于 4 位、密码和确认密码均不小于 6 位");
-        }
-
-        // 避免账户中的非法字符
-        String validPattern = "^[a-zA-Z0-9$_-]+$";
-        if (!userPasswd.matches(validPattern)) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "密码和确认密码均不能包含特殊字符");
-        }
-
-        // 判断两次输入的密码是否一致
-        if (!userPasswd.equals(checkPasswd)) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "新密码和确认密码不一致");
-        }
-
-        // 处理请求
-        // 避免重复注册用户
-        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
-        if (this.count(lambdaQueryWrapper) > 0) {
-            throw new ArgumentException(ErrorCodeBindMessage.OPERATION_ERROR, "不允许重复注册已存在的用户");
-        }
-
-        // 密码加密
-        String newUserPasswd = DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + userPasswd).getBytes(StandardCharsets.UTF_8));
-
-        // 创建用户
-        User user = new User();
-        user.setUserAccount(userAccount);
-        user.setUserPasswd(newUserPasswd);
-
-        // 注册用户
-        boolean saveResult = this.save(user);
-        if (!saveResult) {
-            throw new ArgumentException(ErrorCodeBindMessage.SYSTEM_ERROR, "出现拆箱错误");
-        }
-
-        return user.getId();
+    public Boolean userRegister(String account, String passwd, String checkPasswd) {
+        return null;
     }
 
     @Override
-    public LoginUserVO userLogin(String userAccount, String userPasswd, HttpServletRequest request, HttpServletResponse response) {
-
-        // TODO: 参数校验
-        // 判断传入的所有字符串是否都是空白(null、空字符串、仅包含空格)
-        if (StringUtils.isAllBlank(userAccount, userPasswd)) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请输入账户、密码后再登录");
-        }
-
-        // 判断账户和密码的长度是否符合要求
-        if (userAccount.length() < 4 || userPasswd.length() < 6) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "账户不得小于 4 位、密码不小于 6 位");
-        }
-
-        // 避免账户中的非法字符
-        String validPattern = "^[a-zA-Z0-9$_-]+$";
-        if (!userPasswd.matches(validPattern)) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "密码不能包含特殊字符");
-        }
-
-        // 处理请求
-        String newUserPasswd = DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + userPasswd).getBytes(StandardCharsets.UTF_8)); // 密码加密
-
-        // 查询用户
+    public User userLogin(String account, String passwd) {
+        checkAccountAndPasswd(account, passwd);
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(User::getUserAccount, userAccount).eq(User::getUserPasswd, newUserPasswd);
+        lambdaQueryWrapper.eq(User::getAccount, account).eq(User::getPasswd, DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + passwd).getBytes()));
         User user = this.getOne(lambdaQueryWrapper);
         if (user == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "可能该用户不存在, 也可能是密码错误");
+            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "该用户可能不存在, 也可能是密码错误");
         }
-
-        // 脱敏信息
-        LoginUserVO safetUser = LoginUserVO.removeSensitiveData(user);
-
-        // 创建会话
-        // session 数据存储在应用服务器 Tomcat 中, 以后可以通过 request.getSession().getAttribute(USER_LOGIN_STA) 取出用户登陆自己浏览器中本应用的 session 信息 safetUser, 不过类型变成了 Object, 可以后续强转恢复
-        request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, safetUser); // TODO: 改为 Redis 分布式存储
-
-        return safetUser;
-
+        StpUtil.login(user.getId());
+        return user;
     }
 
     @Override
-    public Boolean userLogout(HttpServletRequest request) {
-
-        // TODO: 参数校验
-
-        // 处理请求
-        request.getSession().removeAttribute(UserConstant.USER_LOGIN_STATE); // TODO: 改为 Redis 分布式存储
+    public Boolean userLogout() {
+        StpUtil.logout();
         return true;
-
     }
 
     @Override
-    public LoginUserVO getLoginUserState(HttpServletRequest request) {
-
-        // TODO: 参数校验
-
-        // 处理请求
-        // 先判断是否已登录
-        var localCurrentUser = (LoginUserVO) request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
-
-        if (localCurrentUser == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.NOT_LOGIN_ERROR, "请先进行登录");
-        }
-
-        // 从数据库查询 // TODO: 追求性能的话可以注释, 直接走缓存
-        long userId = localCurrentUser.getId();
-        User remoteCurrentUser = this.getById(userId); // 由于 id 值不变就可以保证快速获取到被其他地方修改的用户信息
-        if (remoteCurrentUser == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.NOT_FOUND_ERROR, "该用户已被管理员删除");
-        }
-        return LoginUserVO.removeSensitiveData(remoteCurrentUser);
-
+    public UserStatus userStatus() {
+        UserStatus userStatus = new UserStatus();
+        userStatus.setIsLogin(StpUtil.isLogin());
+        userStatus.setTokenName(StpUtil.getTokenName());
+        userStatus.setTokenTimeout(String.valueOf(StpUtil.getTokenTimeout()));
+        return userStatus;
     }
 
-    @Override
-    public LambdaQueryWrapper<User> getLambdaQueryWrapper(UserSearchRequest userSearchRequest) {
-
-        // TODO: 参数校验
-
-        // 校验数据
-        if (userSearchRequest == null) {
-            throw new ArgumentException(ErrorCodeBindMessage.PARAMS_ERROR, "请求参数为空");
+    /**
+     * 检查账户和密码是否合规的方法
+     */
+    private void checkAccountAndPasswd(String checkAccount, String checkPasswd) {
+        // 账户和密码都不能为空
+        if (StringUtils.isAllBlank(checkAccount)) {
+            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "账户为空");
+        }
+        if (StringUtils.isAllBlank(checkPasswd)) {
+            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "密码为空");
         }
 
-        // 处理请求
+        // 判断账户和密码的长度是否符合要求
+        if (checkAccount.length() < UserConstant.ACCOUNT_LENGTH) {
+            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "账户不得小于" + UserConstant.ACCOUNT_LENGTH + "位");
+        }
+        if (checkPasswd.length() < UserConstant.PASSWD_LENGTH) {
+            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "密码不得小于" + UserConstant.PASSWD_LENGTH + "位");
+        }
+
+        // 避免账户和密码中的非法字符
+        String validPattern = "^[$_-]+$";
+        if (checkAccount.matches(validPattern)) {
+            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "账号不能包含特殊字符");
+        }
+    }
+
+    /**
+     * 获取查询封装器的方法
+     */
+    private LambdaQueryWrapper<User> getLambdaQueryWrapper(UserSearchRequest userSearchRequest) {
+        // 取得需要查询的参数
         Long id = userSearchRequest.getId();
-        String userAccount = userSearchRequest.getUserAccount();
-        Integer userRole = userSearchRequest.getUserRole();
-        Integer userLevel = userSearchRequest.getUserLevel();
+        String account = userSearchRequest.getAccount();
+        Integer role = userSearchRequest.getRole();
+        Integer level = userSearchRequest.getLevel();
         String sortOrder = userSearchRequest.getSortOrder();
         String sortField = userSearchRequest.getSortField();
 
-        // 操作数据
+        // 获取包装器进行返回
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(id != null, User::getId, id);
-        lambdaQueryWrapper.eq(StringUtils.isNotBlank(userAccount), User::getUserAccount, userAccount);
-        lambdaQueryWrapper.eq(userRole != null, User::getUserRole, userRole);
-        lambdaQueryWrapper.eq(userLevel != null, User::getUserLevel, userLevel);
+        lambdaQueryWrapper.eq(StringUtils.isNotBlank(account), User::getAccount, account);
+        lambdaQueryWrapper.eq(role != null, User::getRole, role);
+        lambdaQueryWrapper.eq(level != null, User::getLevel, level);
         lambdaQueryWrapper.orderBy(
                 StringUtils.isNotBlank(sortField) && !StringUtils.containsAny(sortField, "=", "(", ")", " "),
-                sortOrder.equals("ascend"), // true 代表 ASC 升序, false 代表 DESC 降序
-                User::getUserAccount // TODO: 先默认按照账户排序
+                sortOrder.equals("ascend"), // 这里结果为 true 代表 ASC 升序, false 代表 DESC 降序
+                User::getAccount // 默认按照账户排序
         );
-
-        // 响应数据
         return lambdaQueryWrapper;
     }
 
 }
+
+
+
+

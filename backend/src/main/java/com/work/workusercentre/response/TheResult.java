@@ -1,15 +1,12 @@
 package com.work.workusercentre.response;
 
-import static com.work.workusercentre.response.ErrorCodeBindMessage.SUCCESS;
+
+import com.work.workusercentre.enums.CodeBindMessage;
 
 /**
- * 便捷响应体包装类
- * 1. 返回成功
- *  (1) 返回成功, 自动处理, {code: 200, message: "success", data: {...}}
- *  (2) 返回成功, 手动处理, {code: xxx, message: "xxxxxxx", data: {...}}
- * 2. 返回失败
- *  (1) 返回失败, 自动处理, 系统内部使用
- *  (2) 返回失败, 手动处理, 全局异常使用
+ * 便捷响应体工具类
+ * 1. 返回成功, 自动处理, {code: 20000, message: "成功", data: { 您来定夺 }}
+ * 2. 返回失败, 自动处理, {code: xxxxx, message: "xxxxxxx: xxx"}
  *
  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
@@ -22,42 +19,18 @@ public class TheResult {
      * @param <T> data 的类型
      * @return 通用响应体对象
      */
-    public static <T> BaseResponse<T> success(T data) {
-        return new BaseResponse<>(SUCCESS, data);
-    }
-
-    /**
-     * 构造成功响应体
-     *
-     * @param code 状态
-     * @param message 含义
-     * @param data 数据
-     * @param <T> data 的类型
-     * @return 通用响应体对象
-     */
-    public static <T> BaseResponse<T> success(int code, String message, T data) {
-        return new BaseResponse<>(code, message, data);
+    public static <T> BaseResponse<T> success(CodeBindMessage codeBindMessage, T data) {
+        return new BaseResponse<>(codeBindMessage, data);
     }
 
     /**
      * 构造失败响应体
      *
-     * @param errorCodeBindMessage 错误-含义 枚举体
+     * @param codeBindMessage 错误-含义 枚举体
      * @return 通用响应体对象
      */
-    public static <T> BaseResponse<T> error(ErrorCodeBindMessage errorCodeBindMessage) {
-        return new BaseResponse<>(errorCodeBindMessage);
-    }
-
-    /**
-     * 构造失败响应体
-     *
-     * @param code 状态
-     * @param message 含义
-     * @return 通用响应体对象
-     */
-    public static <T> BaseResponse<T> error(int code, String message) {
-        return new BaseResponse<>(code, message);
+    public static <T> BaseResponse<T> error(CodeBindMessage codeBindMessage, String message) {
+        return new BaseResponse<>(codeBindMessage, message);
     }
 
 }

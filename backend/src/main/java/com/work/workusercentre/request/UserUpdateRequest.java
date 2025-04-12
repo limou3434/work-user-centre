@@ -13,41 +13,99 @@ import java.io.Serializable;
 @Data
 public class UserUpdateRequest implements Serializable {
 
+    /**
+     * 本用户唯一标识(业务层需要考虑使用雪花算法用户标识的唯一性)
+     */
     private Long id; // 这个 id 是用来寻找需要更新的用户的
 
-    private String userAccount;
+    /**
+     * 账户号(业务层需要决定某一种或多种登录方式, 因此这里不限死为非空)
+     */
+    private String account;
 
-    private String userWxUnion;
+    /**
+     * 微信号
+     */
+    private String wxUnion;
 
-    private String userMpOpen;
+    /**
+     * 公众号
+     */
+    private String mpOpen;
 
-    private String userEmail;
+    /**
+     * 邮箱号
+     */
+    private String email;
 
-    private String userPhone;
+    /**
+     * 电话号
+     */
+    private String phone;
 
-    private String userIdent;
+    /**
+     * 身份证
+     */
+    private String ident;
 
-    private String userAvatar;
+    /**
+     * 用户密码(业务层强制刚刚注册的用户重新设置密码, 交给用户时默认密码为 123456, 并且加盐密码)
+     */
+    private String passwd;
 
-    private String userTags;
+    /**
+     * 用户头像(业务层需要考虑默认头像使用 cos 对象存储)
+     */
+    private String avatar;
 
-    private String userNick;
+    /**
+     * 用户标签(业务层需要 json 数组格式存储用户标签数组)
+     */
+    private String tags;
+    /**
+     * 用户昵称
+     */
+    private String nick;
 
-    private String userName;
+    /**
+     * 用户名字
+     */
+    private String name;
 
-    private String userProfile;
+    /**
+     * 用户简介
+     */
+    private String profile;
 
-    private String userBirthday;
+    /**
+     * 用户生日
+     */
+    private String birthday;
 
-    private String userCountry;
+    /**
+     * 用户国家
+     */
+    private String country;
 
-    private String userAddress;
+    /**
+     * 用户地址
+     */
+    private String address;
 
-    private Integer userRole;
+    /**
+     * 用户角色(业务层需知 -1 为封号, 0 为用户, 1 为管理, ...)
+     */
+    private Integer role;
 
-    private Integer userLevel;
+    /**
+     * 用户等级(业务层需知 0 为 level0, 1 为 level1, 2 为 level2, 3 为 level3, ...)
+     */
+    private Integer level;
 
-    private Integer userGender;
+    /**
+     * 用户性别(业务层需知 0 为未知, 1 为男性, 2 为女性)
+     */
+    private Integer gender;
 
     @Serial
     private static final long serialVersionUID = 1L;

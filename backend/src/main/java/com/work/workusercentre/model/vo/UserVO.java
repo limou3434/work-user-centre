@@ -1,17 +1,26 @@
-package com.work.workusercentre.request;
+package com.work.workusercentre.model.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.work.workusercentre.model.entity.User;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 添加用户请求
+ * 用户脱敏
  *
  * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
  */
 @Data
-public class UserAddRequest implements Serializable {
+public class UserVO implements Serializable {
+
+    /**
+     * 本用户唯一标识(业务层需要考虑使用雪花算法用户标识的唯一性)
+     */
+    @JsonSerialize(using = ToStringSerializer.class) // 非常重要的注解, 只转换 Long, 为字符串, 避免前端 JS 精度不行导致获取到错误的 ID
+    private Long id;
 
     /**
      * 账户号(业务层需要决定某一种或多种登录方式, 因此这里不限死为非空)
@@ -42,11 +51,6 @@ public class UserAddRequest implements Serializable {
      * 身份证
      */
     private String ident;
-
-    /**
-     * 用户密码(业务层强制刚刚注册的用户重新设置密码, 交给用户时默认密码为 123456, 并且加盐密码)
-     */
-    private String passwd;
 
     /**
      * 用户头像(业务层需要考虑默认头像使用 cos 对象存储)
@@ -103,7 +107,19 @@ public class UserAddRequest implements Serializable {
      */
     private Integer gender;
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+    /**
+     * 脱敏方法
+     *
+     * @param user 用户信息
+     * @return 脱敏后的用户信息
+     */
+    static public UserVO removeSensitiveData(User user) {
+        if (user == null) {
+            return null;
+        }
+        var userVO = new UserVO();
+        BeanUtils.copyProperties(user, userVO);
+        return userVO;
+    }
 
 }

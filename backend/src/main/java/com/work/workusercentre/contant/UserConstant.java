@@ -17,4 +17,14 @@ public interface UserConstant {
      */
     String DEFAULT_PASSWD = "123456";
 
+    /**
+     * 账户最小长度
+     */
+    Integer ACCOUNT_LENGTH = 5;
+
+    /**
+     * 密码最小长度
+     */
+    Integer PASSWD_LENGTH = 6;
+
 }
