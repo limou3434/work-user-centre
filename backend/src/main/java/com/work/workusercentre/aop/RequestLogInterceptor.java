@@ -14,9 +14,9 @@ public class RequestLogInterceptor implements HandlerInterceptor {
     /**
      * 每次接口调用都会执行
      *
-     * @param request
-     * @param response
-     * @param handler
+     * @param request 请求体
+     * @param response 响应体
+     * @param handler 处理器对象控制器
      * @return
      * @throws Exception
      */
@@ -25,7 +25,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
 
         log.debug("拦截到请求: {}", "来自 " + IpUtils.getIpAddress(request) + " - " + request.getMethod() + " " + request.getRequestURI());
 
-        return true; // 返回 false 会终止请求
+        return true; // 返回 false 会终止请求, 可以利用这一点进行 IP 屏蔽
 
     }
 
