@@ -67,7 +67,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         User user = new User();
         BeanUtils.copyProperties(userUpdateRequest, user);
-        user.setPasswd(DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + user.getPasswd()).getBytes())); // 需要加密密码
+
+        if (StringUtils.isNotBlank(user.getPasswd())) {
+            user.setPasswd(DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + user.getPasswd()).getBytes())); // 需要加密密码 TODO: 这里有个雷, 如果用户的密码被查询出来, 就会导致再次加密, 暂时使用 if 解决
+        }
+
         this.updateById(user);
         return user;
     }
@@ -81,6 +85,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    public Boolean userDisable(Long userId, Long disableTime) {
+        // 查询数据库
+        UserSearchRequest userSearchRequest = new UserSearchRequest();
+        userSearchRequest.setId(userId);
+        User user = this.userSearch(userSearchRequest).get(0);
+        user.setPasswd(null); // TODO: 暂时这么做以避免密码被二次加密
+        if (user == null) {
+            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "用户不存在");
+        }
+
+        // 复制用户原本的信息到更新请求实例中
+        UserUpdateRequest userUpdateRequest = new UserUpdateRequest();
+        BeanUtils.copyProperties(user, userUpdateRequest);
+
+        // 如果封禁时间为 0 则表示取消封禁, 默认解封后设置为普通用户权限, 否则封禁用户
+        if (disableTime == 0) {
+            StpUtil.untieDisable(userId);
+            userUpdateRequest.setRole(0);
+        }
+        else {
+            StpUtil.kickout(userId); // 先踢下线
+            StpUtil.disable(userId, disableTime); // 然后再进行封禁 TODO: 可以做一些动态封禁, 比如先封禁 1 天、3 天、5 天、...
+            userUpdateRequest.setRole(-1);
+        }
+
+        // 把封禁体现到数据库中方便维护
+        this.userUpdate(userUpdateRequest);
+        return true;
+    }
+
+    @Override
     public Boolean userRegister(String account, String passwd, String checkPasswd) {
         return null;
     }
@@ -88,21 +123,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User userLogin(String account, String passwd, String device) {
         checkAccountAndPasswd(account, passwd);
+
+        // 查询对于用户
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(User::getAccount, account).eq(User::getPasswd, DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + passwd).getBytes()));
         User user = this.getOne(lambdaQueryWrapper);
         if (user == null) {
             throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "该用户可能不存在, 也可能是密码错误");
         }
+
+        // 先检查是否被封号再来登录
+        StpUtil.checkDisable(user.getId()); // 这个方法检测被封号就会抛出异常
         StpUtil.login(user.getId(), device);
-        log.debug("查询一次设备类型是否真的被设置: {}", StpUtil.getLoginDevice());
+        log.debug("检测一次设备类型是否真的被设置: {}", StpUtil.getLoginDevice());
+
         return user;
     }
 
     @Override
     public Boolean userLogout(String device) {
         StpUtil.logout();
-        log.debug("查询一次设备类型是否真的被取消: {}", StpUtil.getLoginDevice());
+        log.debug("检测一次设备类型是否真的被取消: {}", StpUtil.getLoginDevice());
         return true;
     }
 
@@ -169,7 +210,3 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
 }
-
-
-
-

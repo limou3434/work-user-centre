@@ -17,7 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *    (2)同时业务中出错只需抛出异常 BusinessException(CodeBindMessage.xxxxx, "更加详细的错误说明") 就可以让控制层响应异常给前端并且避免直接处理报文, 如果发现 CodeBindMessage 枚举不够使用可以自己定义
  *    (3)其他框架组件出错抛出的异常可以在全局异常拦截器 GlobalExceptionHandler 中捕获处理, 以达到自动让控制层响应异常给前端, 并且组件抛异常可以和本业务服务进行隔离
  * 5. 在 controller 中: 需要做 "用户认证、调用服务、报文处理、数据脱敏"
- *    (1)接口名和路由保持强一致
+ *    (1)接口名和路由名保持强一致(在服务中调用其他服务即可)
  *    (2)使用 "/// xxx model ///" 进行模块名注释
  *    (3)默认只返回 200, 某些特殊的错误交给前端响应, 比如 403、404 以及对应的页面, 详细错误 code-message 在响应 JSON 中体现
  *

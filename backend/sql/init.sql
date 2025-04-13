@@ -23,7 +23,7 @@ CREATE TABLE `user_role`
   COLLATE = utf8mb4_unicode_ci COMMENT ='用户角色表';
 
 INSERT INTO user_role (id, name)
-VALUES (2, '封号'),
+VALUES (-1, '封号'),
        (0, '用户'),
        (1, '管理')
 ;

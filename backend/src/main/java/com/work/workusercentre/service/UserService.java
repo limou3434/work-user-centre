@@ -35,6 +35,11 @@ public interface UserService extends IService<User> {
     List<User> userSearch(UserSearchRequest userSearchRequest);
 
     /**
+     * 用户封禁服务
+     */
+    Boolean userDisable(Long userId, Long disableTime);
+
+    /**
      * 用户注册服务
      */
     Boolean userRegister(String account, String passwd, String checkPasswd);

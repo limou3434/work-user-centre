@@ -34,7 +34,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @Resource
     private UserService userService;
 
-    /// CRUD Module ///
+    /// 增删改查模块 ///
     /**
      * 添加用户网络接口
      */
@@ -84,7 +84,16 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
         return TheResult.success(CodeBindMessage.SUCCESS, userVoList);
     }
 
-    /// Authentication Module ///
+    /// 流量安全模块 ///
+    @SaCheckLogin
+    @SaCheckRole("admin")
+    @PostMapping("/disable")
+    public BaseResponse<Boolean>userDisable(@RequestBody UserDisableRequest userDisableRequest) {
+        Boolean result = userService.userDisable(userDisableRequest.getId(), userDisableRequest.getDisableTime());
+        return TheResult.success(CodeBindMessage.SUCCESS, result);
+    }
+
+    /// 用户认证模块 ///
     /**
      * 用户注册网络接口
      */

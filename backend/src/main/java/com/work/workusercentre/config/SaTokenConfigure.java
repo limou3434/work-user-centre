@@ -20,7 +20,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        log.debug("查询一次通过 Sa-token 的拦截器的记录");
+        log.debug("检测一次通过 Sa-token 的拦截器的记录");
         registry.addInterceptor(new SaInterceptor()).addPathPatterns("/**"); // 如果接口较多可以参考使用拦截器把接口结合通配符进行登录校验拦截, 并且排除部分无需校验登录的接口
     }
 

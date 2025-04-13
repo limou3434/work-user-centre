@@ -1,5 +1,6 @@
 package com.work.workusercentre.exception;
 
+import cn.dev33.satoken.exception.DisableServiceException;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
@@ -65,8 +66,8 @@ public class GlobalExceptionHandler {
      */
 
     @ExceptionHandler(NotPermissionException.class)
-    public BaseResponse<?> notPermissionExceptionHandler(NotRoleException e) {
-        log.debug("权限认证异常处理方法(权限码值认证)");
+    public BaseResponse<?> notPermissionExceptionHandler(NotPermissionException e) {
+        log.debug("触发权限认证异常处理方法(权限码值认证)");
         return TheResult.error(CodeBindMessage.NO_AUTH_ERROR, "用户当前权限不允许使用该功能");
     }
 
@@ -78,8 +79,20 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NotRoleException.class)
     public BaseResponse<?> notRoleExceptionHandler(NotRoleException e) {
-        log.debug("权限认证异常处理方法(角色标识认证)");
+        log.debug("触发权限认证异常处理方法(角色标识认证)");
         return TheResult.error(CodeBindMessage.NO_ROLE_ERROR, "用户当前角色不允许使用该功能");
+    }
+
+    /**
+     * 用户封禁异常处理方法
+     *
+     * @param e 权限异常对象
+     * @return 包含错误原因的通用响应体对象
+     */
+    @ExceptionHandler(DisableServiceException.class)
+    public BaseResponse<?> disableServiceExceptionHandler(DisableServiceException e) {
+        log.debug("触发用户封禁异常处理方法");
+        return TheResult.error(CodeBindMessage.USER_DISABLE_ERROR, "当前用户因为违规被封禁"); // TODO: 可以考虑告知用户封禁时间
     }
 
 }

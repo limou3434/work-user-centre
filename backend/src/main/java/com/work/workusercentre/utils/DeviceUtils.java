@@ -32,7 +32,7 @@ public class DeviceUtils {
             throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "禁止隐藏设备类型");
         }
 
-        log.debug("查询一次原始的 HTTP 设备信息 {}", userAgentStr);
+        log.debug("检测一次原始的 HTTP 设备信息 {}", userAgentStr);
 
         // 判断设备类型
         String device = "pc"; // 是否为 PC
