@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.work.workusercentre.mapper.UserRoleMapper">
+<mapper namespace="cn.com.edtechhub.workusercentre.mapper.UserRoleMapper">
 
-    <resultMap id="BaseResultMap" type="com.work.workusercentre.model.entity.UserRole">
+    <resultMap id="BaseResultMap" type="cn.com.edtechhub.workusercentre.model.entity.UserRole">
             <id property="id" column="id" />
             <result property="name" column="name" />
             <result property="deleted" column="deleted" />

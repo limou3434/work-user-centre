@@ -30,7 +30,7 @@ spring:
 logging:
   level:
     # root: DEBUG # 如果需要仔细调试可以打开这个选项
-    com.work.workusercentre: DEBUG # 控制本项目包内的日志输出等级 TRACE | DEBUG | INFO | WARN | ERROR | FATAL
+    cn.com.edtechhub.workusercentre: DEBUG # 控制本项目包内的日志输出等级 TRACE | DEBUG | INFO | WARN | ERROR | FATAL
 
 # 配置服务
 server:
@@ -61,10 +61,10 @@ springdoc:
   ## 配置接口文档小组
   group-configs:
     - group: 用户接口
-      packages-to-scan: com.work.workusercentre
+      packages-to-scan: cn.com.edtechhub.workusercentre
 
 # sa-token 配置
-sa-token: # 默开启 Redis 配置将自动支持 Sa-token 使用 Redis 存储认证相关键值对, 想要关掉需要去除相关依赖
+sa-token: # 默认开启 Redis 配置将自动支持 Sa-token 使用 Redis 存储认证相关键值对, 想要关掉需要去除相关依赖
   ## token 名称
   token-name: work-user-centre # 同时也是 cookie 名称
   ## token 有效期
