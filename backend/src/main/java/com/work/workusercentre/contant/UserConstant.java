@@ -3,7 +3,7 @@ package com.work.workusercentre.contant;
 /**
  * 用户常量
  *
- * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 public interface UserConstant {
 

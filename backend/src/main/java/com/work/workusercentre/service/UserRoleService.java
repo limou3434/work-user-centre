@@ -1,13 +1,13 @@
 package com.work.workusercentre.service;
 
-import com.work.workusercentre.model.entity.UserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.work.workusercentre.model.entity.UserRole;
 
 /**
-* @author Limou
-* @description 针对表【user_role(用户角色表)】的数据库操作Service
-* @createDate 2025-04-11 20:40:02
-*/
+ * 用户角色服务层声明
+ *
+ * @author <a href="https://github.com/limou3434">limou3434</a>
+ */
 public interface UserRoleService extends IService<UserRole> {
 
 }

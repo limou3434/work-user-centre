@@ -3,9 +3,10 @@ package com.work.workusercentre.enums;
 import lombok.Getter;
 
 /**
- * 自定义 错误-含义 枚举体, 对于所有的请求几乎都只放回 200 响应, 但是我们把更加详细的 错误-含义 加入到了响应体中会更加灵活
+ * 自定义 错误-含义 枚举体
+ * 对于所有的请求几乎都只放回 200 响应, 但是我们把更加详细的 错误-含义 加入到了响应体中会更加灵活
  *
- * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Getter // 等价于只能用在类上的 Data
 public enum CodeBindMessage {

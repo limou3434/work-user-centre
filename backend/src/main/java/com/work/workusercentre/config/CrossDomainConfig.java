@@ -8,18 +8,22 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * 跨域共享配置类
+ * 跨域共享配置
  *
- * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Configuration
 public class CrossDomainConfig implements WebMvcConfigurer {
 
+    /**
+     * 注入请求日志拦截切面依赖
+     */
     @Resource
     private RequestLogInterceptor requestLogInterceptor;
 
     /**
-     * 拦截所有接口调用
+     * 配合切面拦截所有接口调用以提供详细的访问日志打印
+     *
      * @param registry
      */
     @Override
@@ -29,6 +33,7 @@ public class CrossDomainConfig implements WebMvcConfigurer {
 
     /**
      * 配置跨域共享
+     *
      * @param registry
      */
     @Override
@@ -44,6 +49,5 @@ public class CrossDomainConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .maxAge(3600);
     }
-
 
 }

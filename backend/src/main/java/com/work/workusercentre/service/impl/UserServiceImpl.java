@@ -5,15 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.work.workusercentre.config.PasswdSaltConfig;
 import com.work.workusercentre.contant.UserConstant;
-import com.work.workusercentre.model.dto.UserStatus;
-import com.work.workusercentre.model.entity.User;
+import com.work.workusercentre.enums.CodeBindMessage;
 import com.work.workusercentre.exception.BusinessException;
 import com.work.workusercentre.mapper.UserMapper;
+import com.work.workusercentre.model.dto.UserStatus;
+import com.work.workusercentre.model.entity.User;
 import com.work.workusercentre.request.UserAddRequest;
 import com.work.workusercentre.request.UserDeleteRequest;
 import com.work.workusercentre.request.UserSearchRequest;
 import com.work.workusercentre.request.UserUpdateRequest;
-import com.work.workusercentre.enums.CodeBindMessage;
 import com.work.workusercentre.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +27,8 @@ import java.util.List;
 
 /**
  * 用户服务层实现
- * 1. 复杂校验
- * 2. 业务逻辑
- * 尽可能不要使用 Request 作为参数, 但是增删改查服务除外
- * 同时业务中出错只需抛出 BusinessException 异常再填入对于的 CodeBindMessage.xxx 和 exceptionMessage 就可以让控制层响应异常给前端
- * 其他框架组件出错可以在全局异常拦截器中捕获处理, 以达到自动让控制层响应异常给前端
- * 这样对于服务层来说可以不再理会报文, 只需要处理异常就可以了, 和控制层解耦
+ *
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Service
 @Slf4j

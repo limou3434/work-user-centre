@@ -8,7 +8,7 @@ import java.net.InetAddress;
 /**
  * 地址工具类
  *
- * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Slf4j
 public class IpUtils {

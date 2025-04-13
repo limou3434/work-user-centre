@@ -7,17 +7,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+/**
+ * 请求日志拦截切面
+ *
+ * @author <a href="https://github.com/limou3434">limou3434</a>
+ */
 @Component
 @Slf4j
 public class RequestLogInterceptor implements HandlerInterceptor {
 
     /**
-     * 每次接口调用都会执行
+     * 每次网络接口被调用都会执行这个方法
      *
      * @param request 请求体
      * @param response 响应体
      * @param handler 处理器对象控制器
-     * @return
+     * @return 布尔值
      * @throws Exception
      */
     @Override

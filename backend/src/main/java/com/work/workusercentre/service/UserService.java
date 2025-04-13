@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * 用户服务层声明
+ *
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 public interface UserService extends IService<User> {
 

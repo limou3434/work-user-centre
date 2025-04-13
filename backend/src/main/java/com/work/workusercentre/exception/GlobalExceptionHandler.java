@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * 全局异常处理方法类
  * 截获异常, 把异常的 "错误-含义:消息" 作为响应传递给前端, 本质时为了避免让服务层抛异常而不涉及报文相关的东西, 让全局异常处理器来代做
  *
- * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @RestControllerAdvice(basePackages = "com.work.workusercentre.controller") // 使用 @RestControllerAdvice 可以拦截所有 @RestController 中抛出的异常, 并统一返回 JSON 格式的错误信息, 不过由于版本过新, 需要考虑问题 https://github.com/xiaoymin/knife4j/issues/884
 @Slf4j

@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * 删除用户请求
  *
- * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Data
 public class UserDeleteRequest implements Serializable {

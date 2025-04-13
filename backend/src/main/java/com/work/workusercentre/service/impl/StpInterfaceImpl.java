@@ -2,9 +2,7 @@ package com.work.workusercentre.service.impl;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.work.workusercentre.enums.UserRoleEnum;
-import com.work.workusercentre.mapper.UserMapper;
 import com.work.workusercentre.model.entity.User;
-import com.work.workusercentre.model.entity.UserRole;
 import com.work.workusercentre.request.UserSearchRequest;
 import com.work.workusercentre.service.UserService;
 import jakarta.annotation.Resource;
@@ -15,6 +13,8 @@ import java.util.List;
 
 /**
  * 权限认证服务层实现
+ *
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Component    // 保证此类被 SpringBoot 扫描，完成 Sa-Token 的自定义权限验证扩展
 public class StpInterfaceImpl implements StpInterface {

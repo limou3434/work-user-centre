@@ -8,7 +8,7 @@ import com.work.workusercentre.enums.CodeBindMessage;
  * 1. 返回成功, 自动处理, {code: 20000, message: "成功", data: { 您来定夺 }}
  * 2. 返回失败, 自动处理, {code: xxxxx, message: "xxxxxxx: xxx"}
  *
- * @author <a href="https://github.com/xiaogithuboo">limou3434</a>
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 public class TheResult {
 

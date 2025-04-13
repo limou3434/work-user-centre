@@ -6,12 +6,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Sa-token 配置类
+ *
+ * @author <a href="https://github.com/limou3434">limou3434</a>
+ */
 @Configuration
 @Slf4j
 public class SaTokenConfigure implements WebMvcConfigurer {
 
     /**
-     * 注册 Sa-Token 拦截器, 打开注解式鉴权功能
+     * 重写此方法以注册 Sa-Token 拦截器, 打开注解式鉴权功能
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

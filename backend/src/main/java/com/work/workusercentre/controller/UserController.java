@@ -21,23 +21,20 @@ import java.util.stream.Collectors;
 
 /**
  * 用户控制层
- * 1. 登录认证、角色认证、权限认证注解
- * 2. 解析请求
- * 3. 调用服务
- * 4. 封装响应
- * 默认只返回 200, 某些特殊的错误交给前端响应, 比如 403、404 以及对应的页面, 详细错误 code-message 在响应 JSON 中体现
+ *
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @RestController // 返回值默认为 json 类型
 @RequestMapping("/user")
 public class UserController { // 通常控制层有服务层中的所有方法, 并且还有组合而成的方法, 如果组合的方法开始变得复杂就会封装到服务层内部
 
     /**
-     * 映射对象
+     * 注入用户服务实例
      */
     @Resource
     private UserService userService;
 
-    // NOTE: CRUD Module
+    /// CRUD Module ///
     /**
      * 添加用户网络接口
      */
@@ -87,7 +84,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
         return TheResult.success(CodeBindMessage.SUCCESS, userVoList);
     }
 
-    // NOTE: Authentication Module
+    /// Authentication Module ///
     /**
      * 用户注册网络接口
      */

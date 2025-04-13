@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 设备工具类
+ *
+ * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Slf4j
 public class DeviceUtils {
