@@ -62,7 +62,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public User userUpdate(UserUpdateRequest userUpdateRequest) {
+    public User userUpdate(UserUpdateRequest userUpdateRequest) { // TODO: 全量更新还是有点底效率
         if (userUpdateRequest.getId() == null || userUpdateRequest.getId() <= 0) {
             throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "参数用户 id 不合法");
         }
