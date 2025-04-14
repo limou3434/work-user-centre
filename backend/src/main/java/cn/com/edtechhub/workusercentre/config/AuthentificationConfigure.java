@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Sa-token 配置类
+ * Sa-token 配置
  *
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */

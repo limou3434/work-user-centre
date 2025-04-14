@@ -2,6 +2,7 @@ package cn.com.edtechhub.workusercentre.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.com.edtechhub.workusercentre.config.PasswdSaltConfig;
 import cn.com.edtechhub.workusercentre.contant.UserConstant;
@@ -78,10 +79,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public List<User> userSearch(UserSearchRequest userSearchRequest) {
-        List<User> userList = this.list(this.getLambdaQueryWrapper(userSearchRequest));
-        return userList
-                .stream() // 转化操作, 将 userList 转换为一个流
-                .toList();
+        Page<User> page = new Page<>(userSearchRequest.getPageCurrent(), userSearchRequest.getPageSize()); // 创建分页对象, 指定页码和每页条数
+        LambdaQueryWrapper<User> queryWrapper = this.getLambdaQueryWrapper(userSearchRequest); // 构造查询条件
+        Page<User> userPage = this.page(page, queryWrapper); // 调用 MyBatis-Plus 的分页查询方法
+        return userPage.getRecords(); // 返回分页结果
     }
 
     @Override
@@ -89,6 +90,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 查询数据库
         UserSearchRequest userSearchRequest = new UserSearchRequest();
         userSearchRequest.setId(userId);
+        userSearchRequest.setPageCurrent(1);
+        userSearchRequest.setPageSize(1);
         User user = this.userSearch(userSearchRequest).get(0);
         user.setPasswd(null); // TODO: 暂时这么做以避免密码被二次加密
         if (user == null) { // TODO: 等待修改

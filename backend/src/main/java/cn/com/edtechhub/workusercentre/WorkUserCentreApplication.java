@@ -1,7 +1,7 @@
 package cn.com.edtechhub.workusercentre;
 
 import cn.dev33.satoken.SaManager;
-import cn.com.edtechhub.workusercentre.config.ProjectConfig;
+import cn.com.edtechhub.workusercentre.contant.ProjectConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -24,7 +24,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @SpringBootApplication
-@MapperScan("cn.com.edtechhub.workusercentre.mapper") // 启用 MyBatisPlus 扫描 ./src/Mapper/ 中的映射
 @Slf4j
 public class WorkUserCentreApplication {
 
@@ -33,12 +32,12 @@ public class WorkUserCentreApplication {
         var context = SpringApplication.run(WorkUserCentreApplication.class, args);
         log.debug("Spring Boot 启动成功");
 
-        ProjectConfig projectConfig = context.getBean(ProjectConfig.class);
-        String baseUrl = "http://" + projectConfig.getIp() + ":" + projectConfig.getPort() + projectConfig.getApiPrefix();
+        ProjectConstant projectConstant = context.getBean(ProjectConstant.class);
+        String baseUrl = "http://" + projectConstant.getIp() + ":" + projectConstant.getPort() + projectConstant.getApiPrefix();
         log.debug(
                 "OpenAPI 启动成功: 访问 {} 即可得到在线文档, 访问 {} 即可得到文档配置",
-                baseUrl + projectConfig.getApiDoscUrl(),
-                baseUrl + projectConfig.getApiDoscInfoUrl()
+                baseUrl + projectConstant.getApiDoscUrl(),
+                baseUrl + projectConstant.getApiDoscInfoUrl()
         );
 
         log.debug(

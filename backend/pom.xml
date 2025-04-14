@@ -80,19 +80,13 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <!-- MyBatis Plus 是 MyBatis 的增强版, 提供了 CRUD 的封装, 减少了大量的 SQL 编写 -->
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-            <version>3.5.10.1</version>
-        </dependency>
 
         <!-- Redis -->
-<!--        <dependency>-->
-<!--            &lt;!&ndash; 提供 Redis 连接池 &ndash;&gt;-->
-<!--            <groupId>org.apache.commons</groupId>-->
-<!--            <artifactId>commons-pool2</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <!-- 提供 Redis 连接池 -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
 
         <!-- Tool -->
         <dependency>
@@ -119,6 +113,20 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- MyBatis Plus -->
+        <dependency>
+            <!-- MyBatis Plus 是 MyBatis 的增强版, 提供了 CRUD 的封装, 减少了大量的 SQL 编写 -->
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <version>3.5.10.1</version>
+        </dependency>
+        <dependency>
+            <!-- MyBatis Plus 分页插件 -->
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+            <version>3.5.10.1</version>
         </dependency>
 
         <!-- Open API -->

@@ -12,6 +12,7 @@ import cn.com.edtechhub.workusercentre.response.TheResult;
 import cn.com.edtechhub.workusercentre.service.UserService;
 import cn.com.edtechhub.workusercentre.model.vo.UserVO;
 import cn.com.edtechhub.workusercentre.utils.DeviceUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,8 +78,8 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @SaCheckRole("admin")
     @PostMapping("/search")
     public BaseResponse<List<UserVO>> userSearch(@RequestBody UserSearchRequest userSearchRequest) {
-        List<User> users = userService.userSearch(userSearchRequest);
-        List<UserVO> userVoList = users.stream()
+        List<User> userList = userService.userSearch(userSearchRequest);
+        List<UserVO> userVoList = userList.stream()
                 .map(UserVO::removeSensitiveData)
                 .collect(Collectors.toList());
         return TheResult.success(CodeBindMessage.SUCCESS, userVoList);
