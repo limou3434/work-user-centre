@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @Slf4j
-public class AuthentificationConfigure implements WebMvcConfigurer {
+public class SatokenConfig implements WebMvcConfigurer {
 
     /**
      * 重写此方法以注册 Sa-Token 拦截器, 打开注解式鉴权功能
