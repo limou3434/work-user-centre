@@ -35,7 +35,7 @@ server:
   ## 项目名称
   project-name: work-user-centre
   ## 配置地址
-  address: 127.0.0.1
+  address: 0.0.0.0
   ## 配置端口
   port: 8000
   ## 配置路由
