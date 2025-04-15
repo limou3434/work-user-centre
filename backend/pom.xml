@@ -67,51 +67,66 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <dependency>
+            <!-- Spring Boot 监控组件, 主要用来给 IDEA 作为 Bean 检测所使用的 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
 
-        <!-- MyBatis -->
+        <!-- MySQL -->
         <dependency>
             <!-- MySQL JDBC 驱动(接口实现), 用于连接 MySQL 数据库 -->
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- Redis -->
+        <dependency>
+            <!-- 提供 Redis 连接池 -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- Tool -->
+        <dependency>
+            <!-- Lombok 减少 Java 代码中的样板代码, 自动生成 getter/setter、toString()、equals() -->
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <!-- Hutool 提供了一些使用的 Java 小工具 -->
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.37</version>
+        </dependency>
+        <dependency>
+            <!-- Commons Lang3 是 Apache 提供的 Java 工具类库, 包含: StringUtils(字符串处理)、ObjectUtils(对象工具)、RandomStringUtils(随机字符串生成)-->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+        <dependency>
+            <!-- Jakarta Servlet API 可以无修改地部署到多种 Web 服务器上, 如果需要直接操作 Servlet API, 比如 HttpServletRequest / HttpServletResponse 就需要这个依赖 -->
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- MyBatis Plus -->
         <dependency>
             <!-- MyBatis Plus 是 MyBatis 的增强版, 提供了 CRUD 的封装, 减少了大量的 SQL 编写 -->
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
             <version>3.5.10.1</version>
         </dependency>
-
-        <!-- Lombok -->
         <dependency>
-            <!-- 减少 Java 代码中的样板代码, 自动生成 getter/setter、toString()、equals() -->
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- Hutool -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.8.37</version>
-        </dependency>
-
-        <!-- Commons Lang3-->
-        <dependency>
-            <!-- Apache 提供的 Java 工具类库, 包含: StringUtils(字符串处理)、ObjectUtils(对象工具)、RandomStringUtils(随机字符串生成)-->
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
-        </dependency>
-
-        <!-- Jakarta Servlet API -->
-        <dependency>
-            <!-- 无修改地部署到多种Web服务器上, 如果需要直接操作 Servlet API, 比如 HttpServletRequest / HttpServletResponse 就需要这个依赖 -->
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <scope>provided</scope>
+            <!-- MyBatis Plus 分页插件 -->
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+            <version>3.5.10.1</version>
         </dependency>
 
         <!-- Open API -->
@@ -122,20 +137,25 @@
             <version>4.6.0</version>
         </dependency>
 
-        <!-- Actuator -->
-        <dependency>
-            <!-- Spring Boot 监控组件, 主要用来给 IDEA 作为 Bean 检测所使用的 -->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
         <!-- Sa-token -->
         <dependency>
+            <!-- 添加关于登录认证、权限认证等模块的支持 -->
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-spring-boot3-starter</artifactId>
             <version>1.42.0</version>
         </dependency>
-
+        <dependency>
+            <!-- Sa-Token 集成 redis, 并使用 jackson 序列化 -->
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-jackson</artifactId>
+            <version>1.42.0</version>
+        </dependency>
+        <dependency>
+            <!-- fastjson2 处理 json 数据 -->
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <version>2.0.48</version>
+        </dependency>
     </dependencies>
 
     <!-- 插件描述 -->
