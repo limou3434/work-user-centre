@@ -1,83 +1,9 @@
-# 配置框架
 spring:
-  ## 配置名称
-  application:
-    name: work-user-centre
-  ## 配置数源
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver # "com.mysql.jdbc.Driver" 已经过时
-    url: jdbc:mysql://work-mysql:3306/work_user_centre
-    username: wuc
-    password: Qwe54188_
-  ## 配置缓存
+    driver-class-name: com.mysql.cj.jdbc.Driver
   data:
     redis:
-      database: 2 # Redis 数据库索引(默认为 0, 通常为了方便开发会认为 0 号为生产环境、1 号为测试环境、2 号为开发环境)
-      host: work-redis # Redis 服务器地址
-      port: 6379 # Redis 服务器连接端口
-      # password: Qwe54188_ # Redis 服务器连接密码(默认为空)
-      timeout: 10s # 连接超时时间
-      lettuce:
-        pool: # 链接池配置
-          max-active: 200 # 连接池最大连接数
-          max-wait: -1ms # 连接池最大阻塞等待时间(使用负值表示没有限制)
-          max-idle: 10 # 连接池中的最大空闲连接
-          min-idle: 0 # 连接池中的最小空闲连接
+      host: work-redis
 
-# 配置日志
-logging:
-  level:
-    # root: DEBUG # 如果需要仔细调试可以打开这个选项
-    cn.com.edtechhub.workusercentre: DEBUG # 控制本项目包内的日志输出等级 TRACE | DEBUG | INFO | WARN | ERROR | FATAL
-
-# 配置服务
 server:
-  ## 项目名称
-  project-name: work-user-centre
-  ## 配置地址
   address: 0.0.0.0
-  ## 配置端口
-  port: 8000
-  ## 配置路由
-  servlet:
-    context-path: /work_user_centre_api # 这样所有接口都会带上前缀
-
-# 配置文档
-springdoc:
-  ## 配置接口文档开关
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: true
-  ## 配置接口文档小组
-  group-configs:
-    - group: 用户接口
-      packages-to-scan: cn.com.edtechhub.workusercentre
-
-# mybatis-plus 配置
-mybatis-plus:
-  ## 配置盐值
-  salt: work-user-centre
-  ## 配置全局
-  global-config:
-    db-config:
-      logic-delete-field: deleted # 指定数据库全局逻辑删除字段名, 并且给实体类的对应字段加上 @TableLogic
-      logic-delete-value: 1 # 逻辑已删除值
-      logic-not-delete-value: 0 # 逻辑未删除值
-
-# sa-token 配置
-sa-token: # 默认开启 Redis 配置将自动支持 Sa-token 使用 Redis 存储认证相关键值对, 想要关掉需要去除相关依赖
-  ## token 名称
-  token-name: work-user-centre # 同时也是 cookie 名称
-  ## token 有效期
-  timeout: 2592000 # 单位为秒, 默认 30 天, -1 代表永久有效
-  ## token 最低活跃频率
-  active-timeout: -1 # 单位:为秒, 如果 token 超过此时间没有访问系统就会被冻结, 默认 -1 代表不限制, 永不冻结
-  ## token 共享
-  is-share: false # 在多人登录同一账号时, 是否共用一个 token(为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token)
-  ## 是否允许同一账号多地同时登录
-  is-concurrent: false # 为 true 时允许一起登录, 为 false 时新登录挤掉旧登录
-  ## token 风格
-  token-style: uuid # 默认可取值: uuid、simple-uuid、random-32、random-64、random-128、tik
-  ## 是否输出操作日志
-  is-log: true
