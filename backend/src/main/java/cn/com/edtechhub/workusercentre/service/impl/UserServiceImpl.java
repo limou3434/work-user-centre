@@ -1,10 +1,10 @@
 package cn.com.edtechhub.workusercentre.service.impl;
 
+import cn.com.edtechhub.workusercentre.config.MybatisPlusConfig;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.com.edtechhub.workusercentre.config.PasswdSaltConfig;
 import cn.com.edtechhub.workusercentre.contant.UserConstant;
 import cn.com.edtechhub.workusercentre.enums.CodeBindMessage;
 import cn.com.edtechhub.workusercentre.exception.BusinessException;
@@ -36,7 +36,7 @@ import java.util.List;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Resource
-    private PasswdSaltConfig passwdSaltConfig;
+    private MybatisPlusConfig mybatisPlusConfig;
 
     @Override
     public User userAdd(UserAddRequest userAddRequest) {
@@ -44,7 +44,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         var user = new User();
         BeanUtils.copyProperties(userAddRequest, user);
         String passwd = user.getPasswd().isEmpty() ? UserConstant.DEFAULT_PASSWD : user.getPasswd(); // 如果密码为空则需要设置默认密码
-        user.setPasswd(DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + passwd).getBytes())); // 需要加密密码
+        user.setPasswd(DigestUtils.md5DigestAsHex((mybatisPlusConfig.getSalt() + passwd).getBytes())); // 需要加密密码
         try {
             this.save(user);
         } catch (DuplicateKeyException e) {
@@ -70,7 +70,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         BeanUtils.copyProperties(userUpdateRequest, user);
 
         if (StringUtils.isNotBlank(user.getPasswd())) {
-            user.setPasswd(DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + user.getPasswd()).getBytes())); // 需要加密密码 TODO: 这里有个雷, 如果用户的密码被查询出来, 就会导致再次加密, 暂时使用 if 解决
+            user.setPasswd(DigestUtils.md5DigestAsHex((mybatisPlusConfig.getSalt() + user.getPasswd()).getBytes())); // 需要加密密码 TODO: 这里有个雷, 如果用户的密码被查询出来, 就会导致再次加密, 暂时使用 if 解决
         }
 
         this.updateById(user);
@@ -129,7 +129,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         // 查询对于用户
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(User::getAccount, account).eq(User::getPasswd, DigestUtils.md5DigestAsHex((passwdSaltConfig.getSalt() + passwd).getBytes()));
+        lambdaQueryWrapper.eq(User::getAccount, account).eq(User::getPasswd, DigestUtils.md5DigestAsHex((mybatisPlusConfig.getSalt() + passwd).getBytes()));
         User user = this.getOne(lambdaQueryWrapper);
         if (user == null) {
             throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "该用户可能不存在, 也可能是密码错误");

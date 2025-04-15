@@ -1,9 +1,9 @@
 package cn.com.edtechhub.workusercentre;
 
+import cn.com.edtechhub.workusercentre.config.SpringdocConfig;
 import cn.dev33.satoken.SaManager;
-import cn.com.edtechhub.workusercentre.contant.ProjectConstant;
+import cn.com.edtechhub.workusercentre.config.ServerConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -29,15 +29,18 @@ public class WorkUserCentreApplication {
 
     public static void main(String[] args) {
 
+
+
         var context = SpringApplication.run(WorkUserCentreApplication.class, args);
         log.debug("Spring Boot 启动成功");
+        ServerConfig serverConfig = context.getBean(ServerConfig.class);
+        SpringdocConfig springdocConfig = context.getBean(SpringdocConfig.class);
 
-        ProjectConstant projectConstant = context.getBean(ProjectConstant.class);
-        String baseUrl = "http://" + projectConstant.getIp() + ":" + projectConstant.getPort() + projectConstant.getApiPrefix();
+        String baseUrl = "http://" + serverConfig.getAddress() + ":" + serverConfig.getPort() + serverConfig.getContextPath();
         log.debug(
                 "OpenAPI 启动成功: 访问 {} 即可得到在线文档, 访问 {} 即可得到文档配置",
-                baseUrl + projectConstant.getApiDoscUrl(),
-                baseUrl + projectConstant.getApiDoscInfoUrl()
+                baseUrl + serverConfig.getContextPath(),
+                baseUrl + springdocConfig.getApiDoscInfoUrl()
         );
 
         log.debug(
