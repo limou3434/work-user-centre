@@ -1,13 +1,3 @@
-# 组件相关忽略文件
-docker/mysql/data/
-
-# 后端相关忽略文件
-backend/.idea/
-backend/target/
-backend/.dockerignore.swp
-
-# 前端相关忽略文件
-frontend/.idea/
-frontend/.next/
-frontend/node_modules/
-frontend/.dockerignore.swp
+.idea/
+target/
+.dockerignore.swp
