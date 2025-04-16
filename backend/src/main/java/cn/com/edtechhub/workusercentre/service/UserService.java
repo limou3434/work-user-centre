@@ -1,13 +1,12 @@
 package cn.com.edtechhub.workusercentre.service;
 
+import cn.com.edtechhub.workusercentre.model.dto.UserStatus;
+import cn.com.edtechhub.workusercentre.model.entity.User;
 import cn.com.edtechhub.workusercentre.request.UserAddRequest;
 import cn.com.edtechhub.workusercentre.request.UserDeleteRequest;
 import cn.com.edtechhub.workusercentre.request.UserSearchRequest;
 import cn.com.edtechhub.workusercentre.request.UserUpdateRequest;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import cn.com.edtechhub.workusercentre.model.dto.UserStatus;
-import cn.com.edtechhub.workusercentre.model.entity.User;
 
 import java.util.List;
 
@@ -62,5 +61,7 @@ public interface UserService extends IService<User> {
      * 用户状态服务
      */
     UserStatus userStatus();
+
+    String test();
 
 }

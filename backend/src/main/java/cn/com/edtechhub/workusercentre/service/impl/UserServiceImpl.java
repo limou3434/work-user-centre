@@ -19,6 +19,7 @@ import cn.com.edtechhub.workusercentre.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ import java.util.List;
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Service
+@DubboService
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
@@ -213,4 +215,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return lambdaQueryWrapper;
     }
 
+    @Override
+    public String test() {
+        return "Hello";
+    }
 }

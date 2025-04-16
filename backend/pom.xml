@@ -115,6 +115,14 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Open API -->
+        <dependency>
+            <!-- Knife4j 是 Swagger 的增强版, 提供 API 文档生成和展示, 搭配扫描配置还可以自动编写在线接口文档 -->
+            <groupId>com.github.xingfudeshi</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+            <version>4.6.0</version>
+        </dependency>
+
         <!-- MyBatis Plus -->
         <dependency>
             <!-- MyBatis Plus 是 MyBatis 的增强版, 提供了 CRUD 的封装, 减少了大量的 SQL 编写 -->
@@ -127,14 +135,6 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-jsqlparser</artifactId>
             <version>3.5.10.1</version>
-        </dependency>
-
-        <!-- Open API -->
-        <dependency>
-            <!-- Knife4j 是 Swagger 的增强版, 提供 API 文档生成和展示, 搭配扫描配置还可以自动编写在线接口文档 -->
-            <groupId>com.github.xingfudeshi</groupId>
-            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-            <version>4.6.0</version>
         </dependency>
 
         <!-- Sa-token -->
@@ -156,6 +156,33 @@
             <artifactId>fastjson2</artifactId>
             <version>2.0.48</version>
         </dependency>
+<!--        <dependency> 报错了... -->
+<!--            &lt;!&ndash; Sa-Token 整合 Dubbo &ndash;&gt;-->
+<!--            <groupId>cn.dev33</groupId>-->
+<!--            <artifactId>sa-token-dubbo</artifactId>-->
+<!--            <version>1.42.0</version>-->
+<!--        </dependency>-->
+
+        <!-- Dubbo -->
+        <dependency>
+            <!-- Kotlin 依赖引入, 避免使用 Dubbo 时出错 -->
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+            <version>1.9.10</version>
+        </dependency>
+        <dependency>
+            <!-- Dubbo 依赖 -->
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <!-- Dubbo 集成 Nacos -->
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-nacos-spring-boot-starter</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
     </dependencies>
 
     <!-- 插件描述 -->

@@ -10,14 +10,14 @@ spring:
   ## 配置数源
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # "com.mysql.jdbc.Driver" 已经过时
-    url: jdbc:mysql://127.0.0.1:3306/work_user_centre
+    url: jdbc:mysql://10.10.174.232:3306/work_user_centre
     username: wuc
     password: Qwe54188_
   ## 配置缓存
   data:
     redis:
       database: 2 # Redis 数据库索引(默认为 0, 通常为了方便开发会认为 0 号为生产环境、1 号为测试环境、2 号为开发环境)
-      host: 127.0.0.1 # Redis 服务器地址
+      host: 10.10.174.232 # Redis 服务器地址
       port: 6379 # Redis 服务器连接端口
       # password: Qwe54188_ # Redis 服务器连接密码(默认为空)
       timeout: 10s # 连接超时时间
@@ -33,6 +33,11 @@ logging:
   level:
     # root: DEBUG # 如果需要仔细调试可以打开这个选项
     cn.com.edtechhub.workusercentre: DEBUG # 控制本项目包内的日志输出等级 TRACE | DEBUG | INFO | WARN | ERROR | FATAL
+    org.apache.dubbo.rpc.Filter: DEBUG
+    org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol: DEBUG
+    org.apache.dubbo.rpc.proxy: DEBUG
+    org.apache.dubbo.remoting.exchange: DEBUG
+    org.apache.dubbo.remoting.transport.netty4: DEBUG
 
 # 配置服务
 server:
@@ -85,3 +90,16 @@ sa-token: # 默认开启 Redis 配置将自动支持 Sa-token 使用 Redis 存�
   token-style: uuid # 默认可取值: uuid、simple-uuid、random-32、random-64、random-128、tik
   ## 是否输出操作日志
   is-log: true
+
+# dubbo 配置
+dubbo:
+  registry:
+    address: nacos://10.10.174.232:8848?username=nacos&password=Qwe54188_
+    register-mode: instance
+  protocol:
+    name: tri
+    port: 50051
+  application:
+    name: WorkUserCentreApplication
+    logger: slf4j
+    protocol: tri # 明确告诉 Dubbo 默认协议是 tri

@@ -4,6 +4,7 @@ import cn.com.edtechhub.workusercentre.config.SpringdocConfig;
 import cn.dev33.satoken.SaManager;
 import cn.com.edtechhub.workusercentre.config.ServerConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -24,12 +25,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @SpringBootApplication
+@EnableDubbo
 @Slf4j
 public class WorkUserCentreApplication {
 
     public static void main(String[] args) {
-
-
 
         var context = SpringApplication.run(WorkUserCentreApplication.class, args);
         log.debug("Spring Boot 启动成功");
