@@ -62,6 +62,4 @@ public interface UserService extends IService<User> {
      */
     UserStatus userStatus();
 
-    String test();
-
 }

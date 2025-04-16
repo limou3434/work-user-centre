@@ -1,10 +1,6 @@
 package cn.com.edtechhub.workusercentre.service.impl;
 
-import cn.com.edtechhub.workusercentre.config.MybatisPlusConfig;
-import cn.dev33.satoken.stp.StpUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import cn.com.edtechhub.workusercentre.config.MyBatisPlusConfig;
 import cn.com.edtechhub.workusercentre.contant.UserConstant;
 import cn.com.edtechhub.workusercentre.enums.CodeBindMessage;
 import cn.com.edtechhub.workusercentre.exception.BusinessException;
@@ -16,10 +12,13 @@ import cn.com.edtechhub.workusercentre.request.UserDeleteRequest;
 import cn.com.edtechhub.workusercentre.request.UserSearchRequest;
 import cn.com.edtechhub.workusercentre.request.UserUpdateRequest;
 import cn.com.edtechhub.workusercentre.service.UserService;
+import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -33,12 +32,11 @@ import java.util.List;
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Service
-@DubboService
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Resource
-    private MybatisPlusConfig mybatisPlusConfig;
+    private MyBatisPlusConfig mybatisPlusConfig;
 
     @Override
     public User userAdd(UserAddRequest userAddRequest) {
@@ -108,8 +106,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (disableTime == 0) {
             StpUtil.untieDisable(userId);
             userUpdateRequest.setRole(0);
-        }
-        else {
+        } else {
             StpUtil.kickout(userId); // 先踢下线
             StpUtil.disable(userId, disableTime); // 然后再进行封禁 TODO: 可以做一些动态封禁, 比如先封禁 1 天、3 天、5 天、...
             userUpdateRequest.setRole(-1);
@@ -215,8 +212,4 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return lambdaQueryWrapper;
     }
 
-    @Override
-    public String test() {
-        return "Hello";
-    }
 }

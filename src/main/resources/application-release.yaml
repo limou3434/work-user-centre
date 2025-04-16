@@ -1,9 +1,11 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://work-mysql:3306/work_user_centre
   data:
     redis:
+      database: 1
       host: work-redis
 
 server:
   address: 0.0.0.0
+  port: 8000

@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class StpInterfaceImpl implements StpInterface {
+public class SaTokenStpInterfaceImpl implements StpInterface {
 
     /**
      * 注入用户服务实例

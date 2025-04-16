@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @MapperScan("cn.com.edtechhub.workusercentre.mapper") // 启用 MyBatisPlus 扫描 ./src/Mapper/ 中的映射
 @Data
 @ConfigurationProperties(prefix = "mybatis-plus")
-public class MybatisPlusConfig {
+public class MyBatisPlusConfig {
 
     /**
      * 默认读取项目名称作为盐值, 如果需要安全则可以注释掉注解并且直接赋值

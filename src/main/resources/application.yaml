@@ -33,11 +33,6 @@ logging:
   level:
     # root: DEBUG # 如果需要仔细调试可以打开这个选项
     cn.com.edtechhub.workusercentre: DEBUG # 控制本项目包内的日志输出等级 TRACE | DEBUG | INFO | WARN | ERROR | FATAL
-    org.apache.dubbo.rpc.Filter: DEBUG
-    org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol: DEBUG
-    org.apache.dubbo.rpc.proxy: DEBUG
-    org.apache.dubbo.remoting.exchange: DEBUG
-    org.apache.dubbo.remoting.transport.netty4: DEBUG
 
 # 配置服务
 server:
@@ -91,15 +86,3 @@ sa-token: # 默认开启 Redis 配置将自动支持 Sa-token 使用 Redis 存�
   ## 是否输出操作日志
   is-log: true
 
-# dubbo 配置
-dubbo:
-  registry:
-    address: nacos://10.10.174.232:8848?username=nacos&password=Qwe54188_
-    register-mode: instance
-  protocol:
-    name: tri
-    port: 50051
-  application:
-    name: WorkUserCentreApplication
-    logger: slf4j
-    protocol: tri # 明确告诉 Dubbo 默认协议是 tri
