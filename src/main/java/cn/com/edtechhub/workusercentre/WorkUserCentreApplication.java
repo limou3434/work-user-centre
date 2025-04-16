@@ -32,7 +32,7 @@ public class WorkUserCentreApplication {
         ServerConfig serverConfig = context.getBean(ServerConfig.class);
         SpringdocConfig springdocConfig = context.getBean(SpringdocConfig.class);
         String baseUrl = "http://" + serverConfig.getAddress() + ":" + serverConfig.getPort() + serverConfig.getContextPath();
-        log.debug("访问 {} 即可得到在线文档, 访问 {} 即可得到文档配置", baseUrl + serverConfig.getContextPath(), baseUrl + springdocConfig.getApiDoscInfoUrl());
+        log.debug("访问 {} 即可得到在线文档, 访问 {} 即可得到文档配置", baseUrl + springdocConfig.getApiDoscUrl(), baseUrl + springdocConfig.getApiDoscInfoUrl());
     }
 
 }
