@@ -1,11 +1,12 @@
 package cn.com.edtechhub.workusercentre.aop;
 
 import cn.com.edtechhub.workusercentre.utils.IpUtils;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 请求日志拦截切面
@@ -18,12 +19,6 @@ public class RequestLogInterceptor implements HandlerInterceptor {
 
     /**
      * 每次网络接口被调用都会执行这个方法
-     *
-     * @param request 请求体
-     * @param response 响应体
-     * @param handler 处理器对象控制器
-     * @return 布尔值
-     * @throws Exception
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

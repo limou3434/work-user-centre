@@ -6,6 +6,7 @@ COPY ./target/*.jar ./app.jar
 
 # 运行端口
 EXPOSE 8000
+EXPOSE 8723
 
 # 启动命令
 CMD ["java", "-jar", "app.jar"]

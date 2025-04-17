@@ -32,7 +32,12 @@ public enum CodeBindMessage {
 
     // 5xxxx 服务端错误类型
     SYSTEM_ERROR(50000, "内部错误"),
-    OPERATION_ERROR(50001, "操作失败");
+    OPERATION_ERROR(50001, "操作失败"),
+    TOO_MANY_REQUESTS(50003, "触发流量控制规则"),
+    SERVICE_DEGRADED(50004, "触发熔断降级规则"),
+    PARAM_LIMIT(50005, "触发热点参数规则"),
+    SYSTEM_BUSY(50002, "触发系统保护规则"),
+    ;
 
     /**
      * 状态

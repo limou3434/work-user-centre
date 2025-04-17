@@ -1,14 +1,14 @@
 package cn.com.edtechhub.workusercentre.utils;
 
+import cn.com.edtechhub.workusercentre.enums.CodeBindMessage;
+import cn.com.edtechhub.workusercentre.exception.BusinessException;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.Header;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import cn.com.edtechhub.workusercentre.enums.CodeBindMessage;
-import cn.com.edtechhub.workusercentre.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 设备工具类

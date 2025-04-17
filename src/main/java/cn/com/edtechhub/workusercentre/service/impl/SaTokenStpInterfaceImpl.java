@@ -1,14 +1,14 @@
 package cn.com.edtechhub.workusercentre.service.impl;
 
-import cn.dev33.satoken.stp.StpInterface;
 import cn.com.edtechhub.workusercentre.enums.UserRoleEnum;
 import cn.com.edtechhub.workusercentre.model.entity.User;
 import cn.com.edtechhub.workusercentre.request.UserSearchRequest;
 import cn.com.edtechhub.workusercentre.service.UserService;
-import jakarta.annotation.Resource;
+import cn.dev33.satoken.stp.StpInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,6 @@ public class SaTokenStpInterfaceImpl implements StpInterface {
     @Resource
     private UserService userService;
 
-
     /**
      * 返回一个账号所拥有的权限码值集合(暂时没有用到)
      */
@@ -47,7 +46,6 @@ public class SaTokenStpInterfaceImpl implements StpInterface {
     public List<String> getRoleList(Object loginId, String loginType) { // loginType 可以用来区分不同客户端
         // 获取登录用户的 id
         Long userId = Long.valueOf(loginId.toString()); // loginId 来源自使用 sa-token 登录接口时使用的 loginId
-
         // 根据 id 值查询用户的信息, 最主要是为了获取身份字段
         UserSearchRequest userSearchRequest = new UserSearchRequest();
         userSearchRequest.setId(userId);

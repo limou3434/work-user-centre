@@ -1,7 +1,7 @@
 package cn.com.edtechhub.workusercentre.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import cn.com.edtechhub.workusercentre.model.entity.UserRole;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * 用户角色服务层声明

@@ -16,7 +16,6 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +23,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -119,7 +119,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Boolean userRegister(String account, String passwd, String checkPasswd) {
-        return null;
+        checkAccountAndPasswd(account, passwd);
+        if (!passwd.equals(checkPasswd)) {
+            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "两次输入的密码不一致");
+        }
+        UserAddRequest userAddRequest = new UserAddRequest();
+        userAddRequest.setAccount(account);
+        userAddRequest.setPasswd(passwd);
+        this.userAdd(userAddRequest);
+
+        return true;
     }
 
     @Override
@@ -153,6 +162,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public UserStatus userStatus() {
         UserStatus userStatus = new UserStatus();
         userStatus.setIsLogin(StpUtil.isLogin());
+        if (userStatus.getIsLogin() == false) {
+            return userStatus;
+        }
         userStatus.setTokenName(StpUtil.getTokenName());
         userStatus.setTokenTimeout(String.valueOf(StpUtil.getTokenTimeout()));
         userStatus.setUserId(String.valueOf(StpUtil.getLoginId()));

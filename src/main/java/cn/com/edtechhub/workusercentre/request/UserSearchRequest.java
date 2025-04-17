@@ -3,7 +3,7 @@ package cn.com.edtechhub.workusercentre.request;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serial;
+
 import java.io.Serializable;
 
 /**
@@ -40,7 +40,7 @@ public class UserSearchRequest extends PageRequest implements Serializable {
      */
     private Integer level;
 
-    @Serial
+    /// 序列化字段 ///
     private static final long serialVersionUID = 1L;
 
 }

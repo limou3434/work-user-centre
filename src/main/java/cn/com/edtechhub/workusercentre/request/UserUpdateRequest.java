@@ -2,7 +2,7 @@ package cn.com.edtechhub.workusercentre.request;
 
 import lombok.Data;
 
-import java.io.Serial;
+
 import java.io.Serializable;
 
 /**
@@ -107,7 +107,7 @@ public class UserUpdateRequest implements Serializable {
      */
     private Integer gender;
 
-    @Serial
+    /// 序列化字段 ///
     private static final long serialVersionUID = 1L;
 
 }

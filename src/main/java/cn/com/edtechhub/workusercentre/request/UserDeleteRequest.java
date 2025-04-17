@@ -1,10 +1,7 @@
 package cn.com.edtechhub.workusercentre.request;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -20,7 +17,7 @@ public class UserDeleteRequest implements Serializable {
      */
     private Long id;
 
-    @Serial
+    /// 序列化字段 ///
     private static final long serialVersionUID = 1L;
 
 }

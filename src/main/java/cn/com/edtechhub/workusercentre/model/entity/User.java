@@ -3,19 +3,16 @@ package cn.com.edtechhub.workusercentre.model.entity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-
+import java.util.Date;
 import lombok.Data;
 
 /**
  * 用户信息表
- *
- * @author <a href="https://github.com/limou3434">limou3434</a>
+ * @TableName user
  */
 @TableName(value ="user")
 @Data
 public class User implements Serializable {
-
     /**
      * 本用户唯一标识(业务层需要考虑使用雪花算法用户标识的唯一性)
      */
@@ -66,6 +63,7 @@ public class User implements Serializable {
      * 用户标签(业务层需要 json 数组格式存储用户标签数组)
      */
     private String tags;
+
     /**
      * 用户昵称
      */
@@ -114,18 +112,18 @@ public class User implements Serializable {
     /**
      * 是否删除(0 为未删除, 1 为已删除)
      */
-    @TableLogic // 手动添加逻辑删除
-    private Integer deleted;
+    @TableLogic
+    private Integer deleted; // 手动修改为逻辑删除
 
     /**
      * 创建时间(受时区影响)
      */
-    private LocalDateTime createTime; // 手动修改为更好的时间类型
+    private Date createTime;
 
     /**
      * 更新时间(受时区影响)
      */
-    private LocalDateTime updateTime; // 手动修改为更好的时间类型
+    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -227,5 +225,4 @@ public class User implements Serializable {
         sb.append("]");
         return sb.toString();
     }
-
 }

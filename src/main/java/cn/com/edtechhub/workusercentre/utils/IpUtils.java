@@ -2,7 +2,7 @@ package cn.com.edtechhub.workusercentre.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 
 /**
@@ -16,9 +16,6 @@ public class IpUtils {
     /**
      * 获取客户端 IP 地址方法
      * 只做了简单的判断, 如果需要更加复杂的逻辑就需要自己定制化
-     *
-     * @param request 请求体
-     * @return 客户端 IP 地址
      */
     public static String getIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");

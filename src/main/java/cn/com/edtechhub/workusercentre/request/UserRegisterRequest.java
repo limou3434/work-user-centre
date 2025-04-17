@@ -2,7 +2,7 @@ package cn.com.edtechhub.workusercentre.request;
 
 import lombok.Data;
 
-import java.io.Serial;
+
 import java.io.Serializable;
 
 /**
@@ -25,7 +25,7 @@ public class UserRegisterRequest implements Serializable {
 
     private String checkPasswd; // 需要再次确认密码
 
-    @Serial
+    /// 序列化字段 ///
     private static final long serialVersionUID = 1L;
 
 }

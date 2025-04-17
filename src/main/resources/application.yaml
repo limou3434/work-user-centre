@@ -1,7 +1,6 @@
-# 配置框架
-# 使用 java -jar app.jar --spring.profiles.active=develop | release | production 来启动项目, 其中 release 有时间就拿来测试, 而 production 存储在 Github 上, 每次修改 Github 配置就需要刷新(这个有时间可以优化为无需重启)
+# 配置框架(使用 java -jar app.jar --spring.profiles.active=develop | release | production 来启动项目, 其中 release 有时间就拿来测试, 而 production 存储在 Github 上, 每次修改 Github 配置就需要刷新(这个有时间可以优化为无需重启))
 spring:
-  ## 环境配置
+  ## 配置环境
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:develop} # 默认启动开发环境
   ## 配置名称
@@ -9,24 +8,30 @@ spring:
     name: work-user-centre
   ## 配置数源
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver # "com.mysql.jdbc.Driver" 已经过时
-    url: jdbc:mysql://10.10.174.232:3306/work_user_centre
+    driver-class-name: com.mysql.cj.jdbc.Driver  # com.mysql.jdbc.Driver 已经过时,
+    url: jdbc:mysql://127.0.0.1:3306/work_user_centre
     username: wuc
     password: Qwe54188_
   ## 配置缓存
-  data:
-    redis:
-      database: 2 # Redis 数据库索引(默认为 0, 通常为了方便开发会认为 0 号为生产环境、1 号为测试环境、2 号为开发环境)
-      host: 10.10.174.232 # Redis 服务器地址
-      port: 6379 # Redis 服务器连接端口
-      # password: Qwe54188_ # Redis 服务器连接密码(默认为空)
-      timeout: 10s # 连接超时时间
-      lettuce:
-        pool: # 链接池配置
-          max-active: 200 # 连接池最大连接数
-          max-wait: -1ms # 连接池最大阻塞等待时间(使用负值表示没有限制)
-          max-idle: 10 # 连接池中的最大空闲连接
-          min-idle: 0 # 连接池中的最小空闲连接
+  redis:
+    database: 2 # Redis 数据库索引(默认为 0, 通常为了方便开发会认为 0 号为生产环境、1 号为测试环境、2 号为开发环境)
+    host: 127.0.0.1 # Redis 服务器地址
+    port: 6379 # Redis 服务器连接端口
+    # password: Qwe54188_ # Redis 服务器连接密码(默认为空)
+    timeout: 10s # 连接超时时间
+    lettuce:
+      pool: # 链接池配置
+        max-active: 200 # 连接池最大连接数
+        max-wait: -1ms # 连接池最大阻塞等待时间(使用负值表示没有限制)
+        max-idle: 10 # 连接池中的最大空闲连接
+        min-idle: 0 # 连接池中的最小空闲连接
+  ## 配置微云
+  cloud:
+    ### 配置流量治理
+    sentinel:
+      transport:
+        port: 8721
+        dashboard: 127.0.0.1:8131 # 不过在容器模式下是无法访问宿主的, 因此开发模式下控制台失效, 但是不代表无法注册到控制台, 并且流量治理功能还是可用
 
 # 配置日志
 logging:
@@ -48,17 +53,22 @@ server:
 
 # 配置文档
 springdoc:
-  ## 配置接口文档开关
-  api-docs:
-    enabled: true
   swagger-ui:
-    enabled: true
-  ## 配置接口文档小组
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
   group-configs:
-    - group: 用户接口
-      packages-to-scan: cn.com.edtechhub.workusercentre
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: cn.com.edtechhub.workusercentre.controller
+knife4j: # knife4j 的增强配置(不需要增强可以不配)
+  enable: true
+  setting:
+    language: zh_cn
 
-# mybatis-plus 配置
+# 配置 mybatis-plus
 mybatis-plus:
   ## 配置盐值
   salt: work-user-centre
@@ -69,7 +79,7 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值
       logic-not-delete-value: 0 # 逻辑未删除值
 
-# sa-token 配置
+# 配置 sa-token
 sa-token: # 默认开启 Redis 配置将自动支持 Sa-token 使用 Redis 存储认证相关键值对, 想要关掉需要去除相关依赖
   ## token 名称
   token-name: work-user-centre # 同时也是 cookie 名称
@@ -85,4 +95,3 @@ sa-token: # 默认开启 Redis 配置将自动支持 Sa-token 使用 Redis 存�
   token-style: uuid # 默认可取值: uuid、simple-uuid、random-32、random-64、random-128、tik
   ## 是否输出操作日志
   is-log: true
-

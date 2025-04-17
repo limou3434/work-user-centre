@@ -1,8 +1,8 @@
 package cn.com.edtechhub.workusercentre.model.vo;
 
+import cn.com.edtechhub.workusercentre.model.entity.User;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import cn.com.edtechhub.workusercentre.model.entity.User;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

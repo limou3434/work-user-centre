@@ -1,25 +1,24 @@
 package cn.com.edtechhub.workusercentre.model.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
-
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-
+import java.util.Date;
 import lombok.Data;
 
 /**
  * 用户角色表
- *
- * @author <a href="https://github.com/limou3434">limou3434</a>
+ * @TableName user_role
  */
 @TableName(value ="user_role")
 @Data
 public class UserRole implements Serializable {
-
     /**
      * 本角色唯一标识(业务层需要考虑使用雪花算法用户标识的唯一性)
      */
-    @TableId(type = IdType.ASSIGN_ID) // 手动添加雪花算法
+    @TableId
     private Integer id;
 
     /**
@@ -30,18 +29,18 @@ public class UserRole implements Serializable {
     /**
      * 是否删除(0 为未删除, 1 为已删除)
      */
-    @TableLogic // 手动添加逻辑删除
-    private Integer deleted;
+    @TableLogic
+    private Integer deleted; // 手动修改为逻辑删除
 
     /**
      * 创建时间(受时区影响)
      */
-    private LocalDateTime createTime; // 手动修改为更好的时间类型
+    private Date createTime;
 
     /**
      * 更新时间(受时区影响)
      */
-    private LocalDateTime updateTime; // 手动修改为更好的时间类型
+    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -92,5 +91,4 @@ public class UserRole implements Serializable {
         sb.append("]");
         return sb.toString();
     }
-
 }
