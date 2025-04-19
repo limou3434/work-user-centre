@@ -7,9 +7,17 @@ import cn.dev33.satoken.exception.DisableServiceException;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
+import com.alibaba.csp.sentinel.Tracer;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.csp.sentinel.slots.block.degrade.DegradeException;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * 全局异常处理方法类
@@ -29,25 +37,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     /**
-     * 全局所有异常处理方法
+     * 全局所有异常处理方法(兜底把所有运行时异常拦截后进行处理)
      * @param e 参数异常对象
      */
     @ExceptionHandler // 直接拦截 Throwable
-    public void exceptionHandler(Exception e) throws Exception {
+    public BaseResponse<String> exceptionHandler(Exception e) throws Exception {
         log.debug("触发全局所有异常处理方法");
-        log.error(e.getMessage());
-        throw e; // 抛出是为了上报异常以触发熔断
-    }
-
-    /**
-     * 系统内部异常处理方法(兜底把所有运行时异常拦截后进行处理)
-     *
-     * @param e 系统异常对象
-     * @return 包含错误原因的通用响应体对象
-     */
-    @ExceptionHandler(RuntimeException.class)
-    public BaseResponse<?> runtimeExceptionHandler(RuntimeException e) {
-        log.debug("触发系统内部异常处理方法");
         log.error(e.getMessage());
         return TheResult.error(CodeBindMessage.SYSTEM_ERROR, "请联系管理员");
     }

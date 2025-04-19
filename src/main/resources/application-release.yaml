@@ -9,5 +9,11 @@ spring:
       transport:
         port: 8721
         dashboard: work-sentinel:8131
+  elasticsearch:
+    uris: http://work-elasticsearch:9200
 server:
   address: 0.0.0.0
+nacos:
+  config:
+    server-addr: work-nacos:8848
+

@@ -97,7 +97,15 @@
             <!-- Hutool 提供了一些使用的 Java 小工具 -->
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.24</version>
+            <version>5.8.8</version>
+        </dependency>
+
+        <!-- Guava: https://github.com/google/guava?tab=readme-ov-file  -->
+        <dependency>
+            <!-- 类似 Hutoll 的工具包 -->
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
         </dependency>
 
         <!-- Commons Lang3: https://commons.apache.org/proper/commons-lang/ -->
@@ -163,7 +171,13 @@
           <version>2021.0.5.0</version>
         </dependency>
 
-</dependencies>
+        <!-- elasticsearch: https://www.elastic.co/docs/get-started/ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+
+    </dependencies>
 
 <!-- 插件描述 -->
     <build>

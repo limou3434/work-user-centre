@@ -7,17 +7,13 @@ import cn.com.edtechhub.workusercentre.model.vo.UserVO;
 import cn.com.edtechhub.workusercentre.request.*;
 import cn.com.edtechhub.workusercentre.response.BaseResponse;
 import cn.com.edtechhub.workusercentre.response.TheResult;
+import cn.com.edtechhub.workusercentre.config.SentinelConfig;
 import cn.com.edtechhub.workusercentre.service.UserService;
 import cn.com.edtechhub.workusercentre.utils.DeviceUtils;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaIgnore;
-import cn.dev33.satoken.exception.NotLoginException;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
-import com.alibaba.csp.sentinel.slots.block.BlockException;
-import com.alibaba.csp.sentinel.slots.block.degrade.DegradeException;
-import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
-import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -41,33 +37,12 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     private UserService userService;
 
     /**
-     * 流量控制异常处理方法
-     */
-    public static BaseResponse<?> blockExceptionHandle(BlockException ex) {
-        // 流量控制异常
-        if (ex instanceof FlowException) {
-            return TheResult.error(CodeBindMessage.TOO_MANY_REQUESTS, "请求频繁，请稍后重试");
-        }
-        // 熔断降级异常
-        else if (ex instanceof DegradeException) {
-            return TheResult.error(CodeBindMessage.SERVICE_DEGRADED, "服务退化，请稍后重试");
-        }
-        // 热点参数异常
-        else if (ex instanceof ParamFlowException) {
-            return TheResult.error(CodeBindMessage.PARAM_LIMIT, "请求繁忙，请稍后重试");
-        }
-        // 系统保护异常
-        else {
-            return TheResult.error(CodeBindMessage.SYSTEM_BUSY, "系统繁忙，请稍后重试");
-        }
-    }
-
-    /**
      * 添加用户网络接口
      */
-    @SaCheckLogin @SaCheckRole("admin")
-    @SentinelResource(value = "userAdd", blockHandler = "blockExceptionHandle")
+    @SaCheckLogin
+    @SaCheckRole("admin")
     @PostMapping("/add")
+    @SentinelResource(value = "userAdd")
     public BaseResponse<UserVO> userAdd(@RequestBody UserAddRequest userAddRequest) {
         User user = userService.userAdd(userAddRequest);
         UserVO userVo = UserVO.removeSensitiveData(user);
@@ -77,9 +52,10 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     /**
      * 删除用户网络接口
      */
-    @SaCheckLogin @SaCheckRole("admin")
+    @SaCheckLogin
+    @SaCheckRole("admin")
     @PostMapping("/delete")
-    @SentinelResource(value = "userDelete", blockHandler = "blockExceptionHandle")
+    @SentinelResource(value = "userDelete")
     public BaseResponse<Boolean> userDelete(@RequestBody UserDeleteRequest userDeleteRequest) {
         Boolean result = userService.userDelete(userDeleteRequest);
         return TheResult.success(CodeBindMessage.SUCCESS, result);
@@ -88,9 +64,10 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     /**
      * 修改用户网络接口
      */
-    @SaCheckLogin @SaCheckRole("admin")
-    @SentinelResource(value = "userUpdate", blockHandler = "blockExceptionHandle")
+    @SaCheckLogin
+    @SaCheckRole("admin")
     @PostMapping("/update")
+    @SentinelResource(value = "userUpdate")
     public BaseResponse<UserVO> userUpdate(@RequestBody UserUpdateRequest userUpdateRequest) {
         User user = userService.userUpdate(userUpdateRequest);
         UserVO userVo = UserVO.removeSensitiveData(user);
@@ -100,9 +77,10 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     /**
      * 查询用户网络接口
      */
-    @SaCheckLogin @SaCheckRole("admin")
-    @SentinelResource(value = "userSearch", blockHandler = "blockExceptionHandle")
+    @SaCheckLogin
+    @SaCheckRole("admin")
     @PostMapping("/search")
+    @SentinelResource(value = "userSearch")
     public BaseResponse<List<UserVO>> userSearch(@RequestBody UserSearchRequest userSearchRequest) {
         List<User> userList = userService.userSearch(userSearchRequest);
         List<UserVO> userVoList = userList.stream()
@@ -114,9 +92,10 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     /**
      * 封禁用户网络接口
      */
-    @SaCheckLogin @SaCheckRole("admin")
-    @SentinelResource(value = "userDisable", blockHandler = "blockExceptionHandle")
+    @SaCheckLogin
+    @SaCheckRole("admin")
     @PostMapping("/disable")
+    @SentinelResource(value = "userDisable")
     public BaseResponse<Boolean> userDisable(@RequestBody UserDisableRequest userDisableRequest) {
         Boolean result = userService.userDisable(userDisableRequest.getId(), userDisableRequest.getDisableTime());
         return TheResult.success(CodeBindMessage.SUCCESS, result);
@@ -126,8 +105,8 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * 用户注册网络接口
      */
     @SaIgnore
-    @SentinelResource(value = "userRegister", blockHandler = "blockExceptionHandle")
     @PostMapping("/register")
+    @SentinelResource(value = "userRegister")
     public BaseResponse<Boolean> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         Boolean result = userService.userRegister(userRegisterRequest.getAccount(), userRegisterRequest.getPasswd(), userRegisterRequest.getCheckPasswd());
         return TheResult.success(CodeBindMessage.SUCCESS, result);
@@ -137,8 +116,8 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * 用户登入网络接口
      */
     @SaIgnore
-    @SentinelResource(value = "userLogin", blockHandler = "blockExceptionHandle")
     @PostMapping("/login")
+    @SentinelResource(value = "userLogin")
     public BaseResponse<UserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         User user = userService.userLogin(userLoginRequest.getAccount(), userLoginRequest.getPasswd(), DeviceUtils.getRequestDevice(request)); // 这里同时解析用户的设备, 以支持同端互斥
         UserVO userVo = UserVO.removeSensitiveData(user);
@@ -149,7 +128,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * 用户登出网络接口
      */
     @SaCheckLogin
-    @SentinelResource(value = "userLogout", blockHandler = "blockExceptionHandle")
+    @SentinelResource(value = "userLogout")
     @PostMapping("/logout")
     public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
         Boolean result = userService.userLogout(DeviceUtils.getRequestDevice(request));
@@ -160,7 +139,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
      * 获取状态网络接口
      */
     @SaIgnore
-    @SentinelResource(value = "userStatus", blockHandler = "blockExceptionHandle")
+    @SentinelResource(value = "userStatus", blockHandler = "userStatusBlockHandler", blockHandlerClass = SentinelConfig.class)
     @GetMapping("/status")
     public BaseResponse<UserStatus> userStatus() {
         UserStatus userStatus = userService.userStatus();
