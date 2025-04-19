@@ -8,7 +8,7 @@ import lombok.Data;
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Data
-public class UserStatusDto {
+public class UserStatus {
 
     /**
      * 是否登录
