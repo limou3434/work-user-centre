@@ -14,6 +14,7 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
  */
 @RestController // 返回值默认为 json 类型
 @RequestMapping("/user")
+@Slf4j
 public class UserController { // 通常控制层有服务层中的所有方法, 并且还有组合而成的方法, 如果组合的方法开始变得复杂就会封装到服务层内部
 
     /**
@@ -83,6 +85,21 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @SentinelResource(value = "userSearch")
     public BaseResponse<List<UserVO>> userSearch(@RequestBody UserSearchRequest userSearchRequest) {
         List<User> userList = userService.userSearch(userSearchRequest);
+        List<UserVO> userVoList = userList.stream()
+                .map(UserVO::removeSensitiveData)
+                .collect(Collectors.toList());
+        return TheResult.success(CodeBindMessage.SUCCESS, userVoList);
+    }
+
+    /**
+     * 查询用户网络接口
+     */
+    @SaCheckLogin
+    @SaCheckRole("admin")
+    @PostMapping("/search/es")
+    @SentinelResource(value = "userSearchEs")
+    public BaseResponse<List<UserVO>> userSearchEs(@RequestBody UserSearchRequest userSearchRequest) {
+        List<User> userList = userService.userSearchEs(userSearchRequest);
         List<UserVO> userVoList = userList.stream()
                 .map(UserVO::removeSensitiveData)
                 .collect(Collectors.toList());

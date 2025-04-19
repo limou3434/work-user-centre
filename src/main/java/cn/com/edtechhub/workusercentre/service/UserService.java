@@ -38,6 +38,11 @@ public interface UserService extends IService<User> {
     List<User> userSearch(UserSearchRequest userSearchRequest);
 
     /**
+     * 用户查询服务(ES)
+     */
+    List<User> userSearchEs(UserSearchRequest userSearchRequest);
+
+    /**
      * 用户封禁服务
      */
     Boolean userDisable(Long userId, Long disableTime);

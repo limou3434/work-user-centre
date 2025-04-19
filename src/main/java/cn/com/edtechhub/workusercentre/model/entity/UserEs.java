@@ -1,9 +1,11 @@
 package cn.com.edtechhub.workusercentre.model.entity;
 
-import cn.com.edtechhub.workusercentre.model.entity.User;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -12,6 +14,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -19,6 +22,7 @@ import java.util.Date;
  */
 @Document(indexName = "user")
 @Data
+@Slf4j
 public class UserEs implements Serializable {
 
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
@@ -81,7 +85,7 @@ public class UserEs implements Serializable {
      * 用户标签(业务层需要 json 数组格式存储用户标签数组)
      */
     @Field(name = "tags") // 显式指定 ES 字段名, 避免字段风格不一致
-    private String tags;
+    private List<String> tags; // 修改以支持数组查询
 
     /**
      * 用户昵称
@@ -163,13 +167,19 @@ public class UserEs implements Serializable {
     /**
      * 对象转包装类
      */
-    public static UserEs MappingToEntity(User user) {
+    public static UserEs EntityToMapping(User user) {
+        // 拷贝字段
         if (user == null) {
             return null;
         }
-
         UserEs userEs = new UserEs();
         BeanUtils.copyProperties(user, userEs);
+
+        // 处理数组字段, 避免纯粹的 JSON 字符无法兼容 ES
+        String tags = user.getTags();
+        if (StringUtils.isNotBlank(tags)) {
+            userEs.setTags(JSONUtil.toList(tags, String.class)); // 快速把 json 数组字符转为数组
+        }
 
         return userEs;
     }
@@ -177,13 +187,19 @@ public class UserEs implements Serializable {
     /**
      * 包装类转对象
      */
-    public static User EntityToMapping(UserEs userEs) {
+    public static User MappingToEntity(UserEs userEs) {
         if (userEs == null) {
             return null;
         }
 
         User user = new User();
         BeanUtils.copyProperties(userEs, user);
+
+        // 处理数组字段, 避免纯粹的 JSON 字符无法兼容 ES
+        List<String> tagList = userEs.getTags();
+        if (CollUtil.isNotEmpty(tagList)) {
+            user.setTags(JSONUtil.toJsonStr(tagList)); // 快速把数组转为 json 数组字符
+        }
 
         return user;
     }

@@ -18,7 +18,7 @@ public class PageRequest {
     /**
      * 页面大小
      */
-    private int pageSize = Integer.MAX_VALUE;
+    private int pageSize = 10000; // Integer.MAX_VALUE 不好设置, 一是可能全量时消耗过大, 二是可能超出 ES 的最大查询值
 
     /**
      * 排序字段

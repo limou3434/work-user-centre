@@ -39,7 +39,7 @@ CREATE TABLE `user`
     `ident`       varchar(50) COLLATE utf8mb4_unicode_ci       DEFAULT NULL COMMENT '身份证',
     `passwd`      varchar(512) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户密码(业务层强制刚刚注册的用户重新设置密码, 交给用户时默认密码为 123456, 并且加盐密码)',
     `avatar`      varchar(1024) COLLATE utf8mb4_unicode_ci     DEFAULT NULL COMMENT '用户头像(业务层需要考虑默认头像使用 cos 对象存储)',
-    `["tag"]s`        varchar(256)                                 DEFAULT NULL COMMENT '用户标签(业务层需要 json 数组格式存储用户标签数组)',
+    `tags`        varchar(256)                                 DEFAULT NULL COMMENT '用户标签(业务层需要 json 数组格式存储用户标签数组)',
     `nick`        varchar(256) COLLATE utf8mb4_unicode_ci      DEFAULT NULL COMMENT '用户昵称',
     `name`        varchar(256) COLLATE utf8mb4_unicode_ci      DEFAULT NULL COMMENT '用户名字',
     `profile`     varchar(512) COLLATE utf8mb4_unicode_ci      DEFAULT NULL COMMENT '用户简介',
@@ -66,7 +66,7 @@ CREATE TABLE `user`
   COLLATE = utf8mb4_unicode_ci COMMENT ='用户信息表';
 
 INSERT INTO user (`account`, `wx_union`, `mp_open`, `email`, `phone`, `ident`, `passwd`,
-                  `avatar`, `["tag"]s`, `nick`, `name`, `profile`, `birthday`, `country`, `address`,
+                  `avatar`, `tags`, `nick`, `name`, `profile`, `birthday`, `country`, `address`,
                   `role`, `level`, `gender`, `deleted`)
 VALUES ('aimou', 'wx_union_aimou', 'mp_open_aimou', 'aimou@example.com', '13800138001', '370101198701012345',
         'ff5e16596809393e26ad6af86b9cc72e', 'https://example.com/avatar_aimou1.jpg', '["tag"]', 'aimou', '艾梦',
@@ -104,7 +104,7 @@ VALUES ('aimou', 'wx_union_aimou', 'mp_open_aimou', 'aimou@example.com', '138001
        ('limou', 'wx_union_limou', 'mp_open_limou', 'limou@example.com', '13800138012', '370101199812122345',
         'ff5e16596809393e26ad6af86b9cc72e',
         'https://avatars.githubusercontent.com/u/113878415?s=400&u=9f10b63e033c9504615bc475581441478424e04b&v=4',
-        '项目架构师,后端程序员,数学爱好者,运维发烧者', 'limou', '李陌', '这是李萌的个人简介', '2004-02-23',
+        '["项目架构师", "后端程序员", "数学爱好者", "运维发烧者"]', 'limou', '李陌', '这是李萌的个人简介', '2004-02-23',
         '中国', '广州市白云区', 1, 1, 1, 0),
        ('mimou', 'wx_union_mimou', 'mp_open_mimou', 'mimou@example.com', '13800138016', '370101200204162345',
         'ff5e16596809393e26ad6af86b9cc72e', 'https://example.com/avatar_mimou16.jpg', '["tag"]', 'mimou', '莫敏',

@@ -98,10 +98,12 @@ curl -u elastic:Qwe54188_ -X PUT "http://127.0.0.1:9200/user_v1" \
         "create_time": {
           "type": "date",
           "format": "yyyy-MM-dd HH:mm:ss"
+          "index": true
         },
         "update_time": {
           "type": "date",
           "format": "yyyy-MM-dd HH:mm:ss"
+          "index": true
         }
       }
     }

@@ -20,11 +20,13 @@ package cn.com.edtechhub.workusercentre;
 
 import cn.com.edtechhub.workusercentre.config.ServerConfig;
 import cn.com.edtechhub.workusercentre.config.SpringdocConfig;
+import cn.com.edtechhub.workusercentre.job.once.FullSyncUserToEs;
 import cn.dev33.satoken.SaManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Spring Boot 启动类
@@ -33,6 +35,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
  */
 @SpringBootApplication
 @ServletComponentScan // 扫描 Servlet 组件以支持 IP 黑名单
+@EnableScheduling // 开启定时任务
 @Slf4j
 public class WorkUserCentreApplication {
 

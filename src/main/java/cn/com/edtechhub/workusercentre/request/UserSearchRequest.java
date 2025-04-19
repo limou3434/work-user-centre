@@ -2,6 +2,7 @@ package cn.com.edtechhub.workusercentre.request;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.elasticsearch.annotations.Field;
 
 
 import java.io.Serializable;
@@ -26,9 +27,29 @@ public class UserSearchRequest extends PageRequest implements Serializable {
     private String account;
 
     /**
+     * 用户标签(业务层需要 json 数组格式存储用户标签数组)
+     */
+    private String tags;
+
+    /**
+     * 用户昵称
+     */
+    private String nick;
+
+    /**
      * 用户名字
      */
     private String name;
+
+    /**
+     * 用户简介
+     */
+    private String profile;
+
+    /**
+     * 用户地址
+     */
+    private String address;
 
     /**
      * 用户角色(业务层需知 -1 为封号, 0 为用户, 1 为管理, ...)

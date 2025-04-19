@@ -7,23 +7,35 @@ import cn.com.edtechhub.workusercentre.exception.BusinessException;
 import cn.com.edtechhub.workusercentre.mapper.UserMapper;
 import cn.com.edtechhub.workusercentre.model.dto.UserStatus;
 import cn.com.edtechhub.workusercentre.model.entity.User;
+import cn.com.edtechhub.workusercentre.model.entity.UserEs;
 import cn.com.edtechhub.workusercentre.request.UserAddRequest;
 import cn.com.edtechhub.workusercentre.request.UserDeleteRequest;
 import cn.com.edtechhub.workusercentre.request.UserSearchRequest;
 import cn.com.edtechhub.workusercentre.request.UserUpdateRequest;
 import cn.com.edtechhub.workusercentre.service.UserService;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +49,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     private MyBatisPlusConfig mybatisPlusConfig;
+
+    @Resource
+    private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     @Override
     public User userAdd(UserAddRequest userAddRequest) {
@@ -80,9 +95,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<User> userSearch(UserSearchRequest userSearchRequest) {
         Page<User> page = new Page<>(userSearchRequest.getPageCurrent(), userSearchRequest.getPageSize()); // 创建分页对象, 指定页码和每页条数
-        LambdaQueryWrapper<User> queryWrapper = this.getLambdaQueryWrapper(userSearchRequest); // 构造查询条件
+        LambdaQueryWrapper<User> queryWrapper = this.getQueryWrapper(userSearchRequest); // 构造查询条件
         Page<User> userPage = this.page(page, queryWrapper); // 调用 MyBatis-Plus 的分页查询方法
         return userPage.getRecords(); // 返回分页结果
+    }
+
+    @Override
+    public List<User> userSearchEs(UserSearchRequest userSearchRequest) {
+        NativeSearchQuery searchQuery = getQueryWrapperEs(userSearchRequest);
+        SearchHits<UserEs> searchHits = elasticsearchRestTemplate.search(searchQuery, UserEs.class);
+
+        // 复用 MySQL 的分页对象, 封装返回结果
+        Page<User> page = new Page<>();
+        page.setTotal(searchHits.getTotalHits());
+        List<User> resourceList = new ArrayList<>();
+        if (searchHits.hasSearchHits()) {
+            List<SearchHit<UserEs>> searchHitList = searchHits.getSearchHits();
+            for (SearchHit<UserEs> userEsSearchHit : searchHitList) {
+                resourceList.add(UserEs.MappingToEntity(userEsSearchHit.getContent()));
+            }
+        }
+        page.setRecords(resourceList);
+        return page.getRecords();
     }
 
     @Override
@@ -93,10 +127,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userSearchRequest.setPageCurrent(1);
         userSearchRequest.setPageSize(1);
         User user = this.userSearch(userSearchRequest).get(0);
-        user.setPasswd(null); // TODO: 暂时这么做以避免密码被二次加密
-        if (user == null) { // TODO: 等待修改
-            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "用户不存在");
-        }
+        user.setPasswd(null); // 暂时这么做以避免密码被二次加密
 
         // 复制用户原本的信息到更新请求实例中
         UserUpdateRequest userUpdateRequest = new UserUpdateRequest();
@@ -201,7 +232,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 获取查询封装器的方法
      */
-    private LambdaQueryWrapper<User> getLambdaQueryWrapper(UserSearchRequest userSearchRequest) {
+    private LambdaQueryWrapper<User> getQueryWrapper(UserSearchRequest userSearchRequest) {
         // 取得需要查询的参数
         Long id = userSearchRequest.getId();
         String account = userSearchRequest.getAccount();
@@ -222,6 +253,66 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 User::getAccount // 默认按照账户排序
         );
         return lambdaQueryWrapper;
+    }
+
+    /**
+     * 获取查询封装器的方法(ES)
+     */
+    private NativeSearchQuery getQueryWrapperEs(UserSearchRequest userSearchRequest) {
+        // 获取参数
+        Long id = userSearchRequest.getId();
+        String account = userSearchRequest.getAccount();
+        String tags = userSearchRequest.getTags();
+        String nick = userSearchRequest.getNick();
+        String name = userSearchRequest.getName();
+        String profile = userSearchRequest.getProfile();
+        String address = userSearchRequest.getAddress();
+        int pageCurrent = userSearchRequest.getPageCurrent() - 1; // 这里需要减 1 以适配 ES 的分页
+        int pageSize = userSearchRequest.getPageSize();
+        String sortField = userSearchRequest.getSortField();
+        String sortOrder = userSearchRequest.getSortOrder();
+
+        List<String> tagsList = JSONUtil.toList(tags, String.class); // 一行代码转换
+
+        // 构造查询条件
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+        // 过滤
+        boolQueryBuilder.filter(QueryBuilders.termQuery("deleted", 0));
+        if (id != null) {
+            boolQueryBuilder.filter(QueryBuilders.termQuery("id", id));
+        }
+
+        // 查询
+        if (StringUtils.isNotBlank(account)) {
+            boolQueryBuilder.filter(QueryBuilders.matchQuery("account", account));
+        }
+        if (CollUtil.isNotEmpty(tagsList)) {
+            for (String tag : tagsList) {
+                boolQueryBuilder.filter(QueryBuilders.termQuery("tags", tag));
+            }
+        }
+        if (StringUtils.isNotBlank(nick)) {
+            boolQueryBuilder.filter(QueryBuilders.matchQuery("nick", nick));
+        }
+        if (StringUtils.isNotBlank(name)) {
+            boolQueryBuilder.filter(QueryBuilders.matchQuery("name", name));
+        }
+        if (StringUtils.isNotBlank(profile)) {
+            boolQueryBuilder.filter(QueryBuilders.matchQuery("profile", profile));
+        }
+        if (StringUtils.isNotBlank(address)) {
+            boolQueryBuilder.filter(QueryBuilders.matchQuery("address", address));
+        }
+
+        // 分页
+        PageRequest pageRequest = PageRequest.of(pageCurrent, pageSize);
+
+        // 构造查询
+        return new NativeSearchQueryBuilder()
+                .withQuery(boolQueryBuilder)
+                .withPageable(pageRequest)
+                .build();
     }
 
 }
