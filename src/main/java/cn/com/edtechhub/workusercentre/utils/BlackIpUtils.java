@@ -64,7 +64,7 @@ public class BlackIpUtils {
 
         // 安全获取黑名单列表
         List<String> blackIpList = Optional.ofNullable(map)
-                .map(m -> (List<String>) m.get("blackIpList"))
+                .map(m -> (List<String>) m.get("blackIpList")) // 这里是从远端读取的配置文件名称
                 .orElse(Collections.emptyList());
 
         // 创建新的布隆过滤器

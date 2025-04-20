@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
-// @Component // 注释这个则关闭全量同步
+@Component // 注释这个则关闭全量同步
 @Slf4j
 public class FullSyncUserToEs {
 
@@ -43,8 +43,6 @@ public class FullSyncUserToEs {
         // 全量获取题目, 数据量不大的情况下使用
         String sql = "SELECT * FROM user";
         List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class)); // 使用原生 JDBC 绕过逻辑删除避免无法同部到 ES
-
-        log.debug("asdkljuugasd {}", userList);
 
         if (CollUtil.isEmpty(userList)) {
             return;
