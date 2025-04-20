@@ -207,16 +207,12 @@
 
     </dependencies>
 
-<!-- 插件描述 -->
+    <!-- 插件描述 -->
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!-- 添加以下配置，生成可被依赖的 JAR -->
-                <configuration>
-                    <classifier>exec</classifier> <!-- 生成两个 JAR：一个可执行，一个普通 -->
-                </configuration>
             </plugin>
         </plugins>
     </build>

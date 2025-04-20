@@ -33,7 +33,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
 @Component
-class Task {
+class Test {
     @DubboReference
     private TestService testService;
 
@@ -65,8 +65,8 @@ public class WorkUserCentreApplication {
         log.debug("读取 Sa-token 配置查验是否正确: {}", String.valueOf(SaManager.getConfig()));
         log.debug("读取 Sa-token 切面类查验是否被替换为自己的: {}", String.valueOf(SaManager.getStpInterface()));
 
-        Task task = context.getBean(Task.class);
-        task.run();
+        Test test = context.getBean(Test.class);
+        test.run();
     }
 
 }
