@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  *
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
-@Component // 注释这个则关闭全量同步
+// @Component // 注释这个则关闭全量同步
 @Slf4j
 public class FullSyncUserToEs {
 

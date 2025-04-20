@@ -6,6 +6,7 @@ import cn.com.edtechhub.workusercentre.request.UserSearchRequest;
 import cn.com.edtechhub.workusercentre.service.UserService;
 import cn.dev33.satoken.stp.StpInterface;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
