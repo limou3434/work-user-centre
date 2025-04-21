@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <name>work-user-centre</name>
-    <description>工作室用户中心</description>
+    <description>work-user-centre</description>
     <url>https://github.com/limou3434</url>
     <licenses>
         <license>
@@ -182,7 +182,7 @@
           <version>2021.0.5.0</version>
         </dependency>
 
-        <!-- elasticsearch: https://www.elastic.co/docs/get-started/ -->
+        <!-- Elasticsearch: https://www.elastic.co/docs/get-started/ -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
