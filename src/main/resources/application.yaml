@@ -119,6 +119,7 @@ dubbo:
   application:
     name: work-user-centre
     logger: slf4j
+    enable-file-cache: false # 避免临时文件独占错误
   protocol:
     name: tri
     port: 50052 # 这个最多检测是否注册而无法在生产环境中使用, 除非本地把需要的服务也启动起来(ls 列出服务)
