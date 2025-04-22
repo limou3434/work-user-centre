@@ -20,28 +20,13 @@
 package cn.com.edtechhub.workusercentre;
 
 import cn.com.edtechhub.workusercentre.config.ServerConfig;
-import cn.com.edtechhub.workusercentre.config.SpringdocConfig;
-import cn.com.edtechhub.workusercentre.service.TestService;
+import cn.com.edtechhub.workusercentre.config.SpringDocConfig;
 import cn.dev33.satoken.SaManager;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.config.annotation.DubboReference;
-import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.stereotype.Component;
-
-@Component
-class Test {
-    @DubboReference
-    private TestService testService;
-
-    public void run() {
-        String result = testService.test("world");
-        System.out.println("Receive result ======> " + result);
-    }
-}
 
 /**
  * Spring Boot 启动类
@@ -51,22 +36,18 @@ class Test {
 @SpringBootApplication
 @ServletComponentScan // 扫描 Servlet 组件以支持 IP 黑名单
 @EnableScheduling // 开启定时任务
-@EnableDubbo // 开启服务注册
 @Slf4j
 public class WorkUserCentreApplication {
 
     public static void main(String[] args) {
         var context = SpringApplication.run(WorkUserCentreApplication.class, args);
         ServerConfig serverConfig = context.getBean(ServerConfig.class);
-        SpringdocConfig springdocConfig = context.getBean(SpringdocConfig.class);
+        SpringDocConfig springdocConfig = context.getBean(SpringDocConfig.class);
         String baseUrl = "http://" + serverConfig.getAddress() + ":" + serverConfig.getPort() + serverConfig.getContextPath();
         log.info("Spring Boot running...");
         log.info("访问 {} 或 {} 即可得到在线文档, 访问 {} 即可得到文档配置", baseUrl + springdocConfig.getKnife4jUi(), baseUrl + springdocConfig.getSwaggerUi(), baseUrl + springdocConfig.getApiDocs());
         log.debug("读取 Sa-token 配置查验是否正确: {}", String.valueOf(SaManager.getConfig()));
         log.debug("读取 Sa-token 切面类查验是否被替换为自己的: {}", String.valueOf(SaManager.getStpInterface()));
-
-        Test test = context.getBean(Test.class);
-        test.run();
     }
 
 }

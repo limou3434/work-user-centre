@@ -44,11 +44,6 @@ public class NacosConfig implements InitializingBean {
     private ConfigService configService;
 
     /**
-     * 上次配置文件哈希缓存, 用来判断是否加载新的配置避免重复配置
-     */
-    private static volatile int lastConfigHash = 0;
-
-    /**
      * 初始化配置文件监听
      */
     @Override

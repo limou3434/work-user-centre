@@ -1,7 +1,7 @@
 package cn.com.edtechhub.workusercentre.config;
 
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -11,36 +11,30 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Data
-@ConfigurationProperties(prefix = "server")
 public class ServerConfig {
 
     /**
      * 项目名称
      */
+    @Value("${spring.application.name}")
     private String projectName;
 
     /**
      * 运行地址
      */
+    @Value("${server.address}")
     private String address;
 
     /**
      * 运行端口
      */
+    @Value("${server.port}")
     private String port;
 
     /**
      * 接口前缀
      */
-    private Servlet servlet;
-
-    @Data
-    public static class Servlet {
-        private String contextPath;
-    }
-
-    public String getContextPath() {
-        return servlet != null ? servlet.getContextPath() : null;
-    }
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
 
 }

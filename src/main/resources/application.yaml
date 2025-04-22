@@ -46,8 +46,6 @@ logging:
 
 # 配置服务
 server:
-  ## 项目名称
-  project-name: work-user-centre
   ## 配置地址
   address: 127.0.0.1
   ## 配置端口
