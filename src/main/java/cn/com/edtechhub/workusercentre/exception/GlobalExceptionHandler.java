@@ -7,37 +7,31 @@ import cn.dev33.satoken.exception.DisableServiceException;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
-import com.alibaba.csp.sentinel.Tracer;
-import com.alibaba.csp.sentinel.slots.block.BlockException;
-import com.alibaba.csp.sentinel.slots.block.degrade.DegradeException;
-import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
-import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.servlet.ServletException;
-import java.io.IOException;
 
 /**
  * 全局异常处理方法类
  * 截获异常, 把异常的 "错误-含义:消息" 作为响应传递给前端, 本质时为了避免让服务层抛异常而不涉及报文相关的东西, 让全局异常处理器来代做
  * Java 异常体系
  * Object -> Throwable
- *              -> 错误: Error
- *              -> 异常: Exception
- *                   -> 运行时异常: RuntimeException(BusinessException, NotLoginException, NotPermissionException, NotRoleException, DisableServiceException)
- *                   -> 非运时异常: IOException
- *
+ * -> 错误: Error
+ * -> 异常: Exception
+ * -> 运行时异常: RuntimeException(BusinessException, NotLoginException, NotPermissionException, NotRoleException, DisableServiceException)
+ * -> 非运时异常: IOException
  *
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @RestControllerAdvice // 使用 @RestControllerAdvice 可以拦截所有抛出的异常, 并统一返回 JSON 格式的错误信息, 这里还支持了异常熔断, 避免异常被提前处理后无法上报
+@Hidden // 避免某些时候文档配置错误
 @Slf4j
 public class GlobalExceptionHandler {
 
     /**
      * 全局所有异常处理方法(兜底把所有运行时异常拦截后进行处理)
+     *
      * @param e 参数异常对象
      */
     @ExceptionHandler // 直接拦截 Throwable
