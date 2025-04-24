@@ -12,7 +12,9 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/work_user_centre
     username: wuc
     password: Qwe54188_
+    type: com.alibaba.druid.pool.DruidDataSource # 指定数据源类型
     druid: # 配置连接池(在使用 Spring Boot 2.x 的情况下默认 HikariCP 连接池大小是 10, 当前请求量大起来之后, 如果数据库执行的不够快, 那么请求都会被阻塞等待获取连接池的连接上, 不过即便我们可以调优, 也无法在没有引入任何外部组件的情况下检测据库连接池, 更别说有依据得调优了, 所以这里引入了 Druid)
+      ########### 设置最基本的配置 ##########
       initial-size: 10 # 配置初始化大小
       minIdle: 10 # 配置初始化最小
       max-active: 10 # 配置初始化最大
