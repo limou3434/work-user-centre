@@ -1,6 +1,9 @@
 spring:
   datasource:
     url: jdbc:mysql://work-mysql:3306/work_user_centre
+    druid:
+      stat-view-servlet:
+        allow:
   redis:
     database: 1
     host: work-redis
@@ -19,4 +22,3 @@ nacos:
 dubbo:
   registry:
     address: nacos://work-nacos:8848?username=nacos&password=Qwe54188_
-
