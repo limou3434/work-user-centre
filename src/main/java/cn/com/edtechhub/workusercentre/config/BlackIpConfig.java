@@ -1,7 +1,7 @@
 package cn.com.edtechhub.workusercentre.config;
 
-import cn.com.edtechhub.workusercentre.utils.BlackIpUtils;
-import cn.com.edtechhub.workusercentre.utils.IpUtils;
+import cn.com.edtechhub.workusercentre.utils.BlackIpUtil;
+import cn.com.edtechhub.workusercentre.utils.IpUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
@@ -21,15 +21,15 @@ public class BlackIpConfig implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        String ipAddress = IpUtils.getIpAddress((HttpServletRequest) servletRequest);
+        String ipAddress = IpUtil.getIpAddress((HttpServletRequest) servletRequest);
 
         log.debug("拦截器 BlackIpConfig 检测到客户端 IP 地址: {}", ipAddress);
 
-        if (BlackIpUtils.isBlackIp(ipAddress)) {
+        if (BlackIpUtil.isBlackIp(ipAddress)) {
             log.debug("拦截器 BlackIpConfig 检测到客户端 IP 地址 {} 在黑名单中, 禁止访问", ipAddress);
             servletResponse.setContentType("text/json;charset=UTF-8");
 
-            servletResponse.getWriter().write("{\"code\":\"-1\",\"message\":\"黑名单IP，禁止访问\",\"data\":null}");
+            servletResponse.getWriter().write("{\"code\":\"-1\",\"message\":\"黑名单 IP, 禁止访问\",\"data\":null}");
             return;
         }
         filterChain.doFilter(servletRequest, servletResponse);

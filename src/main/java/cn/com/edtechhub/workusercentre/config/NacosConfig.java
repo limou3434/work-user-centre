@@ -1,6 +1,6 @@
 package cn.com.edtechhub.workusercentre.config;
 
-import cn.com.edtechhub.workusercentre.utils.BlackIpUtils;
+import cn.com.edtechhub.workusercentre.utils.BlackIpUtil;
 import com.alibaba.nacos.api.annotation.NacosInjected;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
@@ -81,12 +81,12 @@ public class NacosConfig implements InitializingBean {
                     @Override
                     public void receiveConfigInfo(String configInfo) {
                         log.debug("监听到配置信息发生变化, 准备转移配置重构布隆过滤器");
-                        BlackIpUtils.rebuildBlackIp(configInfo);
+                        BlackIpUtil.rebuildBlackIp(configInfo);
                     }
                 });
 
         // 初始化黑名单
-        BlackIpUtils.rebuildBlackIp(config);
+        BlackIpUtil.rebuildBlackIp(config);
     }
 
 }

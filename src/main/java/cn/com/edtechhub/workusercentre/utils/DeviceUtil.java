@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Slf4j
-public class DeviceUtils {
+public class DeviceUtil {
 
     /**
      * 根据请求获取设备信息

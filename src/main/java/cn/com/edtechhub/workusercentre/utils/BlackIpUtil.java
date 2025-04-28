@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Slf4j
-public class BlackIpUtils {
+public class BlackIpUtil {
 
     /**
      * 预期插入数量

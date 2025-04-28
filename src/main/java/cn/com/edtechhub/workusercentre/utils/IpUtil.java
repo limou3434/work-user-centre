@@ -11,7 +11,7 @@ import java.net.InetAddress;
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Slf4j
-public class IpUtils {
+public class IpUtil {
 
     /**
      * 获取客户端 IP 地址方法

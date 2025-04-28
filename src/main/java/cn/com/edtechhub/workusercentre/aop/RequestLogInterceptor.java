@@ -1,6 +1,6 @@
 package cn.com.edtechhub.workusercentre.aop;
 
-import cn.com.edtechhub.workusercentre.utils.IpUtils;
+import cn.com.edtechhub.workusercentre.utils.IpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,7 +23,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        log.debug("拦截到请求: {}", "来自 " + IpUtils.getIpAddress(request) + " - " + request.getMethod() + " " + request.getRequestURI());
+        log.debug("拦截到请求: {}", "来自 " + IpUtil.getIpAddress(request) + " - " + request.getMethod() + " " + request.getRequestURI());
 
         return true; // 返回 false 会终止请求, 可以利用这一点进行 IP 屏蔽
 
