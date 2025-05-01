@@ -18,6 +18,3 @@ server:
 nacos:
   config:
     server-addr: work-nacos:8848
-dubbo:
-  registry:
-    address: nacos://work-nacos:8848?username=nacos&password=Qwe54188_

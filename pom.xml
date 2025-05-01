@@ -35,17 +35,6 @@
     </parent>
 
     <!-- 依赖描述 -->
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-bom</artifactId>
-                <version>3.3.0</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
     <dependencies>
 
         <!-- Spring: https://spring.io/ -->
@@ -185,7 +174,7 @@
 
         <!-- Sentinel: https://sentinelguard.io/zh-cn/index.html -->
         <dependency>
-            <!-- 本依赖内部集成 Sentinel 的所有核心依赖, 包括上面的两个依赖 -->
+            <!-- 本依赖内部集成 Sentinel 的所有核心依赖, 包括两个依赖 -->
             <groupId>com.alibaba.cloud</groupId>
           <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
           <version>2021.0.5.0</version>
