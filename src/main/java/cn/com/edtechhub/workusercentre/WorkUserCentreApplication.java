@@ -4,7 +4,7 @@
  * 3. [服务层]编写 serveice 接口声明和 serviceImpl 接口实现
  * (1) 尽可能不要使用 Request 作为参数但增删改查服务除外
  * (2) 编写简单的 CUDA 代码
- * a. 内部业务出错抛出异常 BusinessException(CodeBindMessage.xxxxx, "更加详细的错误说明"), 就可以让控制层响应异常给前端并且避免直接处理报文, 如果发现 CodeBindMessage 枚举不够使用可以自己定义
+ * a. 内部业务出错抛出异常 BusinessException(CodeBindMessageEnums.xxxxx, "更加详细的错误说明"), 就可以让控制层响应异常给前端并且避免直接处理报文, 如果发现 CodeBindMessageEnums 枚举不够使用可以自己定义
  * b. 外部组件出错抛出异常可以在全局异常拦截器 GlobalExceptionHandler 中捕获处理, 以达到自动让控制层响应异常给前端, 并且组件抛异常可以和本业务服务进行隔离
  * (3) 需要做 "复杂校验、业务处理、数据返回"
  * 4. [控制层]每个 controller 都需要有直接对应的 serviceImpl
@@ -19,8 +19,8 @@
 
 package cn.com.edtechhub.workusercentre;
 
-import cn.com.edtechhub.workusercentre.config.ServerConfig;
-import cn.com.edtechhub.workusercentre.config.OpenApiConfig;
+import cn.com.edtechhub.workusercentre.contant.ServerConstant;
+import cn.com.edtechhub.workusercentre.contant.OpenApiConstant;
 import cn.dev33.satoken.SaManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -41,9 +41,9 @@ public class WorkUserCentreApplication {
 
     public static void main(String[] args) {
         var context = SpringApplication.run(WorkUserCentreApplication.class, args);
-        ServerConfig serverConfig = context.getBean(ServerConfig.class);
-        OpenApiConfig springdocConfig = context.getBean(OpenApiConfig.class);
-        String baseUrl = "http://" + serverConfig.getAddress() + ":" + serverConfig.getPort() + serverConfig.getContextPath();
+        ServerConstant serverConstant = context.getBean(ServerConstant.class);
+        OpenApiConstant springdocConfig = context.getBean(OpenApiConstant.class);
+        String baseUrl = "http://" + serverConstant.getAddress() + ":" + serverConstant.getPort() + serverConstant.getContextPath();
         log.info("Spring Boot running...");
         log.info("访问 {} 或 {} 即可得到在线文档, 访问 {} 即可得到文档配置", baseUrl + springdocConfig.getKnife4jUi(), baseUrl + springdocConfig.getSwaggerUi(), baseUrl + springdocConfig.getApiDocsJson());
         log.debug("读取 Sa-token 配置查验是否正确: {}", SaManager.getConfig());

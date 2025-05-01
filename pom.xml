@@ -127,7 +127,7 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
-        <!-- Open API: https://doc.xiaominfo.com/ -->
+        <!-- OpenAPI: https://doc.xiaominfo.com/ -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
@@ -211,7 +211,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-
             </plugin>
         </plugins>
     </build>

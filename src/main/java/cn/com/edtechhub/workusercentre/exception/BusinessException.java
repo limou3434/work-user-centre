@@ -1,6 +1,6 @@
 package cn.com.edtechhub.workusercentre.exception;
 
-import cn.com.edtechhub.workusercentre.enums.CodeBindMessage;
+import cn.com.edtechhub.workusercentre.enums.CodeBindMessageEnums;
 import lombok.Getter;
 
 /**
@@ -14,7 +14,7 @@ public class BusinessException extends RuntimeException {
     /**
      * 错误-含义
      */
-    CodeBindMessage codeBindMessage;
+    CodeBindMessageEnums codeBindMessageEnums;
 
     /**
      * 详细信息
@@ -24,11 +24,11 @@ public class BusinessException extends RuntimeException {
     /**
      * 构造异常对象
      *
-     * @param codeBindMessage 错误-含义 枚举体
+     * @param codeBindMessageEnums 错误-含义 枚举体
      * @param exceptionMessage 详细信息
      */
-    public BusinessException(CodeBindMessage codeBindMessage, String exceptionMessage) {
-        this.codeBindMessage = codeBindMessage;
+    public BusinessException(CodeBindMessageEnums codeBindMessageEnums, String exceptionMessage) {
+        this.codeBindMessageEnums = codeBindMessageEnums;
         this.exceptionMessage = exceptionMessage;
     }
 

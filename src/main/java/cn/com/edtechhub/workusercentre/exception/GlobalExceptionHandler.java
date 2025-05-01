@@ -1,6 +1,6 @@
 package cn.com.edtechhub.workusercentre.exception;
 
-import cn.com.edtechhub.workusercentre.enums.CodeBindMessage;
+import cn.com.edtechhub.workusercentre.enums.CodeBindMessageEnums;
 import cn.com.edtechhub.workusercentre.response.BaseResponse;
 import cn.com.edtechhub.workusercentre.response.TheResult;
 import cn.dev33.satoken.exception.DisableServiceException;
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
     public BaseResponse<String> exceptionHandler(Exception e) throws Exception {
         log.debug("触发全局所有异常处理方法");
         log.error(e.getMessage());
-        return TheResult.error(CodeBindMessage.SYSTEM_ERROR, "请联系管理员");
+        return TheResult.error(CodeBindMessageEnums.SYSTEM_ERROR, "请联系管理员");
     }
 
     /**
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public BaseResponse<?> businessExceptionHandler(BusinessException e) {
         log.debug("触发业务内部异常处理方法");
-        return TheResult.error(e.getCodeBindMessage(), e.exceptionMessage);
+        return TheResult.error(e.getCodeBindMessageEnums(), e.exceptionMessage);
     }
 
     /**
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotLoginException.class)
     public BaseResponse<?> notLoginExceptionHandler(NotLoginException e) {
         log.debug("触发登录认证异常处理方法");
-        return TheResult.error(CodeBindMessage.NO_LOGIN_ERROR, "请先进行登录");
+        return TheResult.error(CodeBindMessageEnums.NO_LOGIN_ERROR, "请先进行登录");
     }
 
     /**
@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotPermissionException.class)
     public BaseResponse<?> notPermissionExceptionHandler(NotPermissionException e) {
         log.debug("触发权限认证异常处理方法(权限码值认证)");
-        return TheResult.error(CodeBindMessage.NO_AUTH_ERROR, "用户当前权限不允许使用该功能");
+        return TheResult.error(CodeBindMessageEnums.NO_AUTH_ERROR, "用户当前权限不允许使用该功能");
     }
 
     /**
@@ -87,7 +87,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotRoleException.class)
     public BaseResponse<?> notRoleExceptionHandler(NotRoleException e) {
         log.debug("触发权限认证异常处理方法(角色标识认证)");
-        return TheResult.error(CodeBindMessage.NO_ROLE_ERROR, "用户当前角色不允许使用该功能");
+        return TheResult.error(CodeBindMessageEnums.NO_ROLE_ERROR, "用户当前角色不允许使用该功能");
     }
 
     /**
@@ -99,7 +99,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DisableServiceException.class)
     public BaseResponse<?> disableServiceExceptionHandler(DisableServiceException e) {
         log.debug("触发用户封禁异常处理方法");
-        return TheResult.error(CodeBindMessage.USER_DISABLE_ERROR, "当前用户因为违规被封禁"); // TODO: 可以考虑告知用户封禁时间
+        return TheResult.error(CodeBindMessageEnums.USER_DISABLE_ERROR, "当前用户因为违规被封禁"); // TODO: 可以考虑告知用户封禁时间
     }
 
 }

@@ -1,17 +1,17 @@
-package cn.com.edtechhub.workusercentre.config;
+package cn.com.edtechhub.workusercentre.contant;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * 应用项目常量
  *
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
-@Configuration
+@Component
 @Data
-public class ServerConfig {
+public class ServerConstant {
 
     /**
      * 项目名称

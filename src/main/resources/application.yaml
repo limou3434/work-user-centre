@@ -89,12 +89,6 @@ spring:
     username: elastic
     password: Qwe54188_
 
-# 配置日志
-logging:
-  level:
-    # root: DEBUG # 如果需要仔细调试可以打开这个选项
-    cn.com.edtechhub.workusercentre: DEBUG # 控制本项目包内的日志输出等级 TRACE | DEBUG | INFO | WARN | ERROR | FATAL
-
 # 配置服务
 server:
   ## 配置地址
@@ -104,6 +98,12 @@ server:
   ## 配置路由
   servlet:
     context-path: /work_user_centre_api # 这样所有接口都会带上前缀
+
+# 配置日志
+logging:
+  level:
+    # root: DEBUG # 如果需要仔细调试可以打开这个选项
+    cn.com.edtechhub.workusercentre: DEBUG # 控制本项目包内的日志输出等级 TRACE | DEBUG | INFO | WARN | ERROR | FATAL
 
 # 配置文档
 springdoc:
@@ -126,10 +126,10 @@ knife4j: # knife4j 的增强配置(不需要增强可以不配)
   setting:
     language: zh_cn
 
-# 配置 mybatis-plus
+# 配置 MyBatisPlus
 mybatis-plus:
   ## 配置盐值
-  salt: work-user-centre
+  salt: edtechhub
   ## 配置全局
   global-config:
     db-config:
@@ -137,7 +137,7 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值
       logic-not-delete-value: 0 # 逻辑未删除值
 
-# 配置 sa-token
+# 配置 Sa-Token
 sa-token: # 默认开启 Redis 配置将自动支持 Sa-token 使用 Redis 存储认证相关键值对, 想要关掉需要去除相关依赖
   ## token 名称
   token-name: work-user-centre # 同时也是 cookie 名称
@@ -154,7 +154,7 @@ sa-token: # 默认开启 Redis 配置将自动支持 Sa-token 使用 Redis 存�
   ## 是否输出操作日志
   is-log: true
 
-# 配置 nacos
+# 配置 Nacos
 nacos:
   config:
     username: nacos

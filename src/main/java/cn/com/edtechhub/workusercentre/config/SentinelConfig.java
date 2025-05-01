@@ -1,6 +1,6 @@
 package cn.com.edtechhub.workusercentre.config;
 
-import cn.com.edtechhub.workusercentre.enums.CodeBindMessage;
+import cn.com.edtechhub.workusercentre.enums.CodeBindMessageEnums;
 import cn.com.edtechhub.workusercentre.response.BaseResponse;
 import cn.com.edtechhub.workusercentre.response.TheResult;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
@@ -98,19 +98,19 @@ public class SentinelConfig {
     private static BaseResponse<?> blockHandler(BlockException ex) {
         // 流量控制异常
         if (ex instanceof FlowException) {
-            return TheResult.error(CodeBindMessage.FLOW_RULES, "请求频繁，请稍后重试");
+            return TheResult.error(CodeBindMessageEnums.FLOW_RULES, "请求频繁，请稍后重试");
         }
         // 熔断降级异常
         else if (ex instanceof DegradeException) {
-            return TheResult.error(CodeBindMessage.DEGRADE_RULES, "服务退化，请稍后重试");
+            return TheResult.error(CodeBindMessageEnums.DEGRADE_RULES, "服务退化，请稍后重试");
         }
         // 热点参数异常
         else if (ex instanceof ParamFlowException) {
-            return TheResult.error(CodeBindMessage.PARAM_RULES, "资源过热，请稍后重试");
+            return TheResult.error(CodeBindMessageEnums.PARAM_RULES, "资源过热，请稍后重试");
         }
         // 系统保护异常
         else {
-            return TheResult.error(CodeBindMessage.SYSTEM_RULES, "系统繁忙，请稍后重试");
+            return TheResult.error(CodeBindMessageEnums.SYSTEM_RULES, "系统繁忙，请稍后重试");
         }
     }
 

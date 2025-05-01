@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 // todo 取消注释开启任务
 @Component // 注释这个则关闭增量同步
 @Slf4j
-public class IncSyncUserToEs {
+public class IncSyncUserToEsJob {
 
     /**
      * 注入 userEsMapper
@@ -70,10 +70,10 @@ public class IncSyncUserToEs {
         int total = userEsList.size();
 
         if (total == 0) {
-            log.debug("IncSyncUserToEs no data...");
+            log.debug("IncSyncUserToEsJob no data...");
         }
         else {
-            log.debug("IncSyncUserToEs start, total {}", total);
+            log.debug("IncSyncUserToEsJob start, total {}", total);
 
             for (int i = 0; i < total; i += pageSize) {
                 // 注意同步的数据下标不能超过总数据量
@@ -82,7 +82,7 @@ public class IncSyncUserToEs {
                 userEsMapper.saveAll(userEsList.subList(i, end));
             }
 
-            log.debug("IncSyncUserToEs end, total {}, is {}", total, userEsList);
+            log.debug("IncSyncUserToEsJob end, total {}, is {}", total, userEsList);
         }
     }
 }

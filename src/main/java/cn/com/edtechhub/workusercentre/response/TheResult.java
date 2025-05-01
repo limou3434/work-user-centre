@@ -1,7 +1,7 @@
 package cn.com.edtechhub.workusercentre.response;
 
 
-import cn.com.edtechhub.workusercentre.enums.CodeBindMessage;
+import cn.com.edtechhub.workusercentre.enums.CodeBindMessageEnums;
 
 /**
  * 便捷响应体工具类
@@ -19,18 +19,18 @@ public class TheResult {
      * @param <T> data 的类型
      * @return 通用响应体对象
      */
-    public static <T> BaseResponse<T> success(CodeBindMessage codeBindMessage, T data) {
-        return new BaseResponse<>(codeBindMessage, data);
+    public static <T> BaseResponse<T> success(CodeBindMessageEnums codeBindMessageEnums, T data) {
+        return new BaseResponse<>(codeBindMessageEnums, data);
     }
 
     /**
      * 构造失败响应体
      *
-     * @param codeBindMessage 错误-含义 枚举体
+     * @param codeBindMessageEnums 错误-含义 枚举体
      * @return 通用响应体对象
      */
-    public static <T> BaseResponse<T> error(CodeBindMessage codeBindMessage, String message) {
-        return new BaseResponse<>(codeBindMessage, message);
+    public static <T> BaseResponse<T> error(CodeBindMessageEnums codeBindMessageEnums, String message) {
+        return new BaseResponse<>(codeBindMessageEnums, message);
     }
 
 }

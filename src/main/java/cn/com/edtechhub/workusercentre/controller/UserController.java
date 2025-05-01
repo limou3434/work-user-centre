@@ -1,6 +1,6 @@
 package cn.com.edtechhub.workusercentre.controller;
 
-import cn.com.edtechhub.workusercentre.enums.CodeBindMessage;
+import cn.com.edtechhub.workusercentre.enums.CodeBindMessageEnums;
 import cn.com.edtechhub.workusercentre.model.dto.UserStatus;
 import cn.com.edtechhub.workusercentre.model.entity.User;
 import cn.com.edtechhub.workusercentre.model.vo.UserVO;
@@ -48,7 +48,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     public BaseResponse<UserVO> userAdd(@RequestBody UserAddRequest userAddRequest) {
         User user = userService.userAdd(userAddRequest);
         UserVO userVo = UserVO.removeSensitiveData(user);
-        return TheResult.success(CodeBindMessage.SUCCESS, userVo);
+        return TheResult.success(CodeBindMessageEnums.SUCCESS, userVo);
     }
 
     /**
@@ -60,7 +60,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @SentinelResource(value = "userDelete")
     public BaseResponse<Boolean> userDelete(@RequestBody UserDeleteRequest userDeleteRequest) {
         Boolean result = userService.userDelete(userDeleteRequest);
-        return TheResult.success(CodeBindMessage.SUCCESS, result);
+        return TheResult.success(CodeBindMessageEnums.SUCCESS, result);
     }
 
     /**
@@ -73,7 +73,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     public BaseResponse<UserVO> userUpdate(@RequestBody UserUpdateRequest userUpdateRequest) {
         User user = userService.userUpdate(userUpdateRequest);
         UserVO userVo = UserVO.removeSensitiveData(user);
-        return TheResult.success(CodeBindMessage.SUCCESS, userVo);
+        return TheResult.success(CodeBindMessageEnums.SUCCESS, userVo);
     }
 
     /**
@@ -88,7 +88,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
         List<UserVO> userVoList = userList.stream()
                 .map(UserVO::removeSensitiveData)
                 .collect(Collectors.toList());
-        return TheResult.success(CodeBindMessage.SUCCESS, userVoList);
+        return TheResult.success(CodeBindMessageEnums.SUCCESS, userVoList);
     }
 
     /**
@@ -103,7 +103,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
         List<UserVO> userVoList = userList.stream()
                 .map(UserVO::removeSensitiveData)
                 .collect(Collectors.toList());
-        return TheResult.success(CodeBindMessage.SUCCESS, userVoList);
+        return TheResult.success(CodeBindMessageEnums.SUCCESS, userVoList);
     }
 
     /**
@@ -115,7 +115,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @SentinelResource(value = "userDisable")
     public BaseResponse<Boolean> userDisable(@RequestBody UserDisableRequest userDisableRequest) {
         Boolean result = userService.userDisable(userDisableRequest.getId(), userDisableRequest.getDisableTime());
-        return TheResult.success(CodeBindMessage.SUCCESS, result);
+        return TheResult.success(CodeBindMessageEnums.SUCCESS, result);
     }
 
     /**
@@ -126,7 +126,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @SentinelResource(value = "userRegister")
     public BaseResponse<Boolean> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         Boolean result = userService.userRegister(userRegisterRequest.getAccount(), userRegisterRequest.getPasswd(), userRegisterRequest.getCheckPasswd());
-        return TheResult.success(CodeBindMessage.SUCCESS, result);
+        return TheResult.success(CodeBindMessageEnums.SUCCESS, result);
     }
 
     /**
@@ -138,7 +138,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     public BaseResponse<UserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         User user = userService.userLogin(userLoginRequest.getAccount(), userLoginRequest.getPasswd(), DeviceUtil.getRequestDevice(request)); // 这里同时解析用户的设备, 以支持同端互斥
         UserVO userVo = UserVO.removeSensitiveData(user);
-        return TheResult.success(CodeBindMessage.SUCCESS, userVo);
+        return TheResult.success(CodeBindMessageEnums.SUCCESS, userVo);
     }
 
     /**
@@ -149,7 +149,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @PostMapping("/logout")
     public BaseResponse<Boolean> userLogout(HttpServletRequest request) {
         Boolean result = userService.userLogout(DeviceUtil.getRequestDevice(request));
-        return TheResult.success(CodeBindMessage.SUCCESS, result);
+        return TheResult.success(CodeBindMessageEnums.SUCCESS, result);
     }
 
     /**
@@ -160,7 +160,7 @@ public class UserController { // 通常控制层有服务层中的所有方法, 
     @GetMapping("/status")
     public BaseResponse<UserStatus> userStatus() {
         UserStatus userStatus = userService.userStatus();
-        return TheResult.success(CodeBindMessage.SUCCESS, userStatus);
+        return TheResult.success(CodeBindMessageEnums.SUCCESS, userStatus);
     }
 
 }

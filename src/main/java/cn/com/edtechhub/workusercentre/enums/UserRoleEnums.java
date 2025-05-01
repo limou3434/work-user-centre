@@ -8,7 +8,7 @@ import lombok.Getter;
  * @author <a href="https://github.com/limou3434">limou3434</a>
  */
 @Getter
-public enum UserRoleEnum { // 由于效率问题, 这里手动缓存了数据库中的用户权限, 数据库中的用户等级只是用来限制插入和前端查询的
+public enum UserRoleEnums { // 由于效率问题, 这里手动缓存了数据库中的用户权限, 数据库中的用户等级只是用来限制插入和前端查询的
 
     /**
      * 封号角色枚举实例
@@ -41,7 +41,7 @@ public enum UserRoleEnum { // 由于效率问题, 这里手动缓存了数据库
      * @param code
      * @param description
      */
-    UserRoleEnum(int code, String description) {
+    UserRoleEnums(int code, String description) {
         this.code = code;
         this.description = description;
     }
@@ -53,7 +53,7 @@ public enum UserRoleEnum { // 由于效率问题, 这里手动缓存了数据库
      * @return
      */
     public static String getUserDescription(int code) {
-        for (UserRoleEnum role : UserRoleEnum.values()) {
+        for (UserRoleEnums role : UserRoleEnums.values()) {
             if (role.getCode() == code) {
                 return role.getDescription();
             }

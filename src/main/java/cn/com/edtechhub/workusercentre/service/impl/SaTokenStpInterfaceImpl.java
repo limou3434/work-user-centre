@@ -1,6 +1,6 @@
 package cn.com.edtechhub.workusercentre.service.impl;
 
-import cn.com.edtechhub.workusercentre.enums.UserRoleEnum;
+import cn.com.edtechhub.workusercentre.enums.UserRoleEnums;
 import cn.com.edtechhub.workusercentre.model.entity.User;
 import cn.com.edtechhub.workusercentre.request.UserSearchRequest;
 import cn.com.edtechhub.workusercentre.service.UserService;
@@ -52,7 +52,7 @@ public class SaTokenStpInterfaceImpl implements StpInterface {
         List<User> users = userService.userSearch(userSearchRequest);
 
         // 由于在本数据库中为了拓展性使用数字来标识身份, 因此需要做一层转化
-        String userRole = UserRoleEnum.getUserDescription(users.get(0).getRole());
+        String userRole = UserRoleEnums.getUserDescription(users.get(0).getRole());
         log.debug("检测一次当前用户的身份名称: {}", userRole);
 
         List<String> list = new ArrayList<>();

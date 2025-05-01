@@ -1,6 +1,6 @@
 package cn.com.edtechhub.workusercentre.utils;
 
-import cn.com.edtechhub.workusercentre.enums.CodeBindMessage;
+import cn.com.edtechhub.workusercentre.enums.CodeBindMessageEnums;
 import cn.com.edtechhub.workusercentre.exception.BusinessException;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.Header;
@@ -29,7 +29,7 @@ public class DeviceUtil {
         // 使用 Hutool 解析 UserAgent
         UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
         if (userAgent == null) {
-            throw new BusinessException(CodeBindMessage.PARAMS_ERROR, "禁止隐藏设备类型");
+            throw new BusinessException(CodeBindMessageEnums.PARAMS_ERROR, "禁止隐藏设备类型");
         }
 
         log.debug("检测一次原始的 HTTP 设备信息 {}", userAgentStr);

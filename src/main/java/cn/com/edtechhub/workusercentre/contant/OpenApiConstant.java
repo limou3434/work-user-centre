@@ -1,11 +1,16 @@
-package cn.com.edtechhub.workusercentre.config;
+package cn.com.edtechhub.workusercentre.contant;
 
 import lombok.Data;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+/**
+ * OpenApi 常量
+ *
+ * @author <a href="https://github.com/limou3434">limou3434</a>
+ */
+@Component
 @Data
-public class OpenApiConfig {
+public class OpenApiConstant {
 
     /**
      * Knife4j Ui 在线文档地址
