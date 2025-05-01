@@ -128,9 +128,13 @@ knife4j: # knife4j 的增强配置(不需要增强可以不配)
 
 # 配置 MyBatisPlus
 mybatis-plus:
-  ## 配置盐值
+  ## 配置加密盐值
   salt: edtechhub
-  ## 配置全局
+  ## 下划线转驼峰
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  ## 配置逻辑删除
   global-config:
     db-config:
       logic-delete-field: deleted # 指定数据库全局逻辑删除字段名, 并且给实体类的对应字段加上 @TableLogic
@@ -164,5 +168,5 @@ nacos:
       enable: true  # 预加载
     data-id: workusercentre # 控制台填写的 Data ID
     group: DEFAULT_GROUP # 控制台填写的 group
-    type: yaml  # 选择的文件格式
+    type: yaml # 选择的文件格式
     auto-refresh: true # 开启自动刷新

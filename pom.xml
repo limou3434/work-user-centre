@@ -50,13 +50,14 @@
 
         <!-- Spring: https://spring.io/ -->
         <dependency>
+            <!-- Spring Boot 核心依赖 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
             <!-- 引入 Spring Boot 的 Web 相关依赖, 支持 RESTful API 开发, 包含: Spring MVC(用于处理 HTTP 请求)、Jackson(用于 JSON 序列化)、Tomcat(默认内嵌的 Web 服务器) -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <!-- 提供开发时的工具，比如热加载、自动重启等, 提高开发效率 -->
